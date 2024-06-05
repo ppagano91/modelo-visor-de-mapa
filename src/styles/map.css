@@ -1,0 +1,54 @@
+@import '/node_modules/leaflet-minimap/dist/Control.MiniMap.min.css';
+@import './plugins/leaflet-linear-measurement.css';
+
+.map-container{
+    width: 100%;
+    height: 90vh;
+}
+
+.custom-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+  }
+
+  .custom-control img {
+      width: 100%;
+      height: 100%;
+  }
+
+  .leaflet-control-minimap {
+    width: 10%;
+    height: 10%;
+    border-radius: 5px;
+    border: 1px solid black;
+  }
+  
+  .leaflet-control-locate a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .leaflet-control-locate a:hover {
+    display: flex;
+  }
+  
+  .leaflet-control-locate-button {
+    background-image: url("../assets/images/ubicacion_actual.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 auto;
+  }
+
+  .coordinates-control {
+    background-color: white;
+    padding: 0.25rem;
+    border-radius: 5px;
+    border: 1px solid black;
+    font-size: 12px;
+  }

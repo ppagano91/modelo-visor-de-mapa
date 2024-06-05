@@ -1,0 +1,28 @@
+.layer-section{
+    list-style: none;
+    cursor: pointer;
+    list-style: none;
+    width: 20rem;
+    max-height: inherit;
+    transition: all 0.5s;
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+.layer-section-container{
+    margin: 0;
+    height: 100%;
+    padding-left: 0.0rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.section-content {
+    background-color: #f8f9fa;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .layer-wrapper{
+    height: 90%;
+  }
