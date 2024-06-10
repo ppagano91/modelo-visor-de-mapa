@@ -44,3 +44,7 @@
   color: black;
   font-weight: 700;
 }
+
+.text-justify{
+  text-align: justify;
+}

@@ -39,7 +39,7 @@ const Layers = () => {
       <div className='m-1 d-flex align-items-center justify-content-center'>
         <input type='text'className='w-100 p-2 bg-light text-dark border-0 flex-5' placeholder='Buscador de Capas'/>
       </div>
-      <div className="h-100 layer-container" style={{width: "20rem", position:"relative"}}>
+      <div className="h-100 layer-container" style={{width: "21rem", position:"relative"}}>
         <ul className='d-block layer-section-container'>
           {layerSections.map((section) => (
             <li 

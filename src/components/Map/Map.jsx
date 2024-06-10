@@ -4,7 +4,8 @@ import {
   MapContainer,
   TileLayer,
   LayersControl,
-  useMap
+  useMap,
+  WMSTileLayer
 } from "react-leaflet";
 import L from "leaflet"
 
@@ -16,6 +17,9 @@ import LinearMeasureControl from "./controls/LinearMeasurementControl";
 import LocateControl from "./controls/LocateControl";
 import { MapLayerContext } from '../../context/MapLayerContext';
 import { tileLayers } from '../../utils/consts/consts'
+import SearchControl from './controls/SearchControl';
+
+import {getEnv} from "../../config"
 
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -48,18 +52,26 @@ const AddLayerToMap = ({ layers }) => {
 export default function Map() {
   const { layers } = useContext(MapLayerContext);
   return (
-      <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true}>
+      <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true} attributionControl={false}>
+        <SearchControl />
         <AddLayerToMap layers={layers} />
         <LayersControl className="control-layers" position="topright">
           <BaseLayer checked name="Mapa Base">
-            <TileLayer url={tileLayers.baseLayers.default.map} />
+            <WMSTileLayer 
+              url={getEnv("VITE_MAPA_BASE")}
+              layers="mapa_base"
+              format="image/png"
+              transparent={true}
+            />
           </BaseLayer>
           <BaseLayer name="Mapa Topográfico">
             <TileLayer url={tileLayers.baseLayers.openTopoMap.map} transparent={true}/>
           </BaseLayer>
           <BaseLayer name="Mapa Satelital">
             <TileLayer
-              url={tileLayers.baseLayers.esri.worldImagery.map}
+              // url={tileLayers.baseLayers.esri.worldImagery.map}
+              url={getEnv("VITE_MAPA_SATELITAL")}
+              tms={true}
               attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
             />
           </BaseLayer>
@@ -73,9 +85,9 @@ export default function Map() {
         <InitialView />
         <LocateControl />
         <LinearMeasureControl />
-        <CoordinatesControl position="bottomright" />
-        <MiniMap position="bottomright" />
-        <ScaleControl position="bottomright" imperial={false} />
+        <CoordinatesControl position="bottomleft" />
+        <MiniMap position="bottomleft" />
+        <ScaleControl position="bottomleft" imperial={false} />
       </MapContainer>
       
   );

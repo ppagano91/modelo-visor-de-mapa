@@ -13,7 +13,7 @@ const LinearMeasureControl = () => {
       show_last_node: true,
       show_azimut: false,
       doubleClickSpeed: 500,
-      position: "bottomleft",
+      position: "bottomright",
     });
     measureControl.addTo(map);
     return () => {

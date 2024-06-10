@@ -9,7 +9,7 @@ const LocateControl = () => {
 
   useEffect(() => {
     const locateControl = L.control.locate({
-        position: 'bottomleft',
+        position: 'bottomright',
         iconElementTag: "div",
         icon:"leaflet-control-locate-button",
         strings: {

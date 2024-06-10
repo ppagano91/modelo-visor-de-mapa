@@ -1,6 +1,6 @@
 const MasInformacion = () => {
   return (
-    <div style={{width: "20rem"}} >MasInformacion</div>
+    <div style={{width: "21rem"}} >MasInformacion</div>
   )
 }
 

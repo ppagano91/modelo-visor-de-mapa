@@ -80,6 +80,7 @@ const Salud = ({ onBack, color }) => {
                   title={item.nombre}
                   onClick={item.layerProps?null:null}
                 >
+                  <input type="checkbox"/>
                   {item.icono}
                   <p className="m-0">{item.nombre}</p>
                 </li>

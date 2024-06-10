@@ -8,10 +8,8 @@ const Navbar = () => {
             <a className="navbar-brand" href="#">
               <img src={LOGO} alt="Logo" className="d-inline-block align-text-top"/>
             </a>
-            <form className="d-flex" role="search">
-                <input className="form-control form-control-input-search me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button className="btn btn-primary form-control-button-search" type="submit">🔍</button>
-            </form>
+
+            {/* TODO: Agregar botón para redireccionar al Portal */}
         </div>
     </nav>
   )

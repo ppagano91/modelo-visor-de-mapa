@@ -1,6 +1,6 @@
 const ComoLlego = () => {
   return (
-    <div style={{width: "20rem"}}>ComoLlego</div>
+    <div style={{width: "21rem"}}>ComoLlego</div>
   )
 }
 

@@ -43,7 +43,7 @@ const CustomButtonControl = ({
       onRemove: function (map) {},
     });
 
-    const customControl = new control({ position: postion || "bottomleft" });
+    const customControl = new control({ position: postion || "bottomright" });
     customControl.addTo(map);
 
     return () => {

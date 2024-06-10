@@ -1,6 +1,6 @@
 const Favoritos = () => {
   return (
-    <div style={{width: "20rem"}}>Favoritos</div>
+    <div style={{width: "21rem"}}>Favoritos</div>
   )
 }
 

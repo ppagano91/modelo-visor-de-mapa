@@ -124,6 +124,7 @@ const Transporte = ({onBack, color}) => {
                   title={item.nombre}
                   onClick={item.layerProps?()=>{handleToggleLayer(item.layerProps)}:null}
                   >
+                  <input type="checkbox"/>
                   {item.icono}
                   <p className="m-0">{item.nombre}</p>
                 </li>

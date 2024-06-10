@@ -82,6 +82,7 @@ const Servicios = ({onBack, color}) => {
                   data-bs-placement="top"
                   title={item.nombre}
                 >
+                  <input type="checkbox"/>
                   {item.icono}
                   <p className="m-0">{item.nombre}</p>
                 </li>
