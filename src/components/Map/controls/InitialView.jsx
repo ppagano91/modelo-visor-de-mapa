@@ -20,6 +20,7 @@ const InitialView = () => {
         height: "2rem",
         border: "2px solid #9EAAB8",
         borderRadius: "5%",
+        padding: "2px",
         backgroundColor: "white",
       }}
     />

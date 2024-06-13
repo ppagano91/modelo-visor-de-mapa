@@ -61,7 +61,7 @@ const Contacto = () => {
       </p>
     ) : null;
 
-  const sitekey = getEnv("VITE_CAPTCHA_KEY")
+  const sitekey = getEnv("VITE_CAPTCHA_KEY");
   // const sitekey = "6LeWXeUpAAAAAA-yr2exn5cIJDf9u5azvIpLV62m";
   // const sitekey = "6Ld4XecpAAAAAFk3ocd547rHC_VdrDnEK-ie7EOr"
 
@@ -89,73 +89,73 @@ const Contacto = () => {
   }, [formData.nombre, formData.correo, formData.mensaje]);
 
   return (
-        <div id="contacto-informacion" style={{width:"21rem"}}>
-          <div className="m-3">
-          <div className="text-justify">
-            <h1 className="fs-2">Contacto</h1>
-            <p className="fs-6">
-              Utilice este formulario para hacernos llegar sus comentarios,
-              sugerencias, consultas o críticas respecto al Mapa Interactivo de
-              Buenos Aires. Asegúrese de ingresar una dirección de email válida
-              para que podamos responderle.
-            </p>
-          </div>
-          
-          <div className="">
-            <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
-              <div className="input-group">
-                <input
-                  className="w-100 form-control"
-                  type="text"
-                  placeholder="Nombre (*)"
-                  name="nombre"
-                  value={formData.nombre}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="input-group">
-                <input
-                  className="w-100 form-control"
-                  type="email"
-                  placeholder="Correo electrónico"
-                  name="correo"
-                  value={formData.correo}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
+    <div id="contacto-informacion" style={{ width: "21rem" }}>
+      <div className="m-3">
+        <div className="text-justify">
+          <h1 className="fs-2">Contacto</h1>
+          <p className="fs-6  ">
+            Utilice este formulario para hacernos llegar sus comentarios,
+            sugerencias, consultas o críticas respecto al Mapa Interactivo de
+            Buenos Aires. Asegúrese de ingresar una dirección de email válida
+            para que podamos responderle.
+          </p>
+        </div>
 
-              <div className="input-group">
-                <input
-                  className="w-100 form-control"
-                  type="text"
-                  placeholder="Mensaje (*)"
-                  name="mensaje"
-                  value={formData.mensaje}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <ReCAPTCHA
-                ref={captchaRef}
-                sitekey={sitekey}
-                onChange={handleCaptchaChange}
-                id="reCAPTCHA"
+        <div className="">
+          <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
+            <div className="input-group">
+              <input
+                className="w-100 form-control"
+                type="text"
+                placeholder="Nombre (*)"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleInputChange}
+                required
               />
-              {errorMessage}
-              {successMessage}
-              <button
-                className="btn btn-primary w-25"
-                type="submit"
-              >
-                Enviar
-              </button>
-            </form>
-          </div>
-        </div>
-        </div>
-  )
-}
+            </div>
+            <div className="input-group">
+              <input
+                className="w-100 form-control"
+                type="email"
+                placeholder="Correo electrónico"
+                name="correo"
+                value={formData.correo}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
-export default Contacto
+            <div className="input-group">
+              <input
+                // hacer mas alto el input de mensaje con opci0n de expandirlo
+
+                style={{ height: "8rem" }}
+                className="w-200  form-control "
+                type="text"
+                placeholder="Mensaje (*)"
+                name="mensaje"
+                value={formData.mensaje}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <ReCAPTCHA
+              ref={captchaRef}
+              sitekey={sitekey}
+              onChange={handleCaptchaChange}
+              id="reCAPTCHA"
+            />
+            {errorMessage}
+            {successMessage}
+            <button className="btn btn-warning w-25" type="submit">
+              Enviar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Contacto;
