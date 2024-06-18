@@ -143,7 +143,6 @@ const Transporte = ({
       prev.includes(id) ? prev.filter(layerId => layerId !== id) : [...prev, id]
     );
     if (layerProps !== null) {
-      console.log(layerProps);
       toggleLayer(layerProps);
     }
   };
