@@ -103,9 +103,9 @@ const Salud = ({ onBack, color, activeSaludLayers, setActiveSaludLayers }) => {
 
         <div className="fs-4 text-light">
           Salud
-          <span className="badge fw-lighter fs-6 m-2 p-0  ">
-            ({activeSaludLayers.length})
-          </span>
+          <div className="badge  fs-6  text-dark fw-bold  bg-white opacity-50 px-2 mx-3 ">
+            {activeSaludLayers.length ? `${activeSaludLayers.length}` : null}
+          </div>
         </div>
         <button
           onClick={onBack}

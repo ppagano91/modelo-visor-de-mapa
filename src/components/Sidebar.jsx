@@ -62,10 +62,10 @@ const Sidebar = ({ children }) => {
             <NavLink
               to={item.path}
               key={index}
-              className="d-flex align-items-center text-light gap-3 link"
+              className="d-flex align-items-center text-light gap-3 link  p-3"
               onClick={() => toggle(item.path)}
             >
-              <div className="fs-5 icon">{item.icon}</div>
+              <div className="fs-5 icon ">{item.icon}</div>
             </NavLink>
           ))}
         </div>

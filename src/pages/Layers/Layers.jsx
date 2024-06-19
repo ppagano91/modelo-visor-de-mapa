@@ -7,6 +7,7 @@ import Salud from "./Salud/Salud";
 import Servicios from "./Servicios/Servicios";
 
 import GeoFIUBA from "./GeoFIUBA/GeoFIUBA";
+import { Search } from "@mui/icons-material";
 
 const Layers = () => {
   const [activeSection, setActiveSection] = useState(null);
@@ -110,12 +111,15 @@ const Layers = () => {
 
   return (
     <div className="layer-wrapper">
-      <div className="m-1 d-flex align-items-center justify-content-center ">
+      <div className="m-1 d-flex align-items-center justify-content-center w-90 layer-search border-bottom py-1  ">
         <input
           type="text"
-          className="w-100 p-2 form-control border-success flex-4"
+          className="w-100 py-1 form-control border-3 border-warning flex-4 mx-2 px-2"
           placeholder="Buscador de Capas"
         />
+        <button className="btn btn-dark flex-1 mx-1 py-1">
+          <Search />
+        </button>
       </div>
       <div
         className="h-100 layer-container"

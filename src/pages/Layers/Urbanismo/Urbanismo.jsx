@@ -126,7 +126,9 @@ const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
       >
         <div className="fs-4 text-light list-group-item">
           Urbanismo
-          <div className="badge fw-lighter fs-6">({activeLayers.length})</div>
+          <div className="badge  fs-6  text-dark fw-bold  bg-white opacity-50 px-2 mx-3 ">
+            {activeLayers.length ? `${activeLayers.length}` : null}
+          </div>
         </div>
         <div></div>
         <button

@@ -121,9 +121,11 @@ const Servicios = ({
       >
         <div className="fs-4 text-light">
           Servicios
-          <span className="badge fw-lighter fs-6">
-            ({activeServiciosLayers.length})
-          </span>
+          <div className="badge  fs-6  text-dark fw-bold  bg-white opacity-50 px-2 mx-3 ">
+            {activeServiciosLayers.length
+              ? `${activeServiciosLayers.length}`
+              : null}
+          </div>
         </div>
 
         <button
