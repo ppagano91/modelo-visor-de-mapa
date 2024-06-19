@@ -92,8 +92,8 @@ const Contacto = () => {
     <div id="contacto-informacion" style={{ width: "21rem" }}>
       <div className="m-3">
         <div className="text-justify">
-          <h1 className="fs-2">Contacto</h1>
-          <p className="fs-6  ">
+          <h1 className="fs-3">Contacto</h1>
+          <p className="" style={{fontSize: "0.9rem"}}>
             Utilice este formulario para hacernos llegar sus comentarios,
             sugerencias, consultas o críticas respecto al Mapa Interactivo de
             Buenos Aires. Asegúrese de ingresar una dirección de email válida
@@ -102,7 +102,7 @@ const Contacto = () => {
         </div>
 
         <div className="">
-          <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
+          <form onSubmit={handleSubmit} className="d-flex flex-column gap-1">
             <div className="input-group">
               <input
                 className="w-100 form-control"

@@ -13,6 +13,7 @@ const SearchControl = () => {
   const [input, setInput] = useState('');
   const [debouncedInput, setDebouncedInput] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [markers, setMarkers] = useState([]);
   const searchRef = useRef(null);
   const map = useMap();
 
@@ -50,16 +51,50 @@ const SearchControl = () => {
   }, []);
 
   const handleSearch = async (index) => {
+    let res
     if (index == -1) {
-      const data = await autocompleter.getSearch(input);
-      console.log(data);
+      res = await autocompleter.getSearch(input);      
     }
     else if (index >= 0 && index < suggestions.length) {
-      const data = await autocompleter.getSearch(suggestions[index]);
-      console.log(data);
-      setSuggestions([]);
+      res = await autocompleter.getSearch(suggestions[index]);      
+      // setSuggestions([]);
     }
-  };  
+    console.log(res)
+    
+    if(res.status_code == 200){
+      if ("coordenadas" in res.data){
+        // Sitios de Interés
+        const {x, y} = res.data.coordenadas;
+        if (x && y) {
+          const latLng = [y, x];
+          clearMarkers();
+          const marker = L.marker(latLng).addTo(map);
+          setMarkers([marker]);
+          map.setView(latLng, 16);
+        }
+
+      } else {
+        // Direcciones
+        const { coordenada_x, coordenada_y } = res.data;
+        if (coordenada_x && coordenada_y) {
+          const latLng = [coordenada_y, coordenada_x];
+          clearMarkers();
+          const marker = L.marker(latLng).addTo(map);
+          setMarkers([marker]);
+          map.setView(latLng, 16);
+        }
+
+      }
+      
+    }
+  };
+
+  const clearMarkers = () => {    
+    markers.forEach((marker) => {
+      map.removeLayer(marker);
+    });
+    setMarkers([]);
+  };
 
   const handleInputClick = () => {
     if (input !== '' && suggestions.length === 0) {
