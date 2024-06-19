@@ -55,3 +55,18 @@
   background-repeat: no-repeat;
   cursor: pointer;
 }
+
+.suggestions-item-list{
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msg-error {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: x-small;
+}

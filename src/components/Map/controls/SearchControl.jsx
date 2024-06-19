@@ -14,16 +14,24 @@ const SearchControl = () => {
   const [debouncedInput, setDebouncedInput] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [markers, setMarkers] = useState([]);
+  const [error, setError] = useState(null)
   const searchRef = useRef(null);
   const map = useMap();
 
   useEffect(() => {
     const getData = async () => {
       if (debouncedInput !== '') {
+        setError(null)
         setSelectedIndex(-1);
         const data = await autocompleter.getSuggestions(debouncedInput);
         const filteredSuggestions = data.filter((suggestion) => !suggestion.error);
-        setSuggestions(filteredSuggestions);
+        if (filteredSuggestions.length>0){
+          setSuggestions(filteredSuggestions);
+        } else{
+          setSuggestions([]);
+          const {error, value} = data[1]
+          setError({error, value})
+        }
       } else {
         setSuggestions([]);
       }
@@ -73,7 +81,7 @@ const SearchControl = () => {
           map.setView(latLng, 16);
         }
 
-      } else {
+      } else if ("coordenada_x" in res.data && "coordenada_y" in res.data){
         // Direcciones
         const { coordenada_x, coordenada_y } = res.data;
         if (coordenada_x && coordenada_y) {
@@ -83,9 +91,19 @@ const SearchControl = () => {
           setMarkers([marker]);
           map.setView(latLng, 16);
         }
-
+      }      
+    }
+    else {
+      if ("response" in res){
+        setSuggestions([])
+        const {error, value} = res.response.errors[0]
+        setError({error, value})
       }
-      
+      else if ("error" in res) {
+        const {error: value} = res;
+        setError({error: true, value})
+        setSuggestions([])
+      }
     }
   };
 
@@ -109,6 +127,7 @@ const SearchControl = () => {
   const handleClickOutside = (event) => {
     if (searchRef.current && !searchRef.current.contains(event.target)) {
       setSuggestions([]);
+      setError(null)
     }
   };
 
@@ -166,7 +185,7 @@ const SearchControl = () => {
         left: '4rem',
         zIndex: 400,
         borderRadius: '1rem',
-        width: '20rem',
+        width: '22rem',
       }}
     >
       <form className="d-flex" role="search">
@@ -196,7 +215,7 @@ const SearchControl = () => {
             return (
               <li
                 key={i}
-                className={`p-1 ${selectedIndex === i ? 'bg-warning' : ''}`}
+                className={`p-1 ${selectedIndex === i ? 'bg-warning fw-bold' : ''} suggestions-item-list`}
                 style={{ listStyle: 'none', cursor: 'pointer' }}
                 onClick={() => handleSearch(i)}
                 onMouseOver={() => setSelectedSuggestionIndex(i)}
@@ -205,6 +224,11 @@ const SearchControl = () => {
               </li>
             );
           })}
+          {error &&
+          <div>
+            <span className='text-danger p-1 fw-bold msg-error'>{error.value}</span>
+          </div>
+          }
       </ul>
     </div>
   );
