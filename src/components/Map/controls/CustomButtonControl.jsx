@@ -15,27 +15,23 @@ const CustomButtonControl = ({
   useEffect(() => {
     const control = L.Control.extend({
       onAdd: function (map) {
-        const element = L.DomUtil.create("button", "custom-control");
+        const element = L.DomUtil.create("div", "leaflet-bar");
         if (iconImage) {
-          const img = L.DomUtil.create("img");
+          const img = L.DomUtil.create("a");
           img.src = iconImage;
-          img.style.width = "90%";
-          img.style.height = "auto";
+          // img.style.width = "90%";
+          // img.style.height = "auto";
           element.appendChild(img);
         }
         if (innerHTML) {
           element.innerHTML = innerHTML;
         }
         if (iconClassName) {
-          const icon = L.DomUtil.create("i", iconClassName);
+          const icon = L.DomUtil.create("a", iconClassName);
           element.appendChild(icon);
         }
         if (onClickFunction) {
           element.onclick = onClickFunction;
-        }
-
-        if (buttonStyle) {
-          Object.assign(element.style, buttonStyle);
         }
 
         return element;

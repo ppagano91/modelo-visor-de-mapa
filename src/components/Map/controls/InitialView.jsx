@@ -13,16 +13,8 @@ const InitialView = () => {
     <CustomButtonControl
       // innerHTML="🌐"
       onClick={handleClick}
-      iconImage={View}
+      // iconImage={View}
       iconClassName="initial-view-button"
-      buttonStyle={{
-        width: "2rem",
-        height: "2rem",
-        border: "2px solid #9EAAB8",
-        borderRadius: "5%",
-        padding: "2px",
-        backgroundColor: "white",
-      }}
     />
   );
 };
