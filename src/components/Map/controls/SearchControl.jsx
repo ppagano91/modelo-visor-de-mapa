@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Autocompleter } from 'autocompleter-caba';
+import { Autocompleter } from 'autocompleter-caba/dist/src/services/Autocompleter';
 import {getEnv} from "../../../config"
 
 const autocompleter = new Autocompleter();
