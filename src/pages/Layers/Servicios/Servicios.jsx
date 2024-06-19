@@ -10,8 +10,14 @@ import {
   FaShoppingCart,
   FaWifi,
 } from "react-icons/fa";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MapLayerContext } from "../../../context/MapLayerContext";
+import DownloadModal from "../Modal/DownloadModal";
+import {
+  CloudDownloadOutlined,
+  InfoOutlined,
+  PublicOutlined,
+} from "@mui/icons-material";
 
 const Servicios = ({
   onBack,
@@ -22,6 +28,12 @@ const Servicios = ({
   const mapaServicios =
     "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms?";
   const { toggleLayer } = useContext(MapLayerContext);
+  const [showModal, setShowModal] = useState(false);
+  const handleModalClose = () => setShowModal(false);
+  const handleModalShow = e => {
+    e.stopPropagation();
+    setShowModal(true);
+  };
   const itemsServicios = [
     {
       id: 1,
@@ -101,7 +113,8 @@ const Servicios = ({
   };
 
   return (
-    <div className="">
+    <div>
+      <DownloadModal show={showModal} handleClose={handleModalClose} />
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -113,9 +126,12 @@ const Servicios = ({
           </span>
         </div>
 
-        <button onClick={onBack} className="btn btn-transparent">
-          X
-        </button>
+        <button
+          onClick={onBack}
+          type="button"
+          className="btn-close btn-close-white p-0 m-2"
+          aria-label="Close"
+        ></button>
       </div>
       <ul className="m-0 p-0">
         {itemsServicios.map(item => {
@@ -136,6 +152,19 @@ const Servicios = ({
               />
               {item.icono}
               <p className="m-0">{item.nombre}</p>
+              <div className="d-flex gap-1 ms-auto">
+                <PublicOutlined
+                  style={{ height: "16px" }}
+                  tooltip="Acceso a Geoservicios"
+                />
+                <InfoOutlined style={{ height: "16px" }} tooltip="Info" />
+
+                <CloudDownloadOutlined
+                  style={{ height: "16px" }}
+                  tooltip="Descargar Geoservicios"
+                  onClick={e => handleModalShow(e)}
+                />
+              </div>
             </li>
           );
         })}

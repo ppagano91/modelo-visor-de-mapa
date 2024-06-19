@@ -11,10 +11,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.15.20",
     "bootstrap": "^5.3.3",
     "leaflet": "^1.9.4",
     "leaflet-minimap": "^3.6.1",
     "leaflet.locatecontrol": "^0.81.1",
+    "node-sass": "^9.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
@@ -23,7 +28,8 @@
     "react-icons": "^5.2.1",
     "react-leaflet": "^4.2.1",
     "react-leaflet-popup": "^4.0.3",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "sass": "^1.77.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

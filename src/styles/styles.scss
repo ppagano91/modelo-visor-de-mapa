@@ -1,0 +1,37 @@
+/* Definir variables para colores y tamaños */
+$btn-hover-color: #cccccc; /* Gris */
+$btn-focus-color: white; /* Blanco */
+
+/* Estilos personalizados para el botón */
+.btn-custom {
+  /* Estilo base del botón */
+  background-color: #f8f9fa; /* Color de fondo base */
+  color: #000; /* Color de texto base */
+  border: 1px solid #ddd; /* Borde base */
+
+  /* Estilo para el estado hover */
+  &:hover {
+    background-color: $btn-hover-color; /* Fondo gris en hover */
+  }
+
+  /* Estilo para el estado focus */
+  &:focus {
+    outline: none; /* Eliminar el contorno predeterminado */
+    box-shadow: none; /* Eliminar la sombra predeterminada */
+    position: relative; /* Necesario para posicionar el triángulo */
+
+    /* Añadir un triángulo blanco en el enfoque */
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -10px; /* Ajustar según sea necesario */
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent transparent $btn-focus-color;
+      transform: translateY(-50%);
+    }
+  }
+}
+
+@import "bootstrap/scss/bootstrap";

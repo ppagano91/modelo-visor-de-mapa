@@ -12,9 +12,24 @@ import {
   RadioButtonChecked,
   SupervisedUserCircle,
   AccountBalance,
+  CloudDownload,
+  Info,
+  InfoOutlined,
+  InfoSharp,
+  Public,
+  CloudDownloadOutlined,
+  PublicOffOutlined,
+  PublicOutlined,
 } from "@mui/icons-material";
+import DownloadModal from "../Modal/DownloadModal";
 
 const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
+  const [showModal, setShowModal] = useState(false);
+  const handleModalClose = () => setShowModal(false);
+  const handleModalShow = e => {
+    e.stopPropagation();
+    setShowModal(true);
+  };
   // const [activeLayers, setActiveLayers] = useState([]);
 
   const { toggleLayer } = useContext(MapLayerContext);
@@ -22,7 +37,13 @@ const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
     "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms?";
 
   const itemsUrbanismo = [
-    { id: 1, nombre: "Parcelas", icono: <FaHouse />, layerProps: null },
+    {
+      id: 1,
+      nombre: "Parcelas",
+      icono: <FaHouse />,
+      layerProps: null,
+      geoservicios: true,
+    },
     {
       id: 2,
       nombre: "Manzanas",
@@ -98,6 +119,7 @@ const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
 
   return (
     <div>
+      <DownloadModal show={showModal} handleClose={handleModalClose} />
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -107,9 +129,12 @@ const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
           <div className="badge fw-lighter fs-6">({activeLayers.length})</div>
         </div>
         <div></div>
-        <button onClick={onBack} className="btn btn-transparent close-button">
-          X
-        </button>
+        <button
+          onClick={onBack}
+          type="button"
+          className="btn-close btn-close-white p-0 m-2"
+          aria-label="Close"
+        ></button>
       </div>
       <ul className="m-0 p-0">
         {itemsUrbanismo.map(item => {
@@ -123,6 +148,7 @@ const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title={item.nombre}
+              option={item.opciones}
               onClick={() => handleItemClick(item.id, item.layerProps)}
               style={{
                 cursor: "pointer",
@@ -132,6 +158,20 @@ const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
               <input type="checkbox" checked={isActive} readOnly />
               {item.icono}
               <p className="m-0">{item.nombre}</p>
+
+              <div className="d-flex gap-1 ms-auto">
+                <PublicOutlined
+                  style={{ height: "16px" }}
+                  tooltip="Acceso a Geoservicios"
+                />
+                <InfoOutlined style={{ height: "16px" }} tooltip="Info" />
+
+                <CloudDownloadOutlined
+                  style={{ height: "16px" }}
+                  tooltip="Descargar Geoservicios"
+                  onClick={e => handleModalShow(e)}
+                />
+              </div>
             </li>
           );
         })}
