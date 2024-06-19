@@ -8,7 +8,8 @@
           color: '#4D90FE',
           contrastingColor: '#fff',
           show_last_node: false,
-          show_azimut: false
+          show_azimut: false,
+          title: ""
       },
 
       clickSpeed: 200,
@@ -20,7 +21,12 @@
               me = this;
 
           link.href = '#';
-          link.title = 'Toggle measurement tool';
+          if (this.options?.title != ""){
+              link.title = this.options.title;
+          }
+          else {
+              link.title = 'Toggle measurement tool';
+          }
 
           L.DomEvent.on(link, 'click', L.DomEvent.stop).on(link, 'click', function(){
               if(L.DomUtil.hasClass(link, 'icon-active')){

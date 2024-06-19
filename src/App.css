@@ -48,3 +48,10 @@
 .text-justify{
   text-align: justify;
 }
+
+
+.initial-view-button{
+  background-image: url("./assets/images/mundo.png");
+  background-repeat: no-repeat;
+  cursor: pointer;
+}

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useMap } from 'react-leaflet';
-import L from 'leaflet';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const SearchControl = () => {
   const [query, setQuery] = useState("")
@@ -15,7 +14,6 @@ const SearchControl = () => {
 
   return (
     <div style={{ position: 'absolute', top: '1rem', left: '4rem', zIndex: 400, borderRadius: '1rem', width: "20rem" }}>
-
         <form className="d-flex" role="search">
             <input 
             type="text" 
