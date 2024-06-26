@@ -143,9 +143,7 @@ const Urbanismo = ({ onBack, color, activeLayers, setActiveLayers }) => {
           const isActive = activeLayers.includes(item.id);
           return (
             <li
-              className={`d-flex gap-2 m-1 p-1 align-items-center  ${
-                isActive ? "active" : ""
-              }`}
+              className="d-flex gap-2 m-1 p-1 align-items-center list-item"
               key={item.id}
               data-bs-toggle="tooltip"
               data-bs-placement="top"

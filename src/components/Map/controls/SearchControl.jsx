@@ -211,7 +211,12 @@ const SearchControl = () => {
           <Search fontSize="medium" className="d-flex text-white" />
         </button>
       </form>
-      <ul className={`bg-light m-0 p-0`} style={{ paddingLeft: "1rem" }}>
+      <ul
+        className={`bg-light my-1 p-0 border rounded ${
+          suggestions.length > 0 ? suggestions.length : error
+        }`}
+        style={{ paddingLeft: "1rem" }}
+      >
         {suggestions &&
           suggestions.map((sug, i) => {
             return (
@@ -229,7 +234,7 @@ const SearchControl = () => {
             );
           })}
         {error && (
-          <div>
+          <div className="alert alert-danger my-1 py-2 border-2">
             <span className="text-danger p-1 fw-bold msg-error">
               {error.value}
             </span>
