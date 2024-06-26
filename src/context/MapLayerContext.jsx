@@ -24,6 +24,10 @@ export const MapLayerProvider = ({ children }) => {
   };
 
   const handleInfo = (information) => {
+    const filteredInfo = {};
+    let coordinates = information.coordenadas;
+  
+    delete information.coordenadas;
     const formattedInfo = Object.keys(information).reduce((acc, key) => {
       const parts = key.split('.');
       const newKey = parts.slice(0,1).join(' ');
@@ -38,8 +42,7 @@ export const MapLayerProvider = ({ children }) => {
       acc[gna] = nam;
       return acc;
     }, {});
-
-    setInfo(newInfo);
+    setInfo({...newInfo, X: coordinates.lng, Y: coordinates.lat});
   }
 
   

@@ -5,13 +5,12 @@ import L from 'leaflet';
 
 const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
   const map = useMap();
-  const {handleInfo} = useContext(MapLayerContext);
-
+  const { handleInfo } = useContext(MapLayerContext);
 
   const proxiedBaseLayerUrl = `/geoserver${new URL(baseLayerUrl).pathname}`;
 
   const onMapRightClick = async (event) => {
-    const latlng = event.latlng;
+    const latlng = event.latlng; // Obtenemos las coordenadas del evento
     const mapSize = map.getSize();
     const mapBounds = map.getBounds();
     const bbox = mapBounds.toBBoxString();
@@ -48,41 +47,36 @@ const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
       const mappedFeatures = {};
 
       data.features.forEach(feature => {
-      const { id, geometry, properties } = feature;
-      mappedFeatures[id] = {
+        const { id, geometry, properties } = feature;
+        mappedFeatures[id] = {
           ...properties,
           geometry
-      };
-
-      console.log(mappedFeatures);
-      handleInfo(mappedFeatures);
+        };
       });
+      handleInfo({...mappedFeatures, coordenadas: latlng});
     } catch (error) {
       console.error('Error fetching feature info:', error);
     }
   };
 
   useEffect(() => {
-    
     const baseLayer = L.tileLayer.wms(proxiedBaseLayerUrl, {
       layers: layerName,
       format: 'image/png',
       transparent: true,
-      zIndex: 1,
+      zIndex: 10,
       attribution: '&copy; attribution',
     });
 
     baseLayer.addTo(map);
 
-    
-
-    map.on('contextmenu', onMapRightClick);
+    map.on('contextmenu', onMapRightClick); // Escuchar el evento contextmenu
 
     return () => {
       map.off('contextmenu', onMapRightClick);
       map.removeLayer(baseLayer);
     };
-  }, [onMapRightClick]);
+  }, []); // Dependencia vacía para ejecutar solo una vez al montar el componente
 
   return null;
 };

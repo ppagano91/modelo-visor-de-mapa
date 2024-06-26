@@ -72,7 +72,6 @@ const SearchControl = () => {
       res = await autocompleter.getSearch(suggestions[index]);
       // setSuggestions([]);
     }
-    console.log(res);
 
     if (res.status_code == 200) {
       if ("coordenadas" in res.data) {

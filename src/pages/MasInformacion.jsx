@@ -4,7 +4,6 @@ import {Info} from "@mui/icons-material";
 
 const MasInformacion = () => {
   const {info} = useContext(MapLayerContext);
-  console.log(info);
   return (
     <div className="masinfo-wrapper">
         {Object.keys(info).length === 0 ?
