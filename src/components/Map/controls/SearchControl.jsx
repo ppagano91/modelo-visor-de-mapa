@@ -233,14 +233,14 @@ const SearchControl = () => {
               </li>
             );
           })}
-        {error && (
-          <div className="alert alert-danger my-1 py-2 border-2">
-            <span className="text-danger p-1 fw-bold msg-error">
-              {error.value}
-            </span>
-          </div>
-        )}
       </ul>
+      {error && (
+        <div className="alert alert-danger my-1 py-2 border-2">
+          <span className="text-danger p-1 fw-bold msg-error">
+            {error.value}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
