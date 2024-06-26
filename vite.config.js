@@ -11,4 +11,13 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    proxy: {
+      '/geoserver': {
+        target: 'https://geoserver.buenosaires.gob.ar',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/geoserver/, '')
+      }
+    }
+  }
 });

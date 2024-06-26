@@ -4,6 +4,8 @@ export const MapLayerContext = createContext();
 
 export const MapLayerProvider = ({ children }) => {
   const [layers, setLayers] = useState([]);
+  const [info, setInfo] = useState({});
+
 
   const addLayer = (layer) => {
     setLayers((prevLayers) => [...prevLayers, layer]);
@@ -20,12 +22,16 @@ export const MapLayerProvider = ({ children }) => {
     });
   };
 
+  const handleInfo = (information) => {
+    setInfo(information);
+  }
+
   const removeLayer = (layerName) => {
     setLayers((prevLayers) => prevLayers.filter(layer => layer.name !== layerName));
   };
 
   return (
-    <MapLayerContext.Provider value={{ layers, addLayer, removeLayer, toggleLayer }}>
+    <MapLayerContext.Provider value={{ layers, info, addLayer, removeLayer, toggleLayer, handleInfo }}>
       {children}
     </MapLayerContext.Provider>
   );
