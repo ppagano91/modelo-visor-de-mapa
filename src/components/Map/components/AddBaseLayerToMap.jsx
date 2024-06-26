@@ -68,7 +68,7 @@ const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
       layers: layerName,
       format: 'image/png',
       transparent: true,
-      zIndex: 10,
+      zIndex: 1,
       attribution: '&copy; attribution',
     });
 
