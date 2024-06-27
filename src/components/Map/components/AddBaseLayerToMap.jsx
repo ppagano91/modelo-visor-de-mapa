@@ -52,7 +52,6 @@ const AddBaseLayerToMap = () => {
           geometry
         };
       });
-      console.log(mappedFeatures)
       handleInfo({...mappedFeatures, coordenadas: latlng});
     } catch (error) {
       console.error('Error fetching feature info:', error);
