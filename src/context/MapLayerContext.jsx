@@ -42,7 +42,7 @@ export const MapLayerProvider = ({ children }) => {
       acc[gna] = nam;
       return acc;
     }, {});
-    setInfo({...newInfo, X: coordinates.lng, Y: coordinates.lat});
+    setInfo({...newInfo, Longitud: coordinates.lng, Latitud: coordinates.lat});
   }
 
   
