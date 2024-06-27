@@ -20,75 +20,52 @@ import { tileLayers } from '../../utils/consts/consts'
 import SearchControl from './controls/SearchControl';
 
 import {getEnv} from "../../config"
+import AddLayerToMap from './components/AddLayerToMap';
+import AddBaseLayerToMap from './components/AddBaseLayerToMap';
 
 const { BaseLayer, Overlay } = LayersControl;
 
-const AddLayerToMap = ({ layers }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    const wmsLayers = layers.map((layer) => {
-      const wmsLayer = L.tileLayer.wms(layer.url, {
-        layers: layer.layers,
-        format: 'image/png',
-        transparent: true,
-        zIndex: 10,
-        attribution: layer.attribution,
-      });
-      wmsLayer.addTo(map);
-      return wmsLayer;
-    });
-
-    return () => {
-      wmsLayers.forEach((layer) => {
-        map.removeLayer(layer);
-      });
-    };
-  }, [layers, map]);
-
-  return null;
-};
-
 export default function Map() {
-  const { layers } = useContext(MapLayerContext);
+  const { layers, baseMapLayer } = useContext(MapLayerContext);
+  
+
   return (
-      <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true} attributionControl={false}>
-        <SearchControl />
-        <AddLayerToMap layers={layers} />
-        <LayersControl className="control-layers" position="topright">
-          <BaseLayer checked name="Mapa Base">
-            <WMSTileLayer 
-              url={getEnv("VITE_MAPA_BASE")}
-              layers="mapa_base"
-              format="image/png"
-              transparent={true}
-            />
-          </BaseLayer>
-          <BaseLayer name="Mapa Topográfico">
-            <TileLayer url={tileLayers.baseLayers.openTopoMap.map} transparent={true}/>
-          </BaseLayer>
-          <BaseLayer name="Mapa Satelital">
-            <TileLayer
-              // url={tileLayers.baseLayers.esri.worldImagery.map}
-              url={getEnv("VITE_MAPA_SATELITAL")}
-              tms={true}
-              attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
-            />
-          </BaseLayer>
-          <BaseLayer name="Mapa Watercolor">
-            <TileLayer
-              url={tileLayers.baseLayers.stadia.map.Watercolors}
-              attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
-            />
-          </BaseLayer>
-        </LayersControl>
-        <InitialView />
-        <LocateControl />
-        <LinearMeasureControl />
-        <CoordinatesControl position="bottomleft" />
-        <MiniMap position="bottomleft" />
-        <ScaleControl position="bottomleft" imperial={false} />
-      </MapContainer>
-      
+    <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true} attributionControl={false}>
+      <SearchControl />
+      <AddLayerToMap layers={layers} />
+      <AddBaseLayerToMap />
+      <LayersControl className="control-layers" position="topright">
+        <BaseLayer checked name="Mapa Base">
+          <WMSTileLayer 
+            url={baseMapLayer.url}
+            layers="mapa_base"
+            format="image/png"
+            transparent={true}
+          />
+        </BaseLayer>
+        <BaseLayer name="Mapa Topográfico">
+          <TileLayer url={tileLayers.baseLayers.openTopoMap.map} transparent={true} />
+        </BaseLayer>
+        <BaseLayer name="Mapa Satelital">
+          <TileLayer
+            url={getEnv("VITE_MAPA_SATELITAL")}
+            tms={true}
+            attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
+          />
+        </BaseLayer>
+        <BaseLayer name="Mapa Watercolor">
+          <TileLayer
+            url={tileLayers.baseLayers.stadia.map.Watercolors}
+            attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
+          />
+        </BaseLayer>
+      </LayersControl>
+      <InitialView />
+      <LocateControl />
+      <LinearMeasureControl />
+      <CoordinatesControl position="bottomleft" />
+      <MiniMap position="bottomleft" />
+      <ScaleControl position="bottomleft" imperial={false} />
+    </MapContainer>
   );
 }

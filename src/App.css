@@ -70,3 +70,19 @@
   text-overflow: ellipsis;
   font-size: x-small;
 }
+
+.masinfo-wrapper {
+  width: 21rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: white;
+}
+
+/* .masinfo-section-container{
+  margin: 0;
+  height: 100%;
+  padding-left: 0.0rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+} */
