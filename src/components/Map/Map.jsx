@@ -26,21 +26,14 @@ import AddBaseLayerToMap from './components/AddBaseLayerToMap';
 const { BaseLayer, Overlay } = LayersControl;
 
 export default function Map() {
-  const { layers } = useContext(MapLayerContext);
-
-  const baseMapLayer = {
-    url: getEnv("VITE_MAPA_BASE"),
-    layers: "mapa_base",
-    name: "mapa_base",
-    attribution: "&copy; attribution"
-  };
+  const { layers, baseMapLayer } = useContext(MapLayerContext);
   
 
   return (
     <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true} attributionControl={false}>
       <SearchControl />
       <AddLayerToMap layers={layers} />
-      <AddBaseLayerToMap baseLayerUrl={baseMapLayer.url} layerName={baseMapLayer.name} />
+      <AddBaseLayerToMap />
       <LayersControl className="control-layers" position="topright">
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer 

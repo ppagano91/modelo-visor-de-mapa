@@ -1,11 +1,29 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { capitalizeFirstLetter } from '../utils/functions';
+import { getEnv } from '../config';
 
 export const MapLayerContext = createContext();
 
 export const MapLayerProvider = ({ children }) => {
   const [layers, setLayers] = useState([]);
   const [info, setInfo] = useState({});
+  const [geoserverBaseUrl, setGeoserverBaseUrl] = useState('');
+
+  const baseMapLayer = {
+    url: getEnv("VITE_MAPA_BASE"),
+    layers: "mapa_base",
+    name: "mapa_base",
+    attribution: "&copy; attribution"
+  };
+
+  useEffect(() => {
+    const geoserverUrl = getEnv("VITE_GEOSERVER_URL");
+    const proxiedBaseLayerUrl = geoserverUrl
+      ? `${geoserverUrl}${new URL(baseMapLayer.url).pathname}`
+      : `/geoserver${new URL(baseMapLayer.url).pathname}`;
+
+    setGeoserverBaseUrl(proxiedBaseLayerUrl);
+  }, []);
 
 
   const addLayer = (layer) => {
@@ -52,7 +70,7 @@ export const MapLayerProvider = ({ children }) => {
   };
 
   return (
-    <MapLayerContext.Provider value={{ layers, info, addLayer, removeLayer, toggleLayer, handleInfo }}>
+    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfo }}>
       {children}
     </MapLayerContext.Provider>
   );

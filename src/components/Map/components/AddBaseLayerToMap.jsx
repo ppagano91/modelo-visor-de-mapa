@@ -2,12 +2,11 @@ import React, { useEffect, useContext } from 'react';
 import { MapLayerContext } from '../../../context/MapLayerContext';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
+import {getEnv} from "../../../config"
 
-const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
+const AddBaseLayerToMap = () => {
   const map = useMap();
-  const { handleInfo } = useContext(MapLayerContext);
-
-  const proxiedBaseLayerUrl = `/geoserver${new URL(baseLayerUrl).pathname}`;
+  const { handleInfo, geoserverBaseUrl, baseMapLayer } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
     const latlng = event.latlng; // Obtenemos las coordenadas del evento
@@ -23,9 +22,9 @@ const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
       request: 'GetFeatureInfo',
       format: 'image/png',
       transparent: true,
-      query_layers: layerName,
+      query_layers: baseMapLayer.name,
       styles: '',
-      layers: layerName,
+      layers: baseMapLayer.name,
       exceptions: 'application/vnd.ogc.se_inimage',
       info_format: 'application/json',
       feature_count: 50,
@@ -37,7 +36,7 @@ const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
       y: Math.round(point.y),
     };
 
-    const url = proxiedBaseLayerUrl + L.Util.getParamString(params, '', true);
+    const url = geoserverBaseUrl + L.Util.getParamString(params, '', true);
 
     try {
       const response = await fetch(url);
@@ -60,8 +59,8 @@ const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
   };
 
   useEffect(() => {
-    const baseLayer = L.tileLayer.wms(proxiedBaseLayerUrl, {
-      layers: layerName,
+    const baseLayer = L.tileLayer.wms(geoserverBaseUrl, {
+      layers: baseMapLayer.name,
       format: 'image/png',
       transparent: true,
       zIndex: 10,
@@ -70,13 +69,13 @@ const AddBaseLayerToMap = ({ baseLayerUrl, layerName }) => {
 
     baseLayer.addTo(map);
 
-    map.on('contextmenu', onMapRightClick); // Escuchar el evento contextmenu
+    map.on('contextmenu', onMapRightClick);
 
     return () => {
       map.off('contextmenu', onMapRightClick);
       map.removeLayer(baseLayer);
     };
-  }, []); // Dependencia vacía para ejecutar solo una vez al montar el componente
+  }, [geoserverBaseUrl]); 
 
   return null;
 };

@@ -3,7 +3,7 @@ import { MapLayerContext } from "../context/MapLayerContext";
 import { Info } from "@mui/icons-material";
 import { MapContainer, TileLayer, Marker, Popup, useMap, WMSTileLayer } from "react-leaflet";
 import { getEnv } from "../config"
-// Componente para actualizar el mapa
+
 const UpdateMap = ({ position }) => {
   const map = useMap();
 
