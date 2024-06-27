@@ -55,8 +55,8 @@ export const MapLayerProvider = ({ children }) => {
     }, {});
 
     const newInfo = Object.keys(formattedInfo).reduce((acc, key) => {
-      const gna = capitalizeFirstLetter(formattedInfo[key].gna.toLowerCase());
-      const nam = formattedInfo[key].nam;
+      const gna = formattedInfo[key].gna ? capitalizeFirstLetter(formattedInfo[key].gna.toLowerCase()) : capitalizeFirstLetter(key.split("_").join(" "));
+      const nam = formattedInfo[key].nam ? formattedInfo[key].nam : formattedInfo[key].fna;
       acc[gna] = nam;
       return acc;
     }, {});

@@ -75,7 +75,7 @@ const MasInformacion = () => {
             </div>
             {Object.keys(info).map((key) => (
               <div key={key}>
-                <div className="d-flex justify-content-between">
+                <div className="d-flex justify-content-between masinfo-items">
                   <p className="p-0 m-0">
                     <b>{key}</b>:
                   </p>
