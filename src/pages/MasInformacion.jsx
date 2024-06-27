@@ -43,10 +43,7 @@ const MasInformacion = () => {
           transparent={true}
 
         />
-        <Marker position={position}>
-          <Popup>
-            Coordenadas: <br /> Latitud: {info.Latitud} <br /> Longitud: {info.Longitud}
-          </Popup>
+        <Marker position={position} interactive={false}>
         </Marker>
         <UpdateMap position={position} />
       </MapContainer>
