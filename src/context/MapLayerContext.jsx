@@ -1,19 +1,20 @@
-import { createContext, useState, useEffect } from 'react';
-import { capitalizeFirstLetter } from '../utils/functions';
-import { getEnv } from '../config';
+import { createContext, useState, useEffect } from "react";
+import { capitalizeFirstLetter } from "../utils/functions";
+import { getEnv } from "../config";
 
 export const MapLayerContext = createContext();
 
 export const MapLayerProvider = ({ children }) => {
   const [layers, setLayers] = useState([]);
   const [info, setInfo] = useState({});
-  const [geoserverBaseUrl, setGeoserverBaseUrl] = useState('');
+  const [geoserverBaseUrl, setGeoserverBaseUrl] = useState("");
+  const [activeLayers, setActiveLayers] = useState([]);
 
   const baseMapLayer = {
     url: getEnv("VITE_MAPA_BASE"),
     layers: "mapa_base",
     name: "mapa_base",
-    attribution: "&copy; attribution"
+    attribution: "&copy; attribution",
   };
 
   useEffect(() => {
@@ -25,31 +26,38 @@ export const MapLayerProvider = ({ children }) => {
     setGeoserverBaseUrl(proxiedBaseLayerUrl);
   }, []);
 
+  // Update activeLayers whenever layers change
+  useEffect(() => {
+    const activeLayerNames = layers.map(layer => layer.name);
+    setActiveLayers(activeLayerNames);
+  }, [layers]);
 
-  const addLayer = (layer) => {
-    setLayers((prevLayers) => [...prevLayers, layer]);
+  const addLayer = layer => {
+    setLayers(prevLayers => [...prevLayers, layer]);
   };
 
-  const toggleLayer = (newLayer) => {
-    setLayers((prevLayers) => {
-      const layerExists = prevLayers.some(layer => layer.name === newLayer.name);
+  const toggleLayer = layerProps => {
+    setLayers(prevLayers => {
+      const layerExists = prevLayers.some(
+        layer => layer.name === layerProps.name
+      );
       if (layerExists) {
-        return prevLayers.filter(layer => layer.name !== newLayer.name);
+        return prevLayers.filter(layer => layer.name !== layerProps.name);
       } else {
-        return [...prevLayers, newLayer];
+        return [...prevLayers, layerProps];
       }
     });
   };
 
-  const handleInfo = (information) => {
+  const handleInfo = information => {
     const filteredInfo = {};
     let coordinates = information.coordenadas;
-  
+
     delete information.coordenadas;
     const formattedInfo = Object.keys(information).reduce((acc, key) => {
-      const parts = key.split('.');
-      const newKey = parts.slice(0,1).join(' ');
-  
+      const parts = key.split(".");
+      const newKey = parts.slice(0, 1).join(" ");
+
       acc[newKey] = information[key];
       return acc;
     }, {});
@@ -60,17 +68,34 @@ export const MapLayerProvider = ({ children }) => {
       acc[gna] = nam;
       return acc;
     }, {});
-    setInfo({...newInfo, Longitud: coordinates.lng, Latitud: coordinates.lat});
-  }
+    setInfo({
+      ...newInfo,
+      Longitud: coordinates.lng,
+      Latitud: coordinates.lat,
+    });
+  };
 
-  
-
-  const removeLayer = (layerName) => {
-    setLayers((prevLayers) => prevLayers.filter(layer => layer.name !== layerName));
+  const removeLayer = layerName => {
+    setLayers(prevLayers =>
+      prevLayers.filter(layer => layer.name !== layerName)
+    );
   };
 
   return (
-    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfo }}>
+    <MapLayerContext.Provider
+      value={{
+        layers,
+        info,
+        baseMapLayer,
+        geoserverBaseUrl,
+        activeLayers,
+        setActiveLayers,
+        addLayer,
+        removeLayer,
+        toggleLayer,
+        handleInfo,
+      }}
+    >
       {children}
     </MapLayerContext.Provider>
   );
