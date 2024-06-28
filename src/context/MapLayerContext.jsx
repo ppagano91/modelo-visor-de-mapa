@@ -41,23 +41,23 @@ export const MapLayerProvider = ({ children }) => {
     });
   };
 
-  const handleInfoBaseMap = (information) => {
+  const handleInfoBaseMap = (data) => {
     const filteredInfo = {};
-    let coordinates = information.coordenadas;
+    let coordinates = data.coordenadas;
   
-    delete information.coordenadas;
-    const formattedInfo = Object.keys(information).reduce((acc, key) => {
+    delete data.coordenadas;
+    const formattedInfo = Object.keys(data).reduce((acc, key) => {
       const parts = key.split('.');
       const newKey = parts.slice(0,1).join(' ');
   
-      acc[newKey] = information[key];
+      acc[newKey] = data[key];
       return acc;
     }, {});
 
     const newInfo = Object.keys(formattedInfo).reduce((acc, key) => {
       const gna = formattedInfo[key].gna ? capitalizeFirstLetter(formattedInfo[key].gna.toLowerCase()) : capitalizeFirstLetter(key.split("_").join(" "));
       let nam = formattedInfo[key].nam ? formattedInfo[key].nam : formattedInfo[key].fna;
-      if("num_mapa" in formattedInfo[key]){
+      if("num_mapa" in formattedInfo[key] && formattedInfo[key].num_mapa !== null){
         nam = nam + " " + formattedInfo[key].num_mapa
       }
       acc[gna] = nam;
@@ -67,7 +67,14 @@ export const MapLayerProvider = ({ children }) => {
   }
 
   const handleInfoWMSLayers = (data) => {
-    console.log(data)
+    const formattedInfo = Object.keys(data).reduce((acc, key) => {
+      const parts = key.split('.');
+      const newKey = parts.slice(0,1).join(' ');
+  
+      acc[newKey] = data[key];
+      return acc;
+    }, {});
+    console.log(formattedInfo);
 
   }
 

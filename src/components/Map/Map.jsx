@@ -33,7 +33,7 @@ export default function Map() {
     <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true} attributionControl={false}>
       <SearchControl />
       <AddBaseLayerToMap />
-      <AddLayerToMap />
+      {/* <AddLayerToMap /> */}
       <LayersControl className="control-layers" position="topright">
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer 

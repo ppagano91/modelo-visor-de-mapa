@@ -9,7 +9,7 @@ const AddBaseLayerToMap = () => {
   const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
-    const latlng = event.latlng; // Obtenemos las coordenadas del evento
+    const latlng = event.latlng; 
     const mapSize = map.getSize();
     const mapBounds = map.getBounds();
     const bbox = mapBounds.toBBoxString();
@@ -17,7 +17,7 @@ const AddBaseLayerToMap = () => {
     
     let layerClicked = false;
 
-    // Verificar clic en capas activas
+
     for (const layer of layers) {
       const params = {
         service: 'WMS',
@@ -64,7 +64,6 @@ const AddBaseLayerToMap = () => {
       }
     }
 
-    // Si no se hizo clic en ninguna capa activa, procesar el mapa base
     if (!layerClicked) {
       const params = {
         service: 'WMS',
@@ -110,11 +109,34 @@ const AddBaseLayerToMap = () => {
   };
 
   useEffect(() => {
+    const wmsLayers = layers.map((layer) => {
+      const wmsLayer = L.tileLayer.wms(layer.url, {
+        layers: layer.layers,
+        format: 'image/png',
+        transparent: true,
+        zIndex: 10,
+        attribution: layer.attribution,
+      });
+      wmsLayer.addTo(map);
+      return wmsLayer;
+    });
+
+    map.on('contextmenu', onMapRightClick);
+
+    return () => {
+      map.off('contextmenu', onMapRightClick);
+      wmsLayers.forEach((layer) => {
+        map.removeLayer(layer);
+      });
+    };
+  }, [layers, map]);
+
+  useEffect(() => {
     const baseLayer = L.tileLayer.wms(geoserverBaseUrl, {
       layers: baseMapLayer.name,
       format: 'image/png',
       transparent: true,
-      zIndex: 10,
+      zIndex: 5,
       attribution: '&copy; attribution',
     });
 

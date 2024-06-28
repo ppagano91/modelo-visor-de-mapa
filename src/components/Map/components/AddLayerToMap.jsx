@@ -5,7 +5,7 @@ import { MapLayerContext } from '../../../context/MapLayerContext';
 
 const AddLayerToMap = () => {
   const map = useMap();
-  const { handleInfo, layers } = useContext(MapLayerContext);
+  const { layers } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
     const latlng = event.latlng;
