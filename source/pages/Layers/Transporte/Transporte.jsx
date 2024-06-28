@@ -1,12 +1,5 @@
 import {
   FaRoad,
-  FaTrain,
-  FaSubway,
-  FaTram,
-  FaBus,
-  FaBusAlt,
-  FaTaxi,
-  FaParking,
 } from "react-icons/fa";
 import {
   CloudDownloadOutlined,
@@ -21,7 +14,6 @@ import {
   Subway,
   Train,
 } from "@mui/icons-material";
-import { MdDirectionsBike, MdElectricBike } from "react-icons/md";
 import { BiSolidTrafficBarrier } from "react-icons/bi";
 import "../../../styles/Layers/Transporte/transporte.css";
 import { useContext, useState } from "react";
@@ -142,10 +134,6 @@ const Transporte = ({
       layerProps: null,
     },
   ];
-
-  // const handleToggleLayer = layer => {
-  //   toggleLayer(layer);
-  // };
 
   const handleItemClick = (id, layerProps) => {
     setActiveTransporteLayers(prev =>
