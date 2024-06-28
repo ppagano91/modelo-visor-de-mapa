@@ -17,7 +17,7 @@ const UpdateMap = ({ position }) => {
 };
 
 const MasInformacion = () => {
-  const { info } = useContext(MapLayerContext);
+  const { info, resetInfo } = useContext(MapLayerContext);
 
   const renderMap = () => {
     if (!info.Longitud || !info.Latitud) {
@@ -43,10 +43,7 @@ const MasInformacion = () => {
           transparent={true}
 
         />
-        <Marker position={position}>
-          <Popup>
-            Coordenadas: <br /> Latitud: {info.Latitud} <br /> Longitud: {info.Longitud}
-          </Popup>
+        <Marker position={position} interactive={false}>
         </Marker>
         <UpdateMap position={position} />
       </MapContainer>
@@ -69,13 +66,23 @@ const MasInformacion = () => {
           </div>
           
           <div className="mt-4">
-            <div className="d-flex justify-content-between">
-              <h3>Información</h3>
-              <Info/>
+            <div className="d-flex flex-row justify-content-between align-items-center mb-2">
+              <div className="d-flex flex-row align-items-center gap-2">
+                <h3>Información</h3>
+                <Info/>
+              </div>
+              <div className="">                
+                <button
+                  onClick={()=>{resetInfo()}}
+                  type="button"
+                  className="btn-close btn-close-black p-0"
+                  aria-label="Close"
+                ></button>
+              </div>
             </div>
             {Object.keys(info).map((key) => (
               <div key={key}>
-                <div className="d-flex justify-content-between">
+                <div className="d-flex justify-content-between masinfo-items">
                   <p className="p-0 m-0">
                     <b>{key}</b>:
                   </p>

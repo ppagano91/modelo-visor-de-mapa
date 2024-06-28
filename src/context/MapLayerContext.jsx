@@ -41,26 +41,72 @@ export const MapLayerProvider = ({ children }) => {
     });
   };
 
-  const handleInfo = (information) => {
+  const handleInfoBaseMap = (data) => {
     const filteredInfo = {};
-    let coordinates = information.coordenadas;
+    let coordinates = data.coordenadas;
   
-    delete information.coordenadas;
-    const formattedInfo = Object.keys(information).reduce((acc, key) => {
+    delete data.coordenadas;
+    const formattedInfo = Object.keys(data).reduce((acc, key) => {
       const parts = key.split('.');
       const newKey = parts.slice(0,1).join(' ');
   
-      acc[newKey] = information[key];
+      acc[newKey] = data[key];
       return acc;
     }, {});
 
     const newInfo = Object.keys(formattedInfo).reduce((acc, key) => {
-      const gna = capitalizeFirstLetter(formattedInfo[key].gna.toLowerCase());
-      const nam = formattedInfo[key].nam;
+      const gna = formattedInfo[key].gna ? capitalizeFirstLetter(formattedInfo[key].gna.toLowerCase()) : capitalizeFirstLetter(key.split("_").join(" "));
+      let nam = formattedInfo[key].nam ? formattedInfo[key].nam : formattedInfo[key].fna;
+      if("num_mapa" in formattedInfo[key] && formattedInfo[key].num_mapa !== null){
+        nam = nam + " " + formattedInfo[key].num_mapa
+      }
       acc[gna] = nam;
       return acc;
     }, {});
     setInfo({...newInfo, Longitud: coordinates.lng, Latitud: coordinates.lat});
+  }
+
+  const handleInfoWMSLayers = (data) => {
+    let coordinates = data.coordenadas;
+  
+    delete data.coordenadas;
+    const formattedInfo = Object.keys(data).reduce((acc, key) => {
+        const parts = key.split('.');
+        const newKey = parts.slice(0, 1).join(' ');
+
+        const filteredProperties = Object.entries(data[key])
+            .filter(([propKey, propValue]) => {
+                return (
+                    propValue !== null && 
+                    propValue !== "" && 
+                    !propKey.startsWith('fecha') && 
+                    !propKey.startsWith('id') &&
+                    !propKey.startsWith("geometry") &&
+                    !propKey.startsWith("activo") &&
+                    !propKey.startsWith("observaciones") &&
+                    !propKey.startsWith("nombre_")
+                );
+            })
+            .reduce((obj, [propKey, propValue]) => {
+                obj[capitalizeFirstLetter(propKey)] = propValue;
+                return obj;
+            }, {});
+
+        acc[newKey] = {
+            ...filteredProperties,
+        };
+        
+        return acc;
+    }, {});
+
+    const newInfo = Object.values(formattedInfo).reduce((acc, obj) => {
+      return { ...acc, ...obj };
+  }, {});
+  setInfo({...newInfo, Longitud: coordinates.lng, Latitud: coordinates.lat});
+};
+
+  const resetInfo = () => {
+    setInfo({});
   }
 
   
@@ -70,7 +116,7 @@ export const MapLayerProvider = ({ children }) => {
   };
 
   return (
-    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfo }}>
+    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo }}>
       {children}
     </MapLayerContext.Provider>
   );

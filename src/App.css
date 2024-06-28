@@ -79,10 +79,6 @@
   background-color: white;
 }
 
-/* .masinfo-section-container{
-  margin: 0;
-  height: 100%;
-  padding-left: 0.0rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-} */
+.masinfo-items{
+  font-size: x-small;
+}
