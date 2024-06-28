@@ -9,15 +9,15 @@ const AddBaseLayerToMap = () => {
   const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
-    const latlng = event.latlng; 
+    const latlng = event.latlng;
     const mapSize = map.getSize();
     const mapBounds = map.getBounds();
     const bbox = mapBounds.toBBoxString();
     const point = map.latLngToContainerPoint(latlng);
-    
+
     let layerClicked = false;
 
-
+    // Verificar clic en capas activas
     for (const layer of layers) {
       const params = {
         service: 'WMS',
@@ -56,7 +56,7 @@ const AddBaseLayerToMap = () => {
               geometry,
             };
           });
-          handleInfoWMSLayers(mappedFeatures);
+          handleInfoWMSLayers({ ...mappedFeatures, coordenadas: latlng });
           break;
         }
       } catch (error) {
@@ -121,17 +121,7 @@ const AddBaseLayerToMap = () => {
       return wmsLayer;
     });
 
-    map.on('contextmenu', onMapRightClick);
-
-    return () => {
-      map.off('contextmenu', onMapRightClick);
-      wmsLayers.forEach((layer) => {
-        map.removeLayer(layer);
-      });
-    };
-  }, [layers, map]);
-
-  useEffect(() => {
+    // Añadir capa base al mapa
     const baseLayer = L.tileLayer.wms(geoserverBaseUrl, {
       layers: baseMapLayer.name,
       format: 'image/png',
@@ -139,16 +129,18 @@ const AddBaseLayerToMap = () => {
       zIndex: 5,
       attribution: '&copy; attribution',
     });
-
     baseLayer.addTo(map);
 
     map.on('contextmenu', onMapRightClick);
 
     return () => {
       map.off('contextmenu', onMapRightClick);
+      wmsLayers.forEach((layer) => {
+        map.removeLayer(layer);
+      });
       map.removeLayer(baseLayer);
     };
-  }, [geoserverBaseUrl, layers]); 
+  }, [layers, geoserverBaseUrl, baseMapLayer, map]);
 
   return null;
 };

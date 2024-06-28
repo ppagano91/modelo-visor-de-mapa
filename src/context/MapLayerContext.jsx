@@ -67,15 +67,46 @@ export const MapLayerProvider = ({ children }) => {
   }
 
   const handleInfoWMSLayers = (data) => {
-    const formattedInfo = Object.keys(data).reduce((acc, key) => {
-      const parts = key.split('.');
-      const newKey = parts.slice(0,1).join(' ');
+    let coordinates = data.coordenadas;
   
-      acc[newKey] = data[key];
-      return acc;
-    }, {});
-    console.log(formattedInfo);
+    delete data.coordenadas;
+    const formattedInfo = Object.keys(data).reduce((acc, key) => {
+        const parts = key.split('.');
+        const newKey = parts.slice(0, 1).join(' ');
 
+        const filteredProperties = Object.entries(data[key])
+            .filter(([propKey, propValue]) => {
+                return (
+                    propValue !== null && 
+                    propValue !== "" && 
+                    !propKey.startsWith('fecha') && 
+                    !propKey.startsWith('id') &&
+                    !propKey.startsWith("geometry") &&
+                    !propKey.startsWith("activo") &&
+                    !propKey.startsWith("observaciones") &&
+                    !propKey.startsWith("nombre_")
+                );
+            })
+            .reduce((obj, [propKey, propValue]) => {
+                obj[capitalizeFirstLetter(propKey)] = propValue;
+                return obj;
+            }, {});
+
+        acc[newKey] = {
+            ...filteredProperties,
+        };
+        
+        return acc;
+    }, {});
+
+    const newInfo = Object.values(formattedInfo).reduce((acc, obj) => {
+      return { ...acc, ...obj };
+  }, {});
+  setInfo({...newInfo, Longitud: coordinates.lng, Latitud: coordinates.lat});
+};
+
+  const resetInfo = () => {
+    setInfo({});
   }
 
   
@@ -85,7 +116,7 @@ export const MapLayerProvider = ({ children }) => {
   };
 
   return (
-    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers }}>
+    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo }}>
       {children}
     </MapLayerContext.Provider>
   );
