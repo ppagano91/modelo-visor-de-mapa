@@ -3,9 +3,9 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { MapLayerContext } from '../../../context/MapLayerContext';
 
-const AddLayerToMap = ({ layers }) => {
+const AddLayerToMap = () => {
   const map = useMap();
-  const { handleInfo } = useContext(MapLayerContext);
+  const { handleInfo, layers } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
     const latlng = event.latlng;

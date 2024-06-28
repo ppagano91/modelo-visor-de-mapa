@@ -41,7 +41,7 @@ export const MapLayerProvider = ({ children }) => {
     });
   };
 
-  const handleInfo = (information) => {
+  const handleInfoBaseMap = (information) => {
     const filteredInfo = {};
     let coordinates = information.coordenadas;
   
@@ -66,6 +66,11 @@ export const MapLayerProvider = ({ children }) => {
     setInfo({...newInfo, Longitud: coordinates.lng, Latitud: coordinates.lat});
   }
 
+  const handleInfoWMSLayers = (data) => {
+    console.log(data)
+
+  }
+
   
 
   const removeLayer = (layerName) => {
@@ -73,7 +78,7 @@ export const MapLayerProvider = ({ children }) => {
   };
 
   return (
-    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfo }}>
+    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers }}>
       {children}
     </MapLayerContext.Provider>
   );

@@ -2,59 +2,110 @@ import React, { useEffect, useContext } from 'react';
 import { MapLayerContext } from '../../../context/MapLayerContext';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
-import {getEnv} from "../../../config"
+import { getEnv } from "../../../config";
 
 const AddBaseLayerToMap = () => {
   const map = useMap();
-  const { handleInfo, geoserverBaseUrl, baseMapLayer } = useContext(MapLayerContext);
+  const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
     const latlng = event.latlng; // Obtenemos las coordenadas del evento
     const mapSize = map.getSize();
     const mapBounds = map.getBounds();
     const bbox = mapBounds.toBBoxString();
-
     const point = map.latLngToContainerPoint(latlng);
+    
+    let layerClicked = false;
 
-    const params = {
-      service: 'WMS',
-      version: '1.1.1',
-      request: 'GetFeatureInfo',
-      format: 'image/png',
-      transparent: true,
-      query_layers: baseMapLayer.name,
-      styles: '',
-      layers: baseMapLayer.name,
-      exceptions: 'application/vnd.ogc.se_inimage',
-      info_format: 'application/json',
-      feature_count: 50,
-      srs: 'EPSG:4326',
-      bbox: bbox,
-      width: mapSize.x,
-      height: mapSize.y,
-      x: Math.round(point.x),
-      y: Math.round(point.y),
-    };
+    // Verificar clic en capas activas
+    for (const layer of layers) {
+      const params = {
+        service: 'WMS',
+        version: '1.1.1',
+        request: 'GetFeatureInfo',
+        format: 'image/png',
+        transparent: true,
+        query_layers: layer.layers,
+        styles: '',
+        layers: layer.layers,
+        exceptions: 'application/vnd.ogc.se_inimage',
+        info_format: 'application/json',
+        feature_count: 50,
+        srs: 'EPSG:4326',
+        bbox: bbox,
+        width: mapSize.x,
+        height: mapSize.y,
+        x: Math.round(point.x),
+        y: Math.round(point.y),
+      };
 
-    const url = geoserverBaseUrl + L.Util.getParamString(params, '', true);
+      const url = layer.url + L.Util.getParamString(params, '', true);
 
-    try {
-      const response = await fetch(url);
-      const text = await response.text();
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+        const data = JSON.parse(text);
 
-      const data = JSON.parse(text);
-      const mappedFeatures = {};
+        if (data.features && data.features.length > 0) {
+          layerClicked = true;
+          const mappedFeatures = {};
+          data.features.forEach((feature) => {
+            const { id, geometry, properties } = feature;
+            mappedFeatures[id] = {
+              ...properties,
+              geometry,
+            };
+          });
+          handleInfoWMSLayers(mappedFeatures);
+          break;
+        }
+      } catch (error) {
+        console.error('Error fetching feature info:', error);
+      }
+    }
 
-      data.features.forEach(feature => {
-        const { id, geometry, properties } = feature;
-        mappedFeatures[id] = {
-          ...properties,
-          geometry
-        };
-      });
-      handleInfo({...mappedFeatures, coordenadas: latlng});
-    } catch (error) {
-      console.error('Error fetching feature info:', error);
+    // Si no se hizo clic en ninguna capa activa, procesar el mapa base
+    if (!layerClicked) {
+      const params = {
+        service: 'WMS',
+        version: '1.1.1',
+        request: 'GetFeatureInfo',
+        format: 'image/png',
+        transparent: true,
+        query_layers: baseMapLayer.name,
+        styles: '',
+        layers: baseMapLayer.name,
+        exceptions: 'application/vnd.ogc.se_inimage',
+        info_format: 'application/json',
+        feature_count: 50,
+        srs: 'EPSG:4326',
+        bbox: bbox,
+        width: mapSize.x,
+        height: mapSize.y,
+        x: Math.round(point.x),
+        y: Math.round(point.y),
+      };
+
+      const url = geoserverBaseUrl + L.Util.getParamString(params, '', true);
+
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+
+        const data = JSON.parse(text);
+        const mappedFeatures = {};
+
+        data.features.forEach((feature) => {
+          const { id, geometry, properties } = feature;
+          mappedFeatures[id] = {
+            ...properties,
+            geometry,
+          };
+        });
+        handleInfoBaseMap({ ...mappedFeatures, coordenadas: latlng });
+      } catch (error) {
+        console.error('Error fetching feature info:', error);
+      }
     }
   };
 
@@ -75,7 +126,7 @@ const AddBaseLayerToMap = () => {
       map.off('contextmenu', onMapRightClick);
       map.removeLayer(baseLayer);
     };
-  }, [geoserverBaseUrl]); 
+  }, [geoserverBaseUrl, layers]); 
 
   return null;
 };
