@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { AlternateEmail, Info, Layers } from "@mui/icons-material";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { PATHS } from "../utils/consts/paths"
 
 const Sidebar = ({ children }) => {
   const { activeSection, toggle, toggleLastSection, lastActiveSection } = useContext(AppContext);
@@ -10,19 +11,19 @@ const Sidebar = ({ children }) => {
 
   const menuItems = [
     {
-      path: "/masinformacion",
+      path: PATHS.masInformacion,
       name: "Más Información",
       icon: <Info />,
       width: widthComponent,
     },
     {
-      path: "/contacto",
+      path: PATHS.contacto,
       name: "Contacto",
       icon: <AlternateEmail />,
       width: widthComponent,
     },
     {
-      path: "/layers",
+      path: PATHS.layers,
       name: "Layers",
       icon: <Layers />,
       width: widthComponent,
