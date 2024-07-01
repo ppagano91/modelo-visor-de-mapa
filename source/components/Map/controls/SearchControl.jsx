@@ -95,6 +95,7 @@ const SearchControl = () => {
           map.setView(latLng, 16);
         }
       }
+      setSuggestions([]);
     } else {
       if ("response" in res) {
         setSuggestions([]);
@@ -210,14 +211,14 @@ const SearchControl = () => {
           <Search fontSize="medium" className="d-flex text-white" />
         </button>
       </form>
-      <ul
-        className={`bg-light my-1 p-0 border rounded ${
-          suggestions.length > 0 ? suggestions.length : error
-        }`}
-        style={{ paddingLeft: "1rem" }}
-      >
-        {suggestions &&
-          suggestions.map((sug, i) => {
+      {suggestions && suggestions.length > 0 &&
+        <ul
+          className={`bg-light my-1 p-0 border rounded ${
+            suggestions.length > 0 ? suggestions.length : error
+          }`}
+          style={{ paddingLeft: "1rem" }}
+        >
+          {suggestions.map((sug, i) => {
             return (
               <li
                 key={i}
@@ -232,7 +233,8 @@ const SearchControl = () => {
               </li>
             );
           })}
-      </ul>
+        </ul>
+      }
       {error && (
         <div className="alert alert-danger my-1 py-2 border-2">
           <span className="text-danger p-1 fw-bold msg-error">
