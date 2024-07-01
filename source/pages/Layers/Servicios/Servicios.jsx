@@ -10,7 +10,7 @@ import {
   FaShoppingCart,
   FaWifi,
 } from "react-icons/fa";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MapLayerContext } from "../../../context/MapLayerContext";
 import DownloadModal from "../Modal/DownloadModal";
 import {
@@ -18,97 +18,114 @@ import {
   InfoOutlined,
   PublicOutlined,
 } from "@mui/icons-material";
+import axios from "axios";
 
-const Servicios = ({
-  onBack,
-  color,
-  activeServiciosLayers,
-  setActiveServiciosLayers,
-}) => {
-  const mapaServicios =
-    "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms?";
-  const { toggleLayer } = useContext(MapLayerContext);
+const Servicios = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
+  const [itemsServicios, setItemsServicios] = useState([]);
+  const { toggleLayer, setActiveLayers, activeLayers } =
+    useContext(MapLayerContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          "https://localhost:9200/services_map/_search",
+          {
+            query: {
+              match_all: {},
+            },
+          },
+          {
+            auth: {
+              username: "elastic",
+              password: "jmoyano",
+            },
+          }
+        );
+
+        if (response.data && response.data.hits) {
+          const hits = response.data.hits.hits;
+          console.log("Hits received from Elasticsearch:", hits);
+
+          const serviciosItems = hits
+            .filter(hit => hit._source.servicios)
+            .flatMap(hit =>
+              (hit._source.servicios.propiedades || [])
+                .filter(propiedad => propiedad !== null)
+                .map(propiedad => ({
+                  id: propiedad.layerProps
+                    ? propiedad.layerProps.name
+                    : `${hit._id}_${propiedad.id}`,
+                  nombre: propiedad.name || "",
+                  icono: renderIcon(propiedad.icon),
+                  layerProps: propiedad.layerProps
+                    ? propiedad.layerProps
+                    : null,
+                }))
+            );
+
+          setItemsServicios(serviciosItems);
+          console.log("serviciosItems", serviciosItems);
+        } else {
+          console.log("No hits received from Elasticsearch");
+        }
+      } catch (error) {
+        console.error("Error fetching data from Elasticsearch:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const renderIcon = iconName => {
+    switch (iconName) {
+      case "FaBuilding":
+        return <FaBuilding />;
+      case "FaShieldAlt":
+        return <FaShieldAlt />;
+      case "FaFireExtinguisher":
+        return <FaFireExtinguisher />;
+      case "FaGavel":
+        return <FaGavel />;
+      case "FaShoppingCart":
+        return <FaShoppingCart />;
+      case "FaFlag":
+        return <FaFlag />;
+      case "FaWifi":
+        return <FaWifi />;
+      case "FaBriefcase":
+        return <FaBriefcase />;
+      case "FaChurch":
+        return <FaChurch />;
+      case "FaMapMarkedAlt":
+        return <FaMapMarkedAlt />;
+      default:
+        return null;
+    }
+  };
+
   const handleModalClose = () => setShowModal(false);
   const handleModalShow = e => {
     e.stopPropagation();
     setShowModal(true);
   };
-  const itemsServicios = [
-    {
-      id: 1,
-      icono: <FaBuilding />,
-      nombre: "Comisarías Policía de la Ciudad",
-      layerProps: null,
-    },
-    {
-      id: 2,
-      icono: <FaShieldAlt />,
-      nombre: "División Comisarías Vecinales",
-      layerProps: {
-        url: mapaServicios,
-        layers: "area_vecinal",
-        name: "area_vecinal",
-        attribution: "&copy; attribution",
-      },
-    },
-    {
-      id: 3,
-      icono: <FaFireExtinguisher />,
-      nombre: "Estaciones de Bomberos",
-      layerProps: null,
-    },
-    {
-      id: 4,
-      icono: <FaGavel />,
-      nombre: "Fiscalías de la Ciudad",
-      layerProps: null,
-    },
-    {
-      id: 5,
-      icono: <FaShoppingCart />,
-      nombre: "Ferias Itinerantes de Abastecimiento Barrial",
-      layerProps: null,
-    },
-    {
-      id: 6,
-      icono: <FaFlag />,
-      nombre: "Embajadas y Consulados",
-      layerProps: null,
-    },
-    {
-      id: 7,
-      icono: <FaWifi />,
-      nombre: "WiFi Gratis",
-      layerProps: null,
-    },
-    {
-      id: 8,
-      icono: <FaBriefcase />,
-      nombre: "Centros de Integración Laboral",
-      layerProps: null,
-    },
-    {
-      id: 9,
-      icono: <FaChurch />,
-      nombre: "Arquidiócesis (sin establecimientos educativos)",
-      layerProps: null,
-    },
-    {
-      id: 10,
-      icono: <FaMapMarkedAlt />,
-      nombre: "Arquidiócesis zonas",
-      layerProps: null,
-    },
-  ];
 
   const handleItemClick = (id, layerProps) => {
-    setActiveServiciosLayers(prev =>
-      prev.includes(id) ? prev.filter(layerId => layerId !== id) : [...prev, id]
-    );
+    console.log("Toggling layer:", id, layerProps);
+
     if (layerProps !== null) {
       toggleLayer(layerProps);
     }
+
+    // Siempre actualizamos activeLayers, independientemente de si hay layerProps o no
+    setActiveLayers(prevActiveLayers => {
+      if (prevActiveLayers.includes(id)) {
+        return prevActiveLayers.filter(layerId => layerId !== id);
+      } else {
+        return [...prevActiveLayers, id];
+      }
+    });
   };
 
   return (
@@ -121,9 +138,7 @@ const Servicios = ({
         <div className="fs-4 text-light">
           Servicios
           <div className="badge  fs-6  text-dark fw-bold  bg-white opacity-50 px-2 mx-3 ">
-            {activeServiciosLayers.length
-              ? `${activeServiciosLayers.length}`
-              : null}
+            {activeLayers.length ? `${activeLayers.length}` : null}
           </div>
         </div>
 
@@ -136,7 +151,7 @@ const Servicios = ({
       </div>
       <ul className="m-0 p-0">
         {itemsServicios.map(item => {
-          const isActive = activeServiciosLayers.includes(item.id);
+          const isActive = activeLayers.includes(item.id);
           return (
             <li
               className="d-flex gap-2 m-1 p-1 align-items-center list-item"
