@@ -11,11 +11,7 @@ export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const handleActiveSection = (path) => {
-    if (path === '/masinformacion') {
-      setActiveSection('/masinformacion');
-    } else {
-      setActiveSection((prevState) => (prevState === path ? null : path));
-    }
+    setActiveSection((prevState) => (prevState === path ? null : path));
   };
 
   const toggle = (path) => {
@@ -45,7 +41,7 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ activeSection, handleActiveSection, toggle, toggleLastSection, openMasInformacion }}
+      value={{ activeSection, lastActiveSection, handleActiveSection, toggle, toggleLastSection, openMasInformacion }}
     >
       {children}
     </AppContext.Provider>
