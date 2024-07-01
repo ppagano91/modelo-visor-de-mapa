@@ -62,14 +62,13 @@ const Transporte = ({ onBack, color }) => {
               (hit._source.transporte.propiedades || [])
                 .filter(propiedad => propiedad !== null)
                 .map(propiedad => ({
-                  id: `${hit._id}_${propiedad.id}`,
+                  id: propiedad.layerProps
+                    ? propiedad.layerProps.name
+                    : `${hit._id}_${propiedad.id}`,
                   nombre: propiedad.name || "",
-                  layerUrl: propiedad.layerProps
-                    ? propiedad.layerProps.url
-                    : null,
                   icono: renderIcon(propiedad.icon),
                   layerProps: propiedad.layerProps
-                    ? propiedad.layerProps.name
+                    ? propiedad.layerProps
                     : null,
                 }))
             );
@@ -135,21 +134,21 @@ const Transporte = ({ onBack, color }) => {
   };
 
   const handleItemClick = (id, layerProps) => {
-    console.log("layerUrl", layerUrl);
-    setActiveLayers(prevActiveLayers => {
-      const updatedLayers = prevActiveLayers || [];
-      if (updatedLayers.includes(id)) {
-        return updatedLayers.filter(layerId => layerId !== id);
-      } else {
-        return [...updatedLayers, id];
-      }
-    });
+    console.log("Toggling layer:", id, layerProps);
 
-    if (layerProps) {
+    if (layerProps !== null) {
       toggleLayer(layerProps);
     }
-  };
 
+    // Siempre actualizamos activeLayers, independientemente de si hay layerProps o no
+    setActiveLayers(prevActiveLayers => {
+      if (prevActiveLayers.includes(id)) {
+        return prevActiveLayers.filter(layerId => layerId !== id);
+      } else {
+        return [...prevActiveLayers, id];
+      }
+    });
+  };
   return (
     <div>
       <DownloadModal show={showModal} handleClose={handleModalClose} />
@@ -183,9 +182,8 @@ const Transporte = ({ onBack, color }) => {
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title={item.nombre}
-              onClick={() =>
-                handleItemClick(item.id, item.layerProps, item.layerUrl)
-              }
+              option={item.opciones}
+              onClick={() => handleItemClick(item.id, item.layerProps)}
               style={{
                 cursor: "pointer",
                 backgroundColor: isActive ? "#f0f0f0" : "transparent",

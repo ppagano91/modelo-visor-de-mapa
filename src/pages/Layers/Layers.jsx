@@ -5,7 +5,6 @@ import Urbanismo from "./Urbanismo/Urbanismo";
 import Transporte from "./Transporte/Transporte";
 import Salud from "./Salud/Salud";
 import Servicios from "./Servicios/Servicios";
-import GeoFIUBA from "./GeoFIUBA/GeoFIUBA";
 import { Search } from "@mui/icons-material";
 
 const Layers = () => {
@@ -15,35 +14,14 @@ const Layers = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const query = searchTerm
-        ? {
-            query: {
-              multi_match: {
-                query: searchTerm,
-                fields: [
-                  "urbanismo.propiedades.name",
-                  "urbanismo.propiedades.description",
-                  "transporte.propiedades.name",
-                  "transporte.propiedades.description",
-                  "salud.propiedades.name",
-                  "salud.propiedades.description",
-                  "servicios.propiedades.name",
-                  "servicios.propiedades.description",
-                ],
-                fuzziness: "AUTO",
-              },
-            },
-          }
-        : {
-            query: {
-              match_all: {},
-            },
-          };
-
       try {
         const response = await axios.post(
           "https://localhost:9200/services_map/_search",
-          query,
+          {
+            query: {
+              match_all: {},
+            },
+          },
           {
             auth: {
               username: "elastic",
@@ -54,7 +32,7 @@ const Layers = () => {
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
-          console.log("Hits received from ElasticSearch:", hits);
+          console.log("Hits received from Elasticsearch:", hits);
 
           const newSections = hits.flatMap(hit => {
             const source = hit._source;
@@ -69,15 +47,17 @@ const Layers = () => {
 
           setSections(newSections);
         } else {
-          console.log("No hits received from ElasticSearch");
+          setSections([]);
+          console.log("No hits received from Elasticsearch");
         }
       } catch (error) {
-        console.error("Error fetching data from ElasticSearch:", error);
+        console.error("Error fetching data from Elasticsearch:", error);
+        setSections([]);
       }
     };
 
     fetchData();
-  }, [searchTerm]);
+  }, []);
 
   const getComponentByName = (name, source) => {
     switch (name.toLowerCase()) {
@@ -130,15 +110,6 @@ const Layers = () => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredSections = sections.filter(section => {
-    if (section.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-      return true;
-    }
-    return section.propiedades.some(propiedad =>
-      propiedad.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
-
   const getColorByName = name => {
     switch (name.toLowerCase()) {
       case "urbanismo":
@@ -153,6 +124,23 @@ const Layers = () => {
         return "#000000";
     }
   };
+
+  const filteredSections = sections
+    .map(section => {
+      const filteredItems = section.propiedades.filter(
+        propiedad =>
+          (propiedad.name &&
+            propiedad.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (propiedad.description &&
+            propiedad.description
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()))
+      );
+      return { ...section, propiedades: filteredItems };
+    })
+    .filter(
+      section => section.propiedades.length > 0 || searchTerm.trim() === ""
+    );
 
   return (
     <div className="layer-wrapper">

@@ -107,16 +107,19 @@ const Urbanismo = ({ onBack, color }) => {
   };
 
   const handleItemClick = (id, layerProps) => {
+    console.log("Toggling layer:", id, layerProps);
+
+    // Actualizar el estado de activeLayers
     setActiveLayers(prevActiveLayers => {
-      const updatedLayers = prevActiveLayers || [];
-      if (updatedLayers.includes(id)) {
-        return updatedLayers.filter(layerId => layerId !== id);
+      if (prevActiveLayers.includes(id)) {
+        return prevActiveLayers.filter(layerId => layerId !== id);
       } else {
-        return [...updatedLayers, id];
+        return [...prevActiveLayers, id];
       }
     });
 
-    if (layerProps) {
+    // Activar o desactivar la capa en el mapa
+    if (layerProps !== null) {
       toggleLayer(layerProps);
     }
   };

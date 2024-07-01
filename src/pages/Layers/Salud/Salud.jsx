@@ -6,7 +6,7 @@ import {
 } from "react-icons/md";
 import { RiHospitalLine } from "react-icons/ri";
 import { TbVaccine } from "react-icons/tb";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MapLayerContext } from "../../../context/MapLayerContext";
 import {
   CloudDownloadOutlined,
@@ -14,81 +14,110 @@ import {
   PublicOutlined,
 } from "@mui/icons-material";
 import DownloadModal from "../Modal/DownloadModal";
+import axios from "axios";
 
-const Salud = ({ onBack, color, activeSaludLayers, setActiveSaludLayers }) => {
-  const mapaServicios =
-    "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms?";
-  const { toggleLayer } = useContext(MapLayerContext);
+const Salud = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
+  const [itemsSalud, setItemsSalud] = useState([]);
+  const { toggleLayer, setActiveLayers, activeLayers } =
+    useContext(MapLayerContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          "https://localhost:9200/services_map/_search",
+          {
+            query: {
+              match_all: {},
+            },
+          },
+          {
+            auth: {
+              username: "elastic",
+              password: "jmoyano",
+            },
+          }
+        );
+
+        if (response.data && response.data.hits) {
+          const hits = response.data.hits.hits;
+          console.log("Hits received from Elasticsearch:", hits);
+
+          const saludItems = hits
+            .filter(hit => hit._source.salud)
+            .flatMap(hit =>
+              (hit._source.salud.propiedades || [])
+                .filter(propiedad => propiedad !== null)
+                .map(propiedad => ({
+                  id: propiedad.layerProps
+                    ? propiedad.layerProps.name
+                    : `${hit._id}_${propiedad.id}`,
+                  nombre: propiedad.name || "",
+                  icono: renderIcon(propiedad.icon),
+                  layerProps: propiedad.layerProps
+                    ? propiedad.layerProps
+                    : null,
+                }))
+            );
+
+          setItemsSalud(saludItems);
+          console.log("saludItems", saludItems);
+        } else {
+          console.log("No hits received from Elasticsearch");
+        }
+      } catch (error) {
+        console.error("Error fetching data from Elasticsearch:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const renderIcon = iconName => {
+    switch (iconName) {
+      case "FaHospital":
+        return <FaHospital />;
+      case "MdHealthAndSafety":
+        return <MdHealthAndSafety />;
+      case "MdOutlineHealthAndSafety":
+        return <MdOutlineHealthAndSafety />;
+      case "RiHospitalLine":
+        return <RiHospitalLine />;
+      case "FaHospitalUser":
+        return <FaHospitalUser />;
+      case "MdOutlineLocalPharmacy":
+        return <MdOutlineLocalPharmacy />;
+      case "FaHospitalSymbol":
+        return <FaHospitalSymbol />;
+      case "TbVaccine":
+        return <TbVaccine />;
+      default:
+        return null;
+    }
+  };
+
   const handleModalClose = () => setShowModal(false);
   const handleModalShow = e => {
     e.stopPropagation();
     setShowModal(true);
   };
-  const itemsSalud = [
-    {
-      id: 1,
-      icono: <FaHospital />,
-      nombre: "Hospitales GCABA",
-      layerProps: null,
-    },
-    {
-      id: 2,
-      icono: <MdHealthAndSafety />,
-      nombre: "Centros de Salud Nivel 1 (CeSAC)",
-      layerProps: null,
-    },
-    {
-      id: 3,
-      icono: <MdOutlineHealthAndSafety />,
-      nombre: "Centros Médicos Barriales",
-      layerProps: null,
-    },
-    {
-      id: 4,
-      icono: <RiHospitalLine />,
-      nombre: "Otros Centros de Salud GCABA",
-      layerProps: null,
-    },
-    {
-      id: 5,
-      icono: <RiHospitalLine />,
-      nombre: "Centros de Salud no dependientes del GCABA",
-      layerProps: null,
-    },
-    {
-      id: 6,
-      icono: <FaHospitalUser />,
-      nombre: "Estaciones Saludables",
-      layerProps: null,
-    },
-    {
-      id: 7,
-      icono: <MdOutlineLocalPharmacy />,
-      nombre: "Farmacias",
-      layerProps: null,
-    },
-    {
-      id: 8,
-      icono: <FaHospitalSymbol />,
-      nombre: "Áreas Hospitalarias",
-      layerProps: null,
-    },
-    {
-      id: 9,
-      icono: <TbVaccine />,
-      nombre: "Vacunatorios",
-      layerProps: null,
-    },
-  ];
 
   const handleItemClick = (id, layerProps) => {
-    setActiveSaludLayers(prev =>
-      prev.includes(id) ? prev.filter(layerId => layerId !== id) : [...prev, id]
-    );
+    console.log("Toggling layer:", id, layerProps);
+
     if (layerProps !== null) {
       toggleLayer(layerProps);
     }
+
+    // Siempre actualizamos activeLayers, independientemente de si hay layerProps o no
+    setActiveLayers(prevActiveLayers => {
+      if (prevActiveLayers.includes(id)) {
+        return prevActiveLayers.filter(layerId => layerId !== id);
+      } else {
+        return [...prevActiveLayers, id];
+      }
+    });
   };
 
   return (
@@ -98,14 +127,13 @@ const Salud = ({ onBack, color, activeSaludLayers, setActiveSaludLayers }) => {
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
       >
-        {/* centrar el span en el div */}
-
         <div className="fs-4 text-light">
           Salud
           <div className="badge  fs-6  text-dark fw-bold  bg-white opacity-50 px-2 mx-3 ">
-            {activeSaludLayers.length ? `${activeSaludLayers.length}` : null}
+            {activeLayers.length ? `${activeLayers.length}` : null}
           </div>
         </div>
+
         <button
           onClick={onBack}
           type="button"
@@ -115,7 +143,7 @@ const Salud = ({ onBack, color, activeSaludLayers, setActiveSaludLayers }) => {
       </div>
       <ul className="m-0 p-0">
         {itemsSalud.map(item => {
-          const isActive = activeSaludLayers.includes(item.id);
+          const isActive = activeLayers.includes(item.id);
           return (
             <li
               className="d-flex gap-2 m-1 p-1 align-items-center list-item"
