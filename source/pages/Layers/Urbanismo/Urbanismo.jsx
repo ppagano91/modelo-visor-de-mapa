@@ -28,50 +28,32 @@ import { getEnv } from "../../../config";
 const Urbanismo = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsUrbanismo, setItemsUrbanismo] = useState([]);
-  const { toggleLayer, setActiveLayers, activeLayers } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
+    console.log(hits);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(
-          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
-          {
-            query: {
-              match_all: {},
-            },
-          },
-          {
-            auth: {
-              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
-              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
-            },
-          }
-        );
+        const urbanismoItems = hits
+          .filter(hit => hit._source.urbanismo)
+          .flatMap(hit =>
+            hit._source.urbanismo.propiedades.map(propiedad => ({
+              id: `${hit._id}_${propiedad.id}`,
+              nombre: propiedad.name || "",
+              icono: renderIcon(propiedad.icon),
+              layerProps: propiedad.layerProps || null,
+            }))
+          );
 
-        if (response.data && response.data.hits) {
-          const hits = response.data.hits.hits;
-
-          const urbanismoItems = hits
-            .filter(hit => hit._source.urbanismo)
-            .flatMap(hit =>
-              hit._source.urbanismo.propiedades.map(propiedad => ({
-                id: `${hit._id}_${propiedad.id}`,
-                nombre: propiedad.name || "",
-                icono: renderIcon(propiedad.icon),
-                layerProps: propiedad.layerProps || null,
-              }))
-            );
-
-          setItemsUrbanismo(urbanismoItems);
-        }
+        setItemsUrbanismo(urbanismoItems);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [hits]);
 
   const renderIcon = iconName => {
     switch (iconName) {
@@ -145,7 +127,7 @@ const Urbanismo = ({ onBack, color }) => {
         ></button>
       </div>
       <ul className="m-0 p-0">
-        {itemsUrbanismo.map(item => {
+        {itemsUrbanismo && itemsUrbanismo.map(item => {
           const isActive = activeLayers && activeLayers.includes(item.id);
           return (
             <li

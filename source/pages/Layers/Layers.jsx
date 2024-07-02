@@ -10,6 +10,7 @@ import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
 
 const Layers = () => {
+  const {handleHits} = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sections, setSections] = useState([]);
@@ -40,7 +41,6 @@ const Layers = () => {
               match_all: {},
             },
           };
-
       try {
         const response = await axios.post(
           `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
@@ -52,9 +52,13 @@ const Layers = () => {
             },
           }
         );
+        console.log(response)
 
         if (response.data && response.data.hits) {
-          const hits = response.data.hits.hits;
+          const hits = await response.data.hits.hits;
+          console.log(hits)
+          handleHits(hits);
+          
 
           const newSections = hits.flatMap(hit => {
             const source = hit._source;
@@ -217,7 +221,7 @@ const Layers = () => {
               overflow: "auto",
             }}
           >
-            {filteredSections[activeSection].component}
+            {filteredSections && filteredSections[activeSection].component}
           </div>
         )}
       </div>

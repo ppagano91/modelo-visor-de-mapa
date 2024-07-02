@@ -5,6 +5,7 @@ import { getEnv } from '../config';
 export const MapLayerContext = createContext();
 
 export const MapLayerProvider = ({ children }) => {
+  const [hits, setHits] = useState([]);
   const [layers, setLayers] = useState([]);
   const [info, setInfo] = useState({});
   const [geoserverBaseUrl, setGeoserverBaseUrl] = useState('');
@@ -112,14 +113,16 @@ export const MapLayerProvider = ({ children }) => {
     setInfo({});
   }
 
-  
-
   const removeLayer = (layerName) => {
     setLayers((prevLayers) => prevLayers.filter(layer => layer.name !== layerName));
   };
 
+  const handleHits = (data) =>{
+    setHits(prevState => {return prevState !== data ? data : prevState});
+  }
+
   return (
-    <MapLayerContext.Provider value={{ layers, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers  }}>
+    <MapLayerContext.Provider value={{ layers, hits, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers, handleHits  }}>
       {children}
     </MapLayerContext.Provider>
   );

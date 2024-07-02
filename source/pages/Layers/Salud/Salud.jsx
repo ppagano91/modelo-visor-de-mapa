@@ -40,7 +40,6 @@ const Salud = ({ onBack, color }) => {
             },
           }
         );
-        console.log(response)
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
