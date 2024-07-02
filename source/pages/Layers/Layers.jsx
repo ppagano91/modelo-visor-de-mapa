@@ -70,15 +70,15 @@ const Layers = () => {
           });
 
           setSections(newSections);
-          setActiveSection(null); // Resetear activeSection al realizar una búsqueda
+          setActiveSection(null);
         } else {
           setSections([]);
-          setActiveSection(null); // Resetear activeSection al realizar una búsqueda
+          setActiveSection(null);
         }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
         setSections([]);
-        setActiveSection(null); // Resetear activeSection en caso de error
+        setActiveSection(null);
       }
     };
 

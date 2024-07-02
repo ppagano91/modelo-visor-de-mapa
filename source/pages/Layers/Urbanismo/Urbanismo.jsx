@@ -30,7 +30,6 @@ const Urbanismo = ({ onBack, color }) => {
   const [itemsUrbanismo, setItemsUrbanismo] = useState([]);
   const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
-    console.log(hits);
 
   useEffect(() => {
     const fetchData = async () => {
