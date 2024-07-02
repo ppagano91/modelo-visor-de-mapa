@@ -10,7 +10,7 @@ import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
 
 const Layers = () => {
-  const {handleHits} = useContext(MapLayerContext);
+  const { handleHits } = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sections, setSections] = useState([]);
@@ -52,16 +52,14 @@ const Layers = () => {
             },
           }
         );
-        console.log(response)
 
         if (response.data && response.data.hits) {
-          const hits = await response.data.hits.hits;
-          console.log(hits)
+          const hits = response.data.hits.hits;
           handleHits(hits);
-          
 
           const newSections = hits.flatMap(hit => {
             const source = hit._source;
+            if (!source) return [];
             return Object.entries(source).map(([key, value]) => ({
               name: key.charAt(0).toUpperCase() + key.slice(1),
               description: value.description,
@@ -72,12 +70,15 @@ const Layers = () => {
           });
 
           setSections(newSections);
+          setActiveSection(null); // Resetear activeSection al realizar una búsqueda
         } else {
           setSections([]);
+          setActiveSection(null); // Resetear activeSection al realizar una búsqueda
         }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
         setSections([]);
+        setActiveSection(null); // Resetear activeSection en caso de error
       }
     };
 
@@ -209,7 +210,7 @@ const Layers = () => {
             </li>
           ))}
         </ul>
-        {activeSection !== null && (
+        {activeSection !== null && filteredSections[activeSection] && (
           <div
             className="section-content"
             style={{
@@ -221,7 +222,7 @@ const Layers = () => {
               overflow: "auto",
             }}
           >
-            {filteredSections && filteredSections[activeSection].component}
+            {filteredSections[activeSection].component}
           </div>
         )}
       </div>
