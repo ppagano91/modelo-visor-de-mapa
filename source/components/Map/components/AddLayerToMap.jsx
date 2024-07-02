@@ -51,7 +51,6 @@ const AddLayerToMap = () => {
           };
         });
 
-        console.log(mappedFeatures);
       } catch (error) {
         console.error('Error fetching feature info:', error);
       }

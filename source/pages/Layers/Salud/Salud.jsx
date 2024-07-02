@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import DownloadModal from "../Modal/DownloadModal";
 import axios from "axios";
+import { getEnv } from "../../../config";
 
 const Salud = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
@@ -26,7 +27,7 @@ const Salud = ({ onBack, color }) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          "https://localhost:9200/services_map/_search",
+          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
           {
             query: {
               match_all: {},
@@ -34,15 +35,15 @@ const Salud = ({ onBack, color }) => {
           },
           {
             auth: {
-              username: "elastic",
-              password: "jmoyano",
+              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
+              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
             },
           }
         );
+        console.log(response)
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
-          console.log("Hits received from Elasticsearch:", hits);
 
           const saludItems = hits
             .filter(hit => hit._source.salud)
@@ -62,9 +63,6 @@ const Salud = ({ onBack, color }) => {
             );
 
           setItemsSalud(saludItems);
-          console.log("saludItems", saludItems);
-        } else {
-          console.log("No hits received from Elasticsearch");
         }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
@@ -104,7 +102,6 @@ const Salud = ({ onBack, color }) => {
   };
 
   const handleItemClick = (id, layerProps) => {
-    console.log("Toggling layer:", id, layerProps);
 
     if (layerProps !== null) {
       toggleLayer(layerProps);

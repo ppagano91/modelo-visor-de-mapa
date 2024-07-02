@@ -17,6 +17,9 @@ const AddBaseLayerToMap = () => {
 
     let layerClicked = false;
 
+    // Agregar marcador en el mapa
+    const marker = L.marker(latlng).addTo(map);
+
     // Verificar clic en capas activas
     for (const layer of layers) {
       const params = {

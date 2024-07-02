@@ -18,6 +18,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { MapLayerContext } from "../../../context/MapLayerContext";
 import DownloadModal from "../Modal/DownloadModal";
+import { getEnv } from "../../../config";
 
 const Transporte = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +30,7 @@ const Transporte = ({ onBack, color }) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          "https://localhost:9200/services_map/_search",
+          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
           {
             query: {
               match_all: {},
@@ -37,15 +38,14 @@ const Transporte = ({ onBack, color }) => {
           },
           {
             auth: {
-              username: "elastic",
-              password: "jmoyano",
+              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
+              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
             },
           }
         );
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
-          console.log("Hits received from Elasticsearch:", hits);
 
           const transporteItems = hits
             .filter(hit => hit._source.transporte)
@@ -65,9 +65,6 @@ const Transporte = ({ onBack, color }) => {
             );
 
           setItemsTransporte(transporteItems);
-          console.log("transporteItems", transporteItems);
-        } else {
-          console.log("No hits received from Elasticsearch");
         }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
@@ -123,107 +120,8 @@ const Transporte = ({ onBack, color }) => {
     e.stopPropagation();
     setShowModal(true);
   };
-  const itemsTransporte = [
-    {
-      id: 1,
-      nombre: "Vías de Circulación",
-      icono: <FaRoad />,
-      layerProps: null,
-    },
-    {
-      id: 2,
-      nombre: "Red de Ferrocarril",
-      icono: <Train />,
-      layerProps: null,
-    },
-    {
-      id: 3,
-      nombre: "Estaciones de Ferrocarril",
-      icono: <Train />,
-      layerProps: null,
-    },
-    {
-      id: 4,
-      nombre: "Red de Subte",
-
-      icono: <Subway />,
-      layerProps: {
-        name: "red_subte",
-        url: mapaServicios,
-        layers: "red_subte",
-        attribution: "&copy; attribution",
-      },
-    },
-    {
-      id: 5,
-      nombre: "Red de Premetro",
-      icono: <DirectionsTransit />,
-      layerProps: null,
-    },
-    {
-      id: 6,
-      nombre: "Estaciones de Premetro",
-      icono: <DirectionsTransit />,
-      layerProps: null,
-    },
-    {
-      id: 7,
-      nombre: "Red de Metrobús",
-      icono: <DirectionsBus />,
-      layerProps: null,
-    },
-    {
-      id: 8,
-      nombre: "Estaciones de Metrobús",
-      icono: <DirectionsBus />,
-      layerProps: null,
-    },
-    {
-      id: 9,
-      nombre: "Ciclovías",
-      icono: <DirectionsBike />,
-      layerProps: null,
-    },
-    {
-      id: 10,
-      nombre: "Estaciones Ecobici",
-      icono: <ElectricBike />,
-      layerProps: null,
-    },
-    {
-      id: 11,
-      nombre: "Paradas de Colectivo",
-      icono: <DirectionsBus />,
-      layerProps: null,
-    },
-    {
-      id: 12,
-      nombre: "Paradas de Taxi",
-      icono: <LocalTaxi />,
-      layerProps: null,
-    },
-    {
-      id: 13,
-      nombre: "Estacionamiento de bicis",
-      icono: <LocalParking />,
-      layerProps: null,
-    },
-    {
-      id: 14,
-      nombre: "Estacionamiento permitido",
-      icono: <LocalParking />,
-      layerProps: null,
-    },
-    {
-      id: 15,
-      nombre: "Cortes de tránsito",
-      icono: <BiSolidTrafficBarrier />,
-      layerProps: null,
-    },
-  ];
 
   const handleItemClick = (id, layerProps) => {
-    console.log("Toggling layer:", id, layerProps);
 
     if (layerProps !== null) {
       toggleLayer(layerProps);

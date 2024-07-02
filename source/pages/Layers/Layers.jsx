@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../../styles/layers.css";
 import Urbanismo from "./Urbanismo/Urbanismo";
@@ -6,8 +6,11 @@ import Transporte from "./Transporte/Transporte";
 import Salud from "./Salud/Salud";
 import Servicios from "./Servicios/Servicios";
 import { Search } from "@mui/icons-material";
+import { getEnv } from "../../config";
+import { MapLayerContext } from "../../context/MapLayerContext";
 
 const Layers = () => {
+  const {setActiveLayers} = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sections, setSections] = useState([]);
@@ -16,7 +19,7 @@ const Layers = () => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          "https://localhost:9200/services_map/_search",
+          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
           {
             query: {
               match_all: {},
@@ -24,15 +27,14 @@ const Layers = () => {
           },
           {
             auth: {
-              username: "elastic",
-              password: "jmoyano",
+              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
+              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
             },
           }
         );
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
-          console.log("Hits received from Elasticsearch:", hits);
 
           const newSections = hits.flatMap(hit => {
             const source = hit._source;
@@ -48,7 +50,6 @@ const Layers = () => {
           setSections(newSections);
         } else {
           setSections([]);
-          console.log("No hits received from Elasticsearch");
         }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);

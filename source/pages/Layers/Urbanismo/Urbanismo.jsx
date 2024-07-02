@@ -23,6 +23,7 @@ import {
   PublicOutlined,
 } from "@mui/icons-material";
 import DownloadModal from "../Modal/DownloadModal";
+import { getEnv } from "../../../config";
 
 const Urbanismo = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +35,7 @@ const Urbanismo = ({ onBack, color }) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          "https://localhost:9200/services_map/_search",
+          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
           {
             query: {
               match_all: {},
@@ -42,15 +43,14 @@ const Urbanismo = ({ onBack, color }) => {
           },
           {
             auth: {
-              username: "elastic",
-              password: "jmoyano",
+              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
+              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
             },
           }
         );
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
-          console.log("Hits received from Elasticsearch:", hits);
 
           const urbanismoItems = hits
             .filter(hit => hit._source.urbanismo)
@@ -64,8 +64,6 @@ const Urbanismo = ({ onBack, color }) => {
             );
 
           setItemsUrbanismo(urbanismoItems);
-        } else {
-          console.log("No hits received from Elasticsearch");
         }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
@@ -107,7 +105,6 @@ const Urbanismo = ({ onBack, color }) => {
   };
 
   const handleItemClick = (id, layerProps) => {
-    console.log("Toggling layer:", id, layerProps);
 
     // Actualizar el estado de activeLayers
     setActiveLayers(prevActiveLayers => {

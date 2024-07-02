@@ -8,6 +8,7 @@ export const MapLayerProvider = ({ children }) => {
   const [layers, setLayers] = useState([]);
   const [info, setInfo] = useState({});
   const [geoserverBaseUrl, setGeoserverBaseUrl] = useState('');
+  const [activeLayers, setActiveLayers] = useState([]);
 
   const baseMapLayer = {
     url: getEnv("VITE_MAPA_BASE"),
@@ -30,13 +31,15 @@ export const MapLayerProvider = ({ children }) => {
     setLayers((prevLayers) => [...prevLayers, layer]);
   };
 
-  const toggleLayer = (newLayer) => {
-    setLayers((prevLayers) => {
-      const layerExists = prevLayers.some(layer => layer.name === newLayer.name);
+  const toggleLayer = layerProps => {
+    setLayers(prevLayers => {
+      const layerExists = prevLayers.some(
+        layer => layer.name === layerProps.name
+      );
       if (layerExists) {
-        return prevLayers.filter(layer => layer.name !== newLayer.name);
+        return prevLayers.filter(layer => layer.name !== layerProps.name);
       } else {
-        return [...prevLayers, newLayer];
+        return [...prevLayers, layerProps];
       }
     });
   };
@@ -116,7 +119,7 @@ export const MapLayerProvider = ({ children }) => {
   };
 
   return (
-    <MapLayerContext.Provider value={{ layers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo }}>
+    <MapLayerContext.Provider value={{ layers, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers  }}>
       {children}
     </MapLayerContext.Provider>
   );
