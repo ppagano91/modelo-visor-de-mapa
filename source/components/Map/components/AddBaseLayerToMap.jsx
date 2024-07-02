@@ -15,10 +15,18 @@ const AddBaseLayerToMap = () => {
     const bbox = mapBounds.toBBoxString();
     const point = map.latLngToContainerPoint(latlng);
 
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+
     let layerClicked = false;
 
     // Agregar marcador en el mapa
     const marker = L.marker(latlng).addTo(map);
+
+    map.setView(latlng);
 
     // Verificar clic en capas activas
     for (const layer of layers) {
