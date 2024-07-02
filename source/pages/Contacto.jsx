@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { getEnv } from "../config";
+import Alerts from "../components/Alerts/Alerts";
 
 const Contacto = () => {
   const captchaRef = useRef(null);
