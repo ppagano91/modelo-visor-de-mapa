@@ -3,6 +3,13 @@
 ## Iniciar proyecto
 
 ### Elasticsearch
+Agregar las siguientes líneas al final del archivo **elasticsearch.yml** ubicado en el directorio, donde se haya instalado elasticsearch, llamado config/:
+
+```bash
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+```
+
 Iniciar el servicio de elasticsearch. 
 
 #### Indices y Documentos
@@ -10,18 +17,24 @@ Iniciar el servicio de elasticsearch.
 Antes de inicar el proyecto Visor de Mapa, es necesario crear los índices y documentos dentro de Elasticsearch. Utilizando alguna herramienta como Kibana o Postman, se deberán crear los índices y documentos como se detalla en las siguientes secciones.
 
 #### Crear Indice
-Desde Postman o alguna otra herramienta se deberá crear el índice "servicios". En este ejemplo, el servicio de elasticsearch se está ejecutando en un host localhost y un puerto 9200:
+Desde Postman, o alguna otra herramienta, se deberá crear el índice "services_map". En este ejemplo se crea el índice **services_map**:
 
 ```bash
-    PUT http://localhost:9200/servicios
+    PUT http://localhost:9200/services_map
 ```
+Tener en cuenta que el servicio de elasticsearch se está ejecutando en un host localhost y un puerto 9200
 
 #### Cargar Indices
-Desde Postman o alunga otra herramienta, se deberán cargar los documentos de [servicios.json](./servicios.json), en el índice creado anteriormente (servicios). En este ejemplo, el servicio de elasticsearch se está ejecutando en un host localhost y un puerto 9200:
+Desde Postman o alunga otra herramienta, se deberán cargar los documentos de [servicios.json](./servicios.json), en el índice creado anteriormente (services_map). En este ejemplo, el servicio de elasticsearch se está ejecutando en un host localhost y un puerto 9200. Con la siguiente query se debería agregar todos los documentos dentro del índice **services_map**
 
+Consideraciones a tener en cuenta:
+
+- Headers: agregar `Content-Type: application/x-ndjson`
+- Body: Seleccionar raw-JSON y copiar el contenido del archivo [servicios.json](./servicios.json)
+- Ejecutar la siguiente petición de tipo POST:
 
 ```bash
-PUT http://localhost:9200/servicios/_doc/1
+    POST http://localhost:9200/services_map/_bulk
 ```
 
 
