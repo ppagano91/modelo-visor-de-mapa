@@ -1,48 +1,48 @@
 [
     {
       "urbanismo": {
-        "descripcion": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
         "propiedades": [
           {
             "id": 1,
-            "nombre": "Parcelas",
+            "name": "Parcelas",
             "icon": "FaHouse",
             "layerProps": null,
             "geoservicios": true
           },
           {
             "id": 2,
-            "nombre": "Manzanas",
+            "name": "Manzanas",
             "icon": "Settings",
             "layerProps": null
           },
           {
             "id": 3,
-            "nombre": "Secciones Catastrales",
+            "name": "Secciones Catastrales",
             "icon": "BsFillHousesFill",
             "layerProps": null
           },
           {
             "id": 4,
-            "nombre": "Barrios",
+            "name": "Barrios",
             "icon": "BsFillHousesFill",
             "layerProps": null
           },
           {
             "id": 5,
-            "nombre": "Comunas",
+            "name": "Comunas",
             "icon": "BsFillHousesFill",
             "layerProps": null
           },
           {
             "id": 6,
-            "nombre": "Sedes Comunales",
+            "name": "Sedes Comunales",
             "icon": "BsFillHousesFill",
             "layerProps": null
           },
           {
             "id": 7,
-            "nombre": "Espacios Verdes",
+            "name": "Espacios Verdes",
             "icon": "NaturePeople",
             "layerProps": {
               "url": "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms?",
@@ -53,31 +53,31 @@
           },
           {
             "id": 8,
-            "nombre": "Código Urbanístico",
+            "name": "Código Urbanístico",
             "icon": "LocationCity",
             "layerProps": null
           },
           {
             "id": 9,
-            "nombre": "Relevamiento de Usos del Suelo",
+            "name": "Relevamiento de Usos del Suelo",
             "icon": "GiPlantRoots",
             "layerProps": null
           },
           {
             "id": 10,
-            "nombre": "Radios Censales",
+            "name": "Radios Censales",
             "icon": "RadioButtonChecked",
             "layerProps": null
           },
           {
             "id": 11,
-            "nombre": "Población por radio censal",
+            "name": "Población por radio censal",
             "icon": "SupervisedUserCircle",
             "layerProps": null
           },
           {
             "id": 12,
-            "nombre": "Distritos Económicos",
+            "name": "Distritos Económicos",
             "icon": "AccountBalance",
             "layerProps": null
           }
@@ -86,29 +86,29 @@
     },
     {
       "transporte": {
-        "descripcion": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
         "propiedades": [
           {
             "id": 1,
-            "nombre": "Vías de Circulación",
+            "name": "Vías de Circulación",
             "icon": "FaRoad",
             "layerProps": null
           },
           {
             "id": 2,
-            "nombre": "Red de Ferrocarril",
+            "name": "Red de Ferrocarril",
             "icon": "Train",
             "layerProps": null
           },
           {
             "id": 3,
-            "nombre": "Estaciones de Ferrocarril",
+            "name": "Estaciones de Ferrocarril",
             "icon": "Train",
             "layerProps": null
           },
           {
             "id": 4,
-            "nombre": "Red de Subte",
+            "name": "Red de Subte",
    
             "icon": "Subway",
             "layerProps": {
@@ -120,67 +120,67 @@
           },
           {
             "id": 5,
-            "nombre": "Red de Premetro",
+            "name": "Red de Premetro",
             "icon": "DirectionsTransit",
             "layerProps": null
           },
           {
             "id": 6,
-            "nombre": "Estaciones de Premetro",
+            "name": "Estaciones de Premetro",
             "icon": "DirectionsTransit",
             "layerProps": null
           },
           {
             "id": 7,
-            "nombre": "Red de Metrobús",
+            "name": "Red de Metrobús",
             "icon": "DirectionsBus",
             "layerProps": null
           },
           {
             "id": 8,
-            "nombre": "Estaciones de Metrobús",
+            "name": "Estaciones de Metrobús",
             "icon": "DirectionsBus",
             "layerProps": null
           },
           {
             "id": 9,
-            "nombre": "Ciclovías",
+            "name": "Ciclovías",
             "icon": "DirectionsBike",
             "layerProps": null
           },
           {
             "id": 10,
-            "nombre": "Estaciones Ecobici",
+            "name": "Estaciones Ecobici",
             "icon": "ElectricBike",
             "layerProps": null
           },
           {
             "id": 11,
-            "nombre": "Paradas de Colectivo",
+            "name": "Paradas de Colectivo",
             "icon": "DirectionsBus",
             "layerProps": null
           },
           {
             "id": 12,
-            "nombre": "Paradas de Taxi",
+            "name": "Paradas de Taxi",
             "icon": "LocalTaxi",
             "layerProps": null
           },
           {
             "id": 13,
-            "nombre": "Estacionamiento de bicis",
+            "name": "Estacionamiento de bicis",
             "icon": "LocalParking",
             "layerProps": null
           },
           {
             "id": 14,
-            "nombre": "Estacionamiento permitido",
+            "name": "Estacionamiento permitido",
             "icon": "LocalParking",
             "layerProps": null
           },
           {
             "id": 15,
-            "nombre": "Cortes de tránsito",
+            "name": "Cortes de tránsito",
             "icon": "BiSolidTrafficBarrier",
             "layerProps": null
           }
@@ -189,59 +189,59 @@
     },      
     {
       "salud": {
-        "descripcion": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
         "propiedades": [
           {
             "id": 1,
-            "nombre": "Hospitales GCABA",
+            "name": "Hospitales GCABA",
             "icon": "FaHospital",
             "layerProps": null
           },
           {
             "id": 2,
-            "nombre": "Centros de Salud Nivel 1 (CeSAC)",
+            "name": "Centros de Salud Nivel 1 (CeSAC)",
             "icon": "MdHealthAndSafety",
             "layerProps": null
           },
           {
             "id": 3,
-            "nombre": "Centros Médicos Barriales",
+            "name": "Centros Médicos Barriales",
             "icon": "MdOutlineHealthAndSafety",
             "layerProps": null
           },
           {
             "id": 4,
-            "nombre": "Otros Centros de Salud GCABA",
+            "name": "Otros Centros de Salud GCABA",
             "icon": "RiHospitalLine",
             "layerProps": null
           },
           {
             "id": 5,
-            "nombre": "Centros de Salud no dependientes del GCABA",
+            "name": "Centros de Salud no dependientes del GCABA",
             "icon": "RiHospitalLine",
             "layerProps": null
           },
           {
             "id": 6,
-            "nombre": "Estaciones Saludables",
+            "name": "Estaciones Saludables",
             "icon": "FaHospitalUser",
             "layerProps": null
           },
           {
             "id": 7,
-            "nombre": "Farmacias",
+            "name": "Farmacias",
             "icon": "MdOutlineLocalPharmacy",
             "layerProps": null
           },
           {
             "id": 8,
-            "nombre": "Áreas Hospitalarias",
+            "name": "Áreas Hospitalarias",
             "icon": "FaHospitalSymbol",
             "layerProps": null
           },
           {
             "id": 9,
-            "nombre": "Vacunatorios",
+            "name": "Vacunatorios",
             "icon": "TbVaccine",
             "layerProps": null
           }
@@ -250,18 +250,18 @@
     },
     {
       "servicios": {
-        "descripcion": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et ...",
         "propiedades": [
           {
             "id": 1,
             "icon": null,
-            "nombre": "Comisarías Policía de la Ciudad",
+            "name": "Comisarías Policía de la Ciudad",
             "layerProps": null
           },
           {
             "id": 2,
             "icon": null,
-            "nombre": "División Comisarías Vecinales",
+            "name": "División Comisarías Vecinales",
             "layerProps": {
               "url": "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms?",
               "layers": "area_vecinal",
@@ -272,49 +272,49 @@
           {
             "id": 3,
             "icon": null,
-            "nombre": "Estaciones de Bomberos",
+            "name": "Estaciones de Bomberos",
             "layerProps": null
           },
           {
             "id": 4,
             "icon": null,
-            "nombre": "Fiscalías de la Ciudad",
+            "name": "Fiscalías de la Ciudad",
             "layerProps": null
           },
           {
             "id": 5,
             "icon": null,
-            "nombre": "Ferias Itinerantes de Abastecimiento Barrial",
+            "name": "Ferias Itinerantes de Abastecimiento Barrial",
             "layerProps": null
           },
           {
             "id": 6,
             "icon": null,
-            "nombre": "Embajadas y Consulados",
+            "name": "Embajadas y Consulados",
             "layerProps": null
           },
           {
             "id": 7,
             "icon": null,
-            "nombre": "WiFi Gratis",
+            "name": "WiFi Gratis",
             "layerProps": null
           },
           {
             "id": 8,
             "icon": null,
-            "nombre": "Centros de Integración Laboral",
+            "name": "Centros de Integración Laboral",
             "layerProps": null
           },
           {
             "id": 9,
             "icon": null,
-            "nombre": "Arquidiócesis (sin establecimientos educativos)",
+            "name": "Arquidiócesis (sin establecimientos educativos)",
             "layerProps": null
           },
           {
             "id": 10,
             "icon": null,
-            "nombre": "Arquidiócesis zonas",
+            "name": "Arquidiócesis zonas",
             "layerProps": null
           }
         ]

@@ -10,21 +10,41 @@ import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
 
 const Layers = () => {
-  const {setActiveLayers} = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await axios.post(
-          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
-          {
+      const query = searchTerm
+        ? {
+            query: {
+              multi_match: {
+                query: searchTerm,
+                fields: [
+                  "urbanismo.propiedades.name",
+                  "urbanismo.propiedades.description",
+                  "transporte.propiedades.name",
+                  "transporte.propiedades.description",
+                  "salud.propiedades.name",
+                  "salud.propiedades.description",
+                  "servicios.propiedades.name",
+                  "servicios.propiedades.description",
+                ],
+                fuzziness: "AUTO",
+              },
+            },
+          }
+        : {
             query: {
               match_all: {},
             },
-          },
+          };
+
+      try {
+        const response = await axios.post(
+          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
+          query,
           {
             auth: {
               username: getEnv("VITE_ELATICSEARCH_USERNAME"),
@@ -58,7 +78,7 @@ const Layers = () => {
     };
 
     fetchData();
-  }, []);
+  }, [searchTerm]);
 
   const getComponentByName = (name, source) => {
     switch (name.toLowerCase()) {
