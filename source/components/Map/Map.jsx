@@ -22,6 +22,7 @@ import SearchControl from './controls/SearchControl';
 import {getEnv} from "../../config"
 import AddLayerToMap from './components/AddLayerToMap';
 import AddBaseLayerToMap from './components/AddBaseLayerToMap';
+import DrawToolbar from './controls/DrawControl';
 
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -60,9 +61,11 @@ export default function Map() {
           />
         </BaseLayer>
       </LayersControl>
+      <DrawToolbar />
       <InitialView />
       <LocateControl />
       <LinearMeasureControl />
+      
       <CoordinatesControl position="bottomleft" />
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />
