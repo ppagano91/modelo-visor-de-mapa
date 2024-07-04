@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
-import 'leaflet-draw/dist/leaflet.draw.css';
-import 'leaflet-draw';
+import '../../../styles/plugins/leaflet-draw.css';
+import "../../../plugins/leaflet-draw.js";
 
 const DrawToolbar = () => {
   const map = useMap();
