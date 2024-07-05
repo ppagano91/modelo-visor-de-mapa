@@ -8,8 +8,8 @@ import { Search } from "@mui/icons-material";
 const autocompleter = new Autocompleter();
 
 autocompleter.setCredentials(
-  getEnv("VITE_CLIENTE_ID"),
-  getEnv("VITE_CLIENTE_SECRET")
+  getEnv("VITE_CLIENT_ID"),
+  getEnv("VITE_CLIENT_SECRET")
 );
 
 const SearchControl = () => {
