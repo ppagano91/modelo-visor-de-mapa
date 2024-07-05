@@ -14,77 +14,79 @@
     L.drawVersion = "1.0.4",
     L.Draw = {},
     L.drawLocal = {
-        format: {
-            numeric: {
-                delimiters: {
-                    thousands: '.',
-                    decimal: ','
-                }
-            }
-        },
+        // format: {
+        // 	numeric: {
+        // 		delimiters: {
+        // 			thousands: ',',
+        // 			decimal: '.'
+        // 		}
+        // 	}
+        // },
         draw: {
             toolbar: {
+                // #TODO: this should be reorganized where actions are nested in actions
+                // ex: actions.undo  or actions.cancel
                 actions: {
-                    title: "Cancelar dibujo",
-                    text: "Cancelar"
+                    title: 'Cancel drawing',
+                    text: 'Cancel'
                 },
                 finish: {
-                    title: "Finalizar dibujo",
-                    text: "Finalizar"
+                    title: 'Finish drawing',
+                    text: 'Finish'
                 },
                 undo: {
-                    title: "Borrar el último punto dibujado",
-                    text: "Borrar último punto"
+                    title: 'Delete last point drawn',
+                    text: 'Delete last point'
                 },
                 buttons: {
-                    polyline: "Dibujar una polilínea",
-                    polygon: "Dibujar un polígono",
-                    rectangle: "Dibujar un rectángulo",
-                    circle: "Dibujar un círculo",
-                    marker: "Colocar un marcador",
-                    circlemarker: "Colocar un marcador circular"
+                    polyline: 'Draw a polyline',
+                    polygon: 'Draw a polygon',
+                    rectangle: 'Draw a rectangle',
+                    circle: 'Draw a circle',
+                    marker: 'Draw a marker',
+                    circlemarker: 'Draw a circlemarker'
                 }
             },
             handlers: {
                 circle: {
                     tooltip: {
-                        start: "Haga clic y arrastre para dibujar el círculo."
+                        start: 'Click and drag to draw circle.'
                     },
-                    radius: "Radio"
+                    radius: 'Radius'
                 },
                 circlemarker: {
                     tooltip: {
-                        start: "Haga clic para colocar el marcador circular."
+                        start: 'Click map to place circle marker.'
                     }
                 },
                 marker: {
                     tooltip: {
-                        start: "Haga clic para colocar el marcador."
+                        start: 'Click map to place marker.'
                     }
                 },
                 polygon: {
                     tooltip: {
-                        start: "Haga clic para comenzar a dibujar la figura.",
-                        cont: "Haga clic para continuar dibujando la figura.",
-                        end: "Haga clic en el primer punto para cerrar esta figura."
+                        start: 'Click to start drawing shape.',
+                        cont: 'Click to continue drawing shape.',
+                        end: 'Click first point to close this shape.'
                     }
                 },
                 polyline: {
-                    error: "<strong>Error:</strong> los bordes de la figuras no se pueden cruzar!",
+                    error: '<strong>Error:</strong> shape edges cannot cross!',
                     tooltip: {
-                        start: "Haga clic para comenzar a dibujar la línea.",
-                        cont: "Haga clic para continuar dibujando la línea.",
-                        end: "Haga clic en el último punto para terminar la línea."
+                        start: 'Click to start drawing line.',
+                        cont: 'Click to continue drawing line.',
+                        end: 'Click last point to finish line.'
                     }
                 },
                 rectangle: {
                     tooltip: {
-                        start: "Haga clic y arrastre para dibujar el rectángulo."
+                        start: 'Click and drag to draw rectangle.'
                     }
                 },
                 simpleshape: {
                     tooltip: {
-                        end: "Suelte el mouse para terminar de dibujar."
+                        end: 'Release mouse to finish drawing.'
                     }
                 }
             }
@@ -93,35 +95,35 @@
             toolbar: {
                 actions: {
                     save: {
-                        title: "Guardar cambios",
-                        text: "Guardar"
+                        title: 'Save changes',
+                        text: 'Save'
                     },
                     cancel: {
-                        title: "Descartar todos los cambios",
-                        text: "Cancelar"
+                        title: 'Cancel editing, discards all changes',
+                        text: 'Cancel'
                     },
                     clearAll: {
-                        title: "Borrar todas las figuras",
-                        text: "Borrar todo"
+                        title: 'Clear all layers',
+                        text: 'Clear All'
                     }
                 },
                 buttons: {
-                    edit: "Editar figuras",
-                    editDisabled: "No hay figuras para editar",
-                    remove: "Borrar figuras",
-                    removeDisabled: "No hay figuras para borrar"
+                    edit: 'Edit layers',
+                    editDisabled: 'No layers to edit',
+                    remove: 'Delete layers',
+                    removeDisabled: 'No layers to delete'
                 }
             },
             handlers: {
                 edit: {
                     tooltip: {
-                        text: "Arrastre los puntos o marcadores para modificar las figuras.",
-                        subtext: "Haga clic en cancelar para deshacer los cambios."
+                        text: 'Drag handles or markers to edit features.',
+                        subtext: 'Click cancel to undo changes.'
                     }
                 },
                 remove: {
                     tooltip: {
-                        text: "Haga clic sobre la figura para eliminarla."
+                        text: 'Click on a feature to remove.'
                     }
                 }
             }
