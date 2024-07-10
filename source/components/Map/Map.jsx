@@ -23,6 +23,7 @@ import { getEnv } from "../../config";
 import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
 
 import EasyPrintControl from "./controls/EasyPrintControl";
+import DrawToolbar from "./controls/DrawControl";
 
 const { BaseLayer, Overlay } = LayersControl;
 
