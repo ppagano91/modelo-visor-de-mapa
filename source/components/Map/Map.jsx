@@ -20,7 +20,6 @@ import { MapLayerContext } from "../../context/MapLayerContext";
 import { tileLayers } from "../../utils/consts/consts";
 import SearchControl from "./controls/SearchControl";
 import { getEnv } from "../../config";
-import AddLayerToMap from "./components/AddLayerToMap";
 import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
 
 import EasyPrintControl from "./controls/EasyPrintControl";
@@ -40,7 +39,6 @@ export default function Map() {
     >
       <SearchControl />
       <AddBaseLayerToMap />
-      {/* <AddLayerToMap /> */}
       <LayersControl className="control-layers" position="topright">
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer
@@ -70,9 +68,11 @@ export default function Map() {
           />
         </BaseLayer>
       </LayersControl>
+      <DrawToolbar />
       <InitialView />
       <LocateControl />
       <LinearMeasureControl />
+      
       <CoordinatesControl position="bottomleft" />
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />

@@ -10,6 +10,7 @@ const MiniMap = ({ position }) => {
     const minimapLayer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       minZoom: 0,
       maxZoom: 13,
+      // bounds: map.getBounds()
     });
 
     const miniMap = new L.Control.MiniMap(minimapLayer,
