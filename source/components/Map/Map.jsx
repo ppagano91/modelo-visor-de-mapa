@@ -20,7 +20,6 @@ import { tileLayers } from '../../utils/consts/consts'
 import SearchControl from './controls/SearchControl';
 
 import {getEnv} from "../../config"
-import AddLayerToMap from './components/AddLayerToMap';
 import AddBaseLayerToMap from './components/AddBaseLayerToMap';
 import DrawToolbar from './controls/DrawControl';
 
@@ -34,7 +33,6 @@ export default function Map() {
     <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true} attributionControl={false}>
       <SearchControl />
       <AddBaseLayerToMap />
-      {/* <AddLayerToMap /> */}
       <LayersControl className="control-layers" position="topright">
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer 

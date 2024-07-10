@@ -8,7 +8,6 @@ const DrawToolbar = () => {
     const map = useMap();
   
     useEffect(() => {
-      // Personalizar textos del controlador de dibujo
         L.drawLocal = {
             draw: {
                 toolbar: {
@@ -115,13 +114,13 @@ const DrawToolbar = () => {
                 }
             }
         }
-  
-      // Inicializar la barra de herramientas de dibujo con textos personalizados
+
       const drawControl = new L.Control.Draw({
         position: "bottomright",
         edit: {
           featureGroup: new L.FeatureGroup().addTo(map),
         },
+        // Estilos
         // draw: {
         //   polygon: {
         //     shapeOptions: {
@@ -157,10 +156,8 @@ const DrawToolbar = () => {
         // },
       });
   
-      // Añadir la barra de herramientas de dibujo al mapa
       map.addControl(drawControl);
-  
-      // Event handler para guardar los elementos dibujados
+
       map.on(L.Draw.Event.CREATED, (event) => {
         const { layer } = event;
         const drawnItems = drawControl.options.edit.featureGroup;
