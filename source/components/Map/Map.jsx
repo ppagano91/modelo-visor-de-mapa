@@ -1,42 +1,49 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from "react";
 import { ScaleControl } from "react-leaflet/ScaleControl";
 import {
   MapContainer,
   TileLayer,
   LayersControl,
   useMap,
-  WMSTileLayer
+  WMSTileLayer,
 } from "react-leaflet";
-import L from "leaflet"
+import L from "leaflet";
 
 import "../../styles/map.css";
 import MiniMap from "./controls/MiniMap";
 import CoordinatesControl from "./controls/CoordinateControl";
 import InitialView from "./controls/InitialView";
 import LinearMeasureControl from "./controls/LinearMeasurementControl";
-import LocateControl from "./controls/LocateControl";
-import { MapLayerContext } from '../../context/MapLayerContext';
-import { tileLayers } from '../../utils/consts/consts'
-import SearchControl from './controls/SearchControl';
 
-import {getEnv} from "../../config"
-import AddLayerToMap from './components/AddLayerToMap';
-import AddBaseLayerToMap from './components/AddBaseLayerToMap';
+import LocateControl from "./controls/LocateControl";
+import { MapLayerContext } from "../../context/MapLayerContext";
+import { tileLayers } from "../../utils/consts/consts";
+import SearchControl from "./controls/SearchControl";
+import { getEnv } from "../../config";
+import AddLayerToMap from "./components/AddLayerToMap";
+import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
+
+import EasyPrintControl from "./controls/EasyPrintControl";
 
 const { BaseLayer, Overlay } = LayersControl;
 
 export default function Map() {
   const { baseMapLayer } = useContext(MapLayerContext);
-  
 
   return (
-    <MapContainer className="map-container" center={[-34.600174, -58.453122]} zoom={15} scrollWheelZoom={true} attributionControl={false}>
+    <MapContainer
+      className="map-container"
+      center={[-34.600174, -58.453122]}
+      zoom={15}
+      scrollWheelZoom={true}
+      attributionControl={false}
+    >
       <SearchControl />
       <AddBaseLayerToMap />
       {/* <AddLayerToMap /> */}
       <LayersControl className="control-layers" position="topright">
         <BaseLayer checked name="Mapa Base">
-          <WMSTileLayer 
+          <WMSTileLayer
             url={baseMapLayer.url}
             layers="mapa_base"
             format="image/png"
@@ -44,7 +51,10 @@ export default function Map() {
           />
         </BaseLayer>
         <BaseLayer name="Mapa Topográfico">
-          <TileLayer url={tileLayers.baseLayers.openTopoMap.map} transparent={true} />
+          <TileLayer
+            url={tileLayers.baseLayers.openTopoMap.map}
+            transparent={true}
+          />
         </BaseLayer>
         <BaseLayer name="Mapa Satelital">
           <TileLayer
@@ -66,6 +76,8 @@ export default function Map() {
       <CoordinatesControl position="bottomleft" />
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />
+
+      <EasyPrintControl position="bottomright" />
     </MapContainer>
   );
 }

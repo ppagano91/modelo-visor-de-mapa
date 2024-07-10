@@ -1,0 +1,6 @@
+.leaflet-control-browser-print a {
+  width: 30px !important; /* Cambia esto al tamaño que desees */
+  height: 30px !important; /* Cambia esto al tamaño que desees */
+  background-size: 20px 20px !important; /* Ajusta el tamaño del icono */
+  line-height: 30px !important; /* Ajusta esto para centrar verticalmente el icono */
+}
