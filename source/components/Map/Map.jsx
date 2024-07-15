@@ -20,13 +20,15 @@ import { MapLayerContext } from "../../context/MapLayerContext";
 import { tileLayers } from "../../utils/consts/consts";
 import SearchControl from "./controls/SearchControl";
 import { getEnv } from "../../config";
-import AddLayerToMap from "./components/AddLayerToMap";
 import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
 import EasyPrintControl from "./controls/EasyPrintControl";
+
 import WMSMap from "../WMSMap";
 import { Button } from "react-bootstrap";
 import zIndex from "@mui/material/styles/zIndex";
 import SelectedLayersSidebar from "./components/SelectedLayersSidebar";
+
+import DrawToolbar from "./controls/DrawControl";
 
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -102,6 +104,9 @@ export default function Map() {
         />
       )}
 
+      <SearchControl />
+      <AddBaseLayerToMap />
+
       <LayersControl className="control-layers" position="topright">
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer
@@ -131,6 +136,17 @@ export default function Map() {
           />
         </BaseLayer>
       </LayersControl>
+
+      <DrawToolbar />
+      <InitialView />
+      <LocateControl />
+      <LinearMeasureControl />
+
+      <CoordinatesControl position="bottomleft" />
+      <MiniMap position="bottomleft" />
+      <ScaleControl position="bottomleft" imperial={false} />
+
+      <EasyPrintControl position="bottomright" />
     </MapContainer>
   );
 }
