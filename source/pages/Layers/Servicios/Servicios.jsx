@@ -24,29 +24,12 @@ import { getEnv } from "../../../config";
 const Servicios = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsServicios, setItemsServicios] = useState([]);
-  const { toggleLayer, setActiveLayers, activeLayers } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(
-          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
-          {
-            query: {
-              match_all: {},
-            },
-          },
-          {
-            auth: {
-              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
-              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
-            },
-          }
-        );
-
-        if (response.data && response.data.hits) {
-          const hits = response.data.hits.hits;
 
           const serviciosItems = hits
             .filter(hit => hit._source.servicios)
@@ -66,7 +49,6 @@ const Servicios = ({ onBack, color }) => {
             );
 
           setItemsServicios(serviciosItems);
-        }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }

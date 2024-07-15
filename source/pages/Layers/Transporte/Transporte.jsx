@@ -23,30 +23,13 @@ import { getEnv } from "../../../config";
 const Transporte = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsTransporte, setItemsTransporte] = useState([]);
-  const { toggleLayer, setActiveLayers, activeLayers } =
-    useContext(MapLayerContext);
+  const [downloadProps, setDownloadProps] = useState(null)
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
+  useContext(MapLayerContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(
-          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
-          {
-            query: {
-              match_all: {},
-            },
-          },
-          {
-            auth: {
-              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
-              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
-            },
-          }
-        );
-
-        if (response.data && response.data.hits) {
-          const hits = response.data.hits.hits;
-
           const transporteItems = hits
             .filter(hit => hit._source.transporte)
             .flatMap(hit =>
@@ -63,9 +46,8 @@ const Transporte = ({ onBack, color }) => {
                     : null,
                 }))
             );
-
+            
           setItemsTransporte(transporteItems);
-        }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
@@ -116,12 +98,20 @@ const Transporte = ({ onBack, color }) => {
   };
 
   const handleModalClose = () => setShowModal(false);
-  const handleModalShow = e => {
+
+  const handleModal = (e, layerProps) => {
     e.stopPropagation();
+
+    if (layerProps){
+      setDownloadProps(layerProps);
+    } else{
+      setDownloadProps(null);
+    }
     setShowModal(true);
   };
 
   const handleItemClick = (id, layerProps) => {
+
 
     if (layerProps !== null) {
       toggleLayer(layerProps);
@@ -136,9 +126,10 @@ const Transporte = ({ onBack, color }) => {
       }
     });
   };
+
   return (
     <div>
-      <DownloadModal show={showModal} handleClose={handleModalClose} />
+      {downloadProps && <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps}/>}
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -188,7 +179,8 @@ const Transporte = ({ onBack, color }) => {
                 <CloudDownloadOutlined
                   style={{ height: "16px" }}
                   tooltip="Descargar Geoservicios"
-                  onClick={handleModalShow}
+                  onClick={(e) => {
+                    handleModal(e, item.layerProps)}}
                 />
               </div>
             </li>

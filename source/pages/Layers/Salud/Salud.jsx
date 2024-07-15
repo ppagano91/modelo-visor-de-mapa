@@ -20,29 +20,12 @@ import { getEnv } from "../../../config";
 const Salud = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsSalud, setItemsSalud] = useState([]);
-  const { toggleLayer, setActiveLayers, activeLayers } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(
-          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
-          {
-            query: {
-              match_all: {},
-            },
-          },
-          {
-            auth: {
-              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
-              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
-            },
-          }
-        );
-
-        if (response.data && response.data.hits) {
-          const hits = response.data.hits.hits;
 
           const saludItems = hits
             .filter(hit => hit._source.salud)
@@ -62,7 +45,6 @@ const Salud = ({ onBack, color }) => {
             );
 
           setItemsSalud(saludItems);
-        }
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
