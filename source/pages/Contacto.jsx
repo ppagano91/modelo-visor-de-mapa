@@ -50,16 +50,16 @@ const Contacto = () => {
   };
 
   const successMessage = isMailSent ? (
-    <p className="success-message">
+    <div className="success-message">
       <Alerts type="success" message="¡Correo enviado con éxito!" />
-    </p>
+    </div>
   ) : null;
 
   const errorMessage =
     showErrorMessage && isRobot ? (
-      <p className="error-message" style={{ color: "red" }}>
+      <div className="error-message">
         <Alerts type="warning" message="¡Por favor verifica el Captcha!" />
-      </p>
+      </div>
     ) : null;
 
   const sitekey = getEnv("VITE_CAPTCHA_KEY");
@@ -94,7 +94,7 @@ const Contacto = () => {
       <div className="m-3">
         <div className="text-justify">
           <h1 className="fs-3">Contacto</h1>
-          <p className="" style={{fontSize: "0.9rem"}}>
+          <p className="" style={{ fontSize: "0.9rem" }}>
             Utilice este formulario para hacernos llegar sus comentarios,
             sugerencias, consultas o críticas respecto al Mapa Interactivo de
             Buenos Aires. Asegúrese de ingresar una dirección de email válida

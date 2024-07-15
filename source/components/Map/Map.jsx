@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useState } from "react";
 import { ScaleControl } from "react-leaflet/ScaleControl";
 import {
   MapContainer,
@@ -22,13 +22,38 @@ import SearchControl from "./controls/SearchControl";
 import { getEnv } from "../../config";
 import AddLayerToMap from "./components/AddLayerToMap";
 import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
-
 import EasyPrintControl from "./controls/EasyPrintControl";
+import WMSMap from "../WMSMap";
+import { Button } from "react-bootstrap";
+import zIndex from "@mui/material/styles/zIndex";
+import SelectedLayersSidebar from "./components/SelectedLayersSidebar";
 
 const { BaseLayer, Overlay } = LayersControl;
 
 export default function Map() {
   const { baseMapLayer } = useContext(MapLayerContext);
+  const [showModal, setShowModal] = useState(false);
+  const [wmsUrl, setWmsUrl] = useState("");
+  const [layers, setLayers] = useState([]);
+  const [selectedLayers, setSelectedLayers] = useState([]);
+
+  console.log("selectedLayers:", selectedLayers);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleLoadLayer = (url, layerList) => {
+    setWmsUrl(url);
+    setLayers(layerList);
+  };
+
+  const handleSelectLayer = layer => {
+    setSelectedLayers([...selectedLayers, layer]);
+  };
+
+  const removeLayer = layer => {
+    setSelectedLayers(selectedLayers.filter(l => l !== layer));
+  };
 
   return (
     <MapContainer
@@ -38,9 +63,45 @@ export default function Map() {
       scrollWheelZoom={true}
       attributionControl={false}
     >
-      <SearchControl />
-      <AddBaseLayerToMap />
-      {/* <AddLayerToMap /> */}
+      {selectedLayers.map((layer, index) => (
+        <WMSTileLayer
+          key={index}
+          url={wmsUrl}
+          layers={layer.name}
+          format="image/png"
+          transparent
+          attribution="&copy; attribution"
+          zIndex={1000 + index}
+        />
+      ))}
+
+      <Button
+        className="btn btn-light btn-sm w-30"
+        onClick={handleShowModal}
+        style={{
+          position: "absolute",
+          top: "4rem",
+          right: ".5rem",
+          zIndex: 1000,
+        }}
+      >
+        Capas Temporales
+      </Button>
+
+      <WMSMap
+        showModal={showModal}
+        handleCloseModal={handleCloseModal}
+        handleLoadLayer={handleLoadLayer}
+        handleSelectLayer={handleSelectLayer}
+      />
+
+      {selectedLayers?.length > 0 && (
+        <SelectedLayersSidebar
+          selectedLayers={selectedLayers}
+          removeLayer={removeLayer}
+        />
+      )}
+
       <LayersControl className="control-layers" position="topright">
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer
@@ -51,33 +112,25 @@ export default function Map() {
           />
         </BaseLayer>
         <BaseLayer name="Mapa Topográfico">
-          <TileLayer
+          <WMSTileLayer
             url={tileLayers.baseLayers.openTopoMap.map}
             transparent={true}
           />
         </BaseLayer>
         <BaseLayer name="Mapa Satelital">
-          <TileLayer
-            url={getEnv("VITE_MAPA_SATELITAL")}
+          <WMSTileLayer
+            url={tileLayers.baseLayers.esri.worldImagery.url}
             tms={true}
             attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
           />
         </BaseLayer>
         <BaseLayer name="Mapa Watercolor">
-          <TileLayer
+          <WMSTileLayer
             url={tileLayers.baseLayers.stadia.map.Watercolors}
             attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
           />
         </BaseLayer>
       </LayersControl>
-      <InitialView />
-      <LocateControl />
-      <LinearMeasureControl />
-      <CoordinatesControl position="bottomleft" />
-      <MiniMap position="bottomleft" />
-      <ScaleControl position="bottomleft" imperial={false} />
-
-      <EasyPrintControl position="bottomright" />
     </MapContainer>
   );
 }
