@@ -18,19 +18,15 @@ const WMSMap = ({
 
   const handleLoadClick = async () => {
     const fullUrl = `${wmsUrl}?request=GetCapabilities`;
-    console.log("Full URL:", fullUrl);
     try {
       const response = await axios.get(fullUrl);
-      console.log("Response:", response.data);
       parseString(response.data, (err, result) => {
         if (err) {
           console.error("Error WMS capabilities:", err);
           return;
         }
-        console.log("Parsed Capabilities:", result);
         const layerList = extractLayers(result);
         setLayers(layerList);
-        console.log("Layers:", layerList);
         handleLoadLayer(fullUrl, layerList);
       });
     } catch (error) {

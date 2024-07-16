@@ -19,13 +19,14 @@ import axios from "axios";
 import { MapLayerContext } from "../../../context/MapLayerContext";
 import DownloadModal from "../Modal/DownloadModal";
 import { getEnv } from "../../../config";
+import { AppContext } from "../../../context/AppContext";
 
 const Transporte = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsTransporte, setItemsTransporte] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null)
-  const { toggleLayer, setActiveLayers, activeLayers, hits } =
-  useContext(MapLayerContext);
+  const { toggleLayer, setActiveLayers, activeLayers, hits } = useContext(MapLayerContext);
+  const { handleMetadataModal } = useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -129,7 +130,9 @@ const Transporte = ({ onBack, color }) => {
 
   return (
     <div>
-      {downloadProps && <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps}/>}
+      {downloadProps && (
+        <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps} />
+      )}
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -137,9 +140,7 @@ const Transporte = ({ onBack, color }) => {
         <div className="fs-4 text-light list-group-item">
           Transporte
           <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
-            {activeLayers && activeLayers.length
-              ? `${activeLayers.length}`
-              : null}
+            {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
           </div>
         </div>
         <div></div>
@@ -151,44 +152,57 @@ const Transporte = ({ onBack, color }) => {
         ></button>
       </div>
       <ul className="m-0 p-0">
-        {itemsTransporte.map(item => {
+        {itemsTransporte.map((item) => {
           const isActive = activeLayers && activeLayers.includes(item.id);
           return (
-            <li
-              className="d-flex gap-2 m-1 p-1 align-items-center list-item"
+            <div
               key={item.id}
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title={item.nombre}
-              option={item.opciones}
-              onClick={() => handleItemClick(item.id, item.layerProps)}
-              style={{
-                cursor: "pointer",
-                backgroundColor: isActive ? "#f0f0f0" : "transparent",
-              }}
+              className="d-flex justify-content-between align-items-center list-item"
+              style={{ position: "relative" }}
             >
-              <input type="checkbox" checked={isActive} readOnly />
-              {item.icono}
-              <p className="m-0">{item.nombre}</p>
+              <li
+                className="d-flex align-items-center flex-grow-1 gap-2 m-1 p-1 list-item"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title={item.nombre}
+                option={item.opciones}
+                onClick={() => handleItemClick(item.id, item.layerProps)}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: isActive ? "#f0f0f0" : "transparent",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <input type="checkbox" checked={isActive} readOnly />
+                {item.icono}
+                <p className="m-0 flex-grow-1">{item.nombre}</p>
+              </li>
               <div className="d-flex gap-1 ms-auto">
-                <PublicOutlined
-                  style={{ height: "16px" }}
-                  tooltip="Acceso a Geoservicios"
+                <PublicOutlined style={{ height: "1rem" }} tooltip="Acceso a Geoservicios" />
+                <InfoOutlined
+                  style={{ height: "1rem" }}
+                  tooltip="Info"
+                  onClick={(e) => {
+                    handleMetadataModal(e, item.layerProps);
+                  }}
                 />
-                <InfoOutlined style={{ height: "16px" }} tooltip="Info" />
                 <CloudDownloadOutlined
-                  style={{ height: "16px" }}
+                  style={{ height: "1rem" }}
                   tooltip="Descargar Geoservicios"
                   onClick={(e) => {
-                    handleModal(e, item.layerProps)}}
+                    handleModal(e, item.layerProps);
+                  }}
                 />
               </div>
-            </li>
+            </div>
           );
         })}
       </ul>
     </div>
   );
-};
+}
+  
 
 export default Transporte;

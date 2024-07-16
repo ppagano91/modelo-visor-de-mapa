@@ -26,9 +26,9 @@ const EasyPrintControl = () => {
 
         .addTo(map);
     } else if (!L.control.browserPrint) {
-      console.log("leaflet.browser.print.js no se cargó correctamente.");
+        console.log("leaflet.browser.print.js no se cargó correctamente.");
     } else {
-      console.log("El control de impresión ya existe en el mapa.");
+        console.log("El control de impresión ya existe en el mapa.");
     }
 
     return () => {

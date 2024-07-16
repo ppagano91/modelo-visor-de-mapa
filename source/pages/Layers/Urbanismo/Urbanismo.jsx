@@ -1,9 +1,8 @@
 import { FaHouse } from "react-icons/fa6";
 import { BsFillHousesFill } from "react-icons/bs";
 import { GiPlantRoots } from "react-icons/gi";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useContext } from "react";
 import { MapLayerContext } from "../../../context/MapLayerContext";
 import {
   Home,
@@ -24,12 +23,15 @@ import {
 } from "@mui/icons-material";
 import DownloadModal from "../Modal/DownloadModal";
 import { getEnv } from "../../../config";
+import { AppContext } from "../../../context/AppContext";
 
 const Urbanismo = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsUrbanismo, setItemsUrbanismo] = useState([]);
+  const [downloadProps, setDownloadProps] = useState(null);
   const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
+  const { handleMetadataModal } = useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,8 +82,15 @@ const Urbanismo = ({ onBack, color }) => {
   };
 
   const handleModalClose = () => setShowModal(false);
-  const handleModalShow = e => {
+  
+  const handleModal = (e, layerProps) => {
     e.stopPropagation();
+
+    if (layerProps){
+      setDownloadProps(layerProps);
+    } else{
+      setDownloadProps(null);
+    }
     setShowModal(true);
   };
 
@@ -104,7 +113,7 @@ const Urbanismo = ({ onBack, color }) => {
 
   return (
     <div>
-      <DownloadModal show={showModal} handleClose={handleModalClose} />
+      {downloadProps && <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps}/>}
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -150,11 +159,16 @@ const Urbanismo = ({ onBack, color }) => {
                   style={{ height: "16px" }}
                   tooltip="Acceso a Geoservicios"
                 />
-                <InfoOutlined style={{ height: "16px" }} tooltip="Info" />
+                <InfoOutlined
+                  style={{ height: "16px" }}
+                  tooltip="Info"
+                  onClick={(e) => {
+                    handleMetadataModal(e, item.layerProps)}}
+                  />
                 <CloudDownloadOutlined
                   style={{ height: "16px" }}
                   tooltip="Descargar Geoservicios"
-                  onClick={handleModalShow}
+                  onClick={(e) => handleModal(e, item.layerProps)}
                 />
               </div>
             </li>

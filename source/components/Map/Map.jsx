@@ -37,9 +37,7 @@ export default function Map() {
   const [showModal, setShowModal] = useState(false);
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
-  const [selectedLayers, setSelectedLayers] = useState([]);
-
-  console.log("selectedLayers:", selectedLayers);
+  const [selectedLayers, setSelectedLayers] = useState([]);  
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);

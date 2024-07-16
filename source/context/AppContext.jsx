@@ -1,15 +1,19 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { MapLayerContext } from './MapLayerContext';
 import { useNavigate } from 'react-router-dom';
+import {PATHS} from "../utils/consts/paths"
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const { info } = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
+  const [metadataModalShow, setMetadataModalShow] = useState(false)
+  const [metadata, setMetadata] = useState(null);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const navigate = useNavigate();
 
+  
   const handleActiveSection = (path) => {
     setActiveSection((prevState) => (prevState === path ? null : path));
   };
@@ -28,9 +32,9 @@ export const AppProvider = ({ children }) => {
   };
 
   const openMasInformacion = () => {
-    setActiveSection('/masinformacion');
-    setLastActiveSection('/masinformacion');
-    navigate('/masinformacion');
+    setActiveSection(PATHS.masInformacion);
+    setLastActiveSection(PATHS.masInformacion);
+    navigate(PATHS.masInformacion);
   };
 
   useEffect(() => {
@@ -38,10 +42,27 @@ export const AppProvider = ({ children }) => {
       openMasInformacion();
     }
   }, [info]);
+  
+  const handleMetadataModalClose = () => setMetadataModalShow(false);
+
+  const handleMetadataModal = (event, props) => {
+    setMetadataModalShow(true);
+    console.log(event);
+    console.log(props);
+  }
 
   return (
     <AppContext.Provider
-      value={{ activeSection, lastActiveSection, handleActiveSection, toggle, toggleLastSection, openMasInformacion }}
+      value={{ activeSection,
+        lastActiveSection,
+        metadataModalShow,
+        handleActiveSection,
+        toggle,
+        toggleLastSection,
+        openMasInformacion,
+        handleMetadataModal,
+        handleMetadataModalClose
+      }}
     >
       {children}
     </AppContext.Provider>
