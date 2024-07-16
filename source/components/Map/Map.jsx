@@ -84,7 +84,7 @@ export default function Map() {
           position: "absolute",
           top: "4rem",
           right: ".5rem",
-          zIndex: 1000,
+          zIndex: 400,
         }}
       >
         Capas Temporales
@@ -107,7 +107,7 @@ export default function Map() {
       <SearchControl />
       <AddBaseLayerToMap />
 
-      <LayersControl className="control-layers" position="topright">
+      <LayersControl className="control-layers" position="topright" zIndex={500}>
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer
             url={baseMapLayer.url}
@@ -129,24 +129,21 @@ export default function Map() {
             attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
           />
         </BaseLayer>
-        <BaseLayer name="Mapa Watercolor">
-          <WMSTileLayer
-            url={tileLayers.baseLayers.stadia.map.Watercolors}
-            attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
-          />
-        </BaseLayer>
       </LayersControl>
 
-      <DrawToolbar />
-      <InitialView />
-      <LocateControl />
-      <LinearMeasureControl />
+      
 
       <CoordinatesControl position="bottomleft" />
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />
 
-      <EasyPrintControl position="bottomright" />
+      <DrawToolbar />
+      <LocateControl />
+      
+      <LinearMeasureControl />
+      <InitialView />
+      <EasyPrintControl />
+
     </MapContainer>
   );
 }

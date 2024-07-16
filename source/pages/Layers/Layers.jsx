@@ -19,7 +19,7 @@ const Layers = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `${getEnv("VITE_URL_BACKEND")}/search_all`, {
+          `${getEnv("VITE_URL_BACKEND")}/search`, {
             method: "POST",
             headers: {
               'Content-Type': 'application/json',

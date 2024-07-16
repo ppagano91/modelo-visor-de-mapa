@@ -15,6 +15,7 @@ const InitialView = () => {
       onClick={handleClick}
       // iconImage={View}
       iconClassName="initial-view-button"
+      postion={"bottomright"}
     />
   );
 };
