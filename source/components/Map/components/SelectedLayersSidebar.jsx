@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 
-const SelectedLayersSidebar = ({
-  selectedLayers,
-  removeLayer,
-  setSelectedLayers,
-}) => {
+const SelectedLayersSidebar = ({ selectedLayers, removeLayer }) => {
   return (
     <div
       className="d-flex flex-column m-0 justify-content-start align-items-center bg-light rounded-2"
@@ -13,7 +9,7 @@ const SelectedLayersSidebar = ({
         width: "21rem",
         position: "absolute",
         left: 0,
-        top: "10rem",
+        top: "12rem",
         zIndex: 1000,
       }}
     >
@@ -23,7 +19,7 @@ const SelectedLayersSidebar = ({
       <ul className="list-group list-group-flush w-100 rounded-2 my-2 ">
         {selectedLayers
           .slice()
-          .reverse()
+
           .map((layer, index) => (
             <li
               key={index}
