@@ -13,8 +13,8 @@ const SelectedLayersSidebar = ({ selectedLayers, removeLayer }) => {
         zIndex: 1000,
       }}
     >
-      <div className="w-100 bg-warning text-center fw-bold p-3 rounded-top-2">
-        <h5 className="m-0">Capas Seleccionadas</h5>
+      <div className="w-100 bg-warning text-center  p-3 rounded-top-2">
+        <h5 className="m-0 fw-bold">Capas Seleccionadas</h5>
       </div>
       <ul className="list-group list-group-flush w-100 rounded-2 my-2 ">
         {selectedLayers
@@ -31,7 +31,7 @@ const SelectedLayersSidebar = ({ selectedLayers, removeLayer }) => {
               <Button
                 onClick={() => removeLayer(layer)}
                 type="button"
-                className="btn-close btn-close-warning p-1 m-1 bg-transparent border-0"
+                className="btn-close btn-close-warning p-1 m-1 bg-transparent border-0 btn-sm"
                 aria-label="Close"
               ></Button>
             </li>

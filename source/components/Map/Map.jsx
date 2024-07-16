@@ -22,6 +22,7 @@ import SearchControl from "./controls/SearchControl";
 import { getEnv } from "../../config";
 import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
 import EasyPrintControl from "./controls/EasyPrintControl";
+import Capas_temporales from "../../assets/images/layer-plus-regular-24.png";
 
 import WMSMap from "../WMSMap";
 import { Button } from "react-bootstrap";
@@ -89,16 +90,26 @@ export default function Map() {
       )}
 
       <Button
-        className="btn btn-light btn-sm w-30"
+        title="Capas Temporales"
+        className="btn bg-light  border-2 border-opacity-25 border-black d-flex justify-content-center align-items-center "
         onClick={handleShowModal}
         style={{
           position: "absolute",
           top: "4rem",
           right: ".5rem",
           zIndex: 400,
+          width: "50px",
+          height: "50px",
+
+          fontSize: "0.7rem",
+          lineHeight: "1",
         }}
       >
-        Capas Temporales
+        <img
+          className="  h-auto opacity-75"
+          src={Capas_temporales}
+          alt=" Capas Temporales"
+        />
       </Button>
 
       <WMSMap
@@ -118,7 +129,11 @@ export default function Map() {
       <SearchControl />
       <AddBaseLayerToMap />
 
-      <LayersControl className="control-layers" position="topright" zIndex={500}>
+      <LayersControl
+        className="control-layers"
+        position="topright"
+        zIndex={500}
+      >
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer
             url={baseMapLayer.url}
@@ -142,19 +157,16 @@ export default function Map() {
         </BaseLayer>
       </LayersControl>
 
-      
-
       <CoordinatesControl position="bottomleft" />
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />
 
       <DrawToolbar />
       <LocateControl />
-      
+
       <LinearMeasureControl />
       <InitialView />
       <EasyPrintControl />
-
     </MapContainer>
   );
 }

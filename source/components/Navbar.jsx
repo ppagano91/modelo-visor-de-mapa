@@ -3,7 +3,10 @@ import LOGO from "../assets/images/logo-bsas.png";
 
 const Navbar = () => {
   return (
-    <nav className="navbar bg-warning " style={{ height: "10vh" }}>
+    <nav
+      className="navbar  "
+      style={{ height: "10vh", backgroundColor: "#FDD306" }}
+    >
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
           <img

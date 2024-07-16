@@ -7,6 +7,7 @@ import { AppContext } from "../context/AppContext";
 const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
+  console.log(layers);
   const { setSelectedLayers } = useContext(AppContext);
 
   const handleUrlChange = event => {
@@ -64,10 +65,10 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
 
         {layers.length > 0 && (
           <DropdownButton
-            id="dropdown-basic-button"
+            className=" mb-2"
             title="Capas Disponibles"
-            className="w-100"
             menuVariant="dark"
+            variant="dark"
           >
             {layers.map((layer, index) => (
               <Dropdown.Item

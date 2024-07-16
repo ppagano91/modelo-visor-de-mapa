@@ -9,6 +9,8 @@ export const AppProvider = ({ children }) => {
   const [activeSection, setActiveSection] = useState(null);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
+  const [showTemporalLayers, setShowTemporalLayers] = useState(false);
+
   console.log(selectedLayers);
   const navigate = useNavigate();
 
@@ -19,6 +21,9 @@ export const AppProvider = ({ children }) => {
   const toggle = path => {
     handleActiveSection(path);
     setLastActiveSection(path);
+  };
+  const toogleTemporalLayers = () => {
+    setShowTemporalLayers(prev => !prev);
   };
 
   const toggleLastSection = () => {
@@ -52,6 +57,8 @@ export const AppProvider = ({ children }) => {
         openMasInformacion,
         selectedLayers,
         setSelectedLayers,
+        showTemporalLayers,
+        toogleTemporalLayers,
       }}
     >
       {children}

@@ -19,6 +19,8 @@ const Sidebar = ({ children }) => {
     toggleLastSection,
     lastActiveSection,
     selectedLayers,
+    toggleTemporalLayers,
+    showTemporalLayers,
   } = useContext(AppContext);
   const widthComponent = 15;
 
@@ -42,16 +44,16 @@ const Sidebar = ({ children }) => {
       width: widthComponent,
     },
     // Condicional para mostrar el botón solo si hay capas seleccionadas
-    ...(selectedLayers.length > 0
-      ? [
-          {
-            path: PATHS.temporalsLayers,
-            name: "Layers",
-            icon: <Queue />,
-            width: widthComponent,
-          },
-        ]
-      : []),
+    //   ...(selectedLayers.length > 0
+    //     ? [
+    //         {
+    //           path: PATHS.temporalsLayers,
+    //           name: "Layers",
+    //           icon: <Queue />,
+    //           width: widthComponent,
+    //         },
+    //       ]
+    //     : []),
   ];
 
   const bottomMenuItems = [
@@ -94,7 +96,23 @@ const Sidebar = ({ children }) => {
               <div className="fs-5 icon">{item.icon}</div>
             </NavLink>
           ))}
+
+          {selectedLayers.length > 0 && (
+            <button
+              className={`btn btn-dark d-flex align-items-center justify-content-center p-3 w-100 ${
+                showTemporalLayers ? "active" : ""
+              }`}
+              onClick={toggleTemporalLayers}
+              style={{
+                transition: "background-color 0.3s",
+              }}
+            >
+              <Queue className="fs-5" />
+            </button>
+          )}
+
           <div className="mt-auto">
+            {/* <hr style={{ width: "80%", margin: "auto" }} /> */}
             {bottomMenuItems.map((item, index) => (
               <NavLink
                 to={item.path}
