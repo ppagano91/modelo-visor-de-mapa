@@ -13,8 +13,13 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { PATHS } from "../utils/consts/paths";
 
 const Sidebar = ({ children }) => {
-  const { activeSection, toggle, toggleLastSection, lastActiveSection } =
-    useContext(AppContext);
+  const {
+    activeSection,
+    toggle,
+    toggleLastSection,
+    lastActiveSection,
+    selectedLayers,
+  } = useContext(AppContext);
   const widthComponent = 15;
 
   const menuItems = [
@@ -36,12 +41,17 @@ const Sidebar = ({ children }) => {
       icon: <Layers />,
       width: widthComponent,
     },
-    {
-      path: PATHS.temporalsLayers,
-      name: "Layers",
-      icon: <Queue />,
-      width: widthComponent,
-    },
+    // Condicional para mostrar el botón solo si hay capas seleccionadas
+    ...(selectedLayers.length > 0
+      ? [
+          {
+            path: PATHS.temporalsLayers,
+            name: "Layers",
+            icon: <Queue />,
+            width: widthComponent,
+          },
+        ]
+      : []),
   ];
 
   const bottomMenuItems = [
