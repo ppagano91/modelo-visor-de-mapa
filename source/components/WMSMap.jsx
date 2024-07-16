@@ -7,7 +7,6 @@ import { AppContext } from "../context/AppContext";
 const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
-  console.log(layers);
   const { setSelectedLayers } = useContext(AppContext);
 
   const handleUrlChange = event => {

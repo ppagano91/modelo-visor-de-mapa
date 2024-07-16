@@ -53,8 +53,6 @@ export default function Map() {
     setSelectedLayers(prevLayers => [...prevLayers, { ...layer, url: wmsUrl }]);
   };
 
-  console.log(selectedLayers);
-
   const removeLayer = layerToRemove => {
     setSelectedLayers(prevLayers =>
       prevLayers.filter(
@@ -74,7 +72,6 @@ export default function Map() {
     >
       {selectedLayers.map(
         (layer, index) => (
-          console.log(layer.url),
           (
             <WMSTileLayer
               key={index}

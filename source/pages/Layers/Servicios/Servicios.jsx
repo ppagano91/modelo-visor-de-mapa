@@ -20,12 +20,15 @@ import {
 } from "@mui/icons-material";
 import axios from "axios";
 import { getEnv } from "../../../config";
+import { AppContext } from "../../../context/AppContext";
 
 const Servicios = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsServicios, setItemsServicios] = useState([]);
+  const [downloadProps, setDownloadProps] = useState(null);
   const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
+  const { handleMetadataModal } = useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,8 +88,15 @@ const Servicios = ({ onBack, color }) => {
   };
 
   const handleModalClose = () => setShowModal(false);
-  const handleModalShow = e => {
+
+  const handleModal = (e, layerProps) => {
     e.stopPropagation();
+
+    if (layerProps){
+      setDownloadProps(layerProps);
+    } else{
+      setDownloadProps(null);
+    }
     setShowModal(true);
   };
 
@@ -108,7 +118,7 @@ const Servicios = ({ onBack, color }) => {
 
   return (
     <div>
-      <DownloadModal show={showModal} handleClose={handleModalClose} />
+      {downloadProps && <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps}/>}
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -151,12 +161,17 @@ const Servicios = ({ onBack, color }) => {
                   style={{ height: "16px" }}
                   tooltip="Acceso a Geoservicios"
                 />
-                <InfoOutlined style={{ height: "16px" }} tooltip="Info" />
+                <InfoOutlined
+                  style={{ height: "16px" }}
+                  tooltip="Info"
+                  onClick={(e) => {
+                    handleMetadataModal(e, item.layerProps)}}
+                  />
 
                 <CloudDownloadOutlined
                   style={{ height: "16px" }}
                   tooltip="Descargar Geoservicios"
-                  onClick={e => handleModalShow(e)}
+                  onClick={e => handleModal(e, item.layerProps)}
                 />
               </div>
             </li>

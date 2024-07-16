@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 import {
   AlternateEmail,
   Info,
@@ -10,7 +10,7 @@ import {
   School,
 } from "@mui/icons-material";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { PATHS } from "../utils/consts/paths";
+import { PATHS } from "../../utils/consts/paths";
 
 const Sidebar = ({ children }) => {
   const {
