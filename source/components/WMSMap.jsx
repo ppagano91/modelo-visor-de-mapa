@@ -1,37 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Modal, Button, Dropdown, DropdownButton } from "react-bootstrap";
 import axios from "axios";
 import { parseString } from "xml2js";
+import { AppContext } from "../context/AppContext";
 
-const WMSMap = ({
-  showModal,
-  handleCloseModal,
-  handleLoadLayer,
-  handleSelectLayer,
-}) => {
+const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
+  const { setSelectedLayers } = useContext(AppContext);
 
   const handleUrlChange = event => {
     setWmsUrl(event.target.value);
   };
 
   const handleLoadClick = async () => {
-    const fullUrl = `${wmsUrl}?request=GetCapabilities`;
-    console.log("Full URL:", fullUrl);
+    const fullUrl = `${wmsUrl}?request=GetCapabilities&service=WMS&version=1.3.0`;
     try {
       const response = await axios.get(fullUrl);
-      console.log("Response:", response.data);
       parseString(response.data, (err, result) => {
         if (err) {
           console.error("Error WMS capabilities:", err);
           return;
         }
-        console.log("Parsed Capabilities:", result);
         const layerList = extractLayers(result);
         setLayers(layerList);
-        console.log("Layers:", layerList);
-        handleLoadLayer(fullUrl, layerList);
       });
     } catch (error) {
       console.error("Error fetching WMS capabilities:", error);
@@ -44,23 +36,22 @@ const WMSMap = ({
       capabilities.WMS_Capabilities.Capability[0].Layer[0].Layer;
     for (const layerElement of layerElements) {
       layers.push({
-        name: layerElement.Name[0]
-          ? layerElement.Name[0]
-          : layerElement.Title[0],
+        name: layerElement.Name[0] || layerElement.Title[0],
+        url: wmsUrl,
       });
     }
     return layers;
   };
 
   const handleLayerSelect = layer => {
-    handleSelectLayer(layer);
+    setSelectedLayers(prevLayers => [...prevLayers, layer]);
     handleCloseModal();
   };
 
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Introduce la URL del servicio WMS</Modal.Title>
+        <Modal.Title>Capas Temporales</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <input
