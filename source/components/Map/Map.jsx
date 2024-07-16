@@ -29,6 +29,7 @@ import zIndex from "@mui/material/styles/zIndex";
 import SelectedLayersSidebar from "./components/SelectedLayersSidebar";
 
 import DrawToolbar from "./controls/DrawControl";
+import { AppContext } from "../../context/AppContext";
 
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -37,9 +38,7 @@ export default function Map() {
   const [showModal, setShowModal] = useState(false);
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
-  const [selectedLayers, setSelectedLayers] = useState([]);
-
-  console.log("selectedLayers:", selectedLayers);
+  const { selectedLayers, setSelectedLayers } = useContext(AppContext);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -50,11 +49,18 @@ export default function Map() {
   };
 
   const handleSelectLayer = layer => {
-    setSelectedLayers([...selectedLayers, layer]);
+    setSelectedLayers(prevLayers => [...prevLayers, { ...layer, url: wmsUrl }]);
   };
 
-  const removeLayer = layer => {
-    setSelectedLayers(selectedLayers.filter(l => l !== layer));
+  console.log(selectedLayers);
+
+  const removeLayer = layerToRemove => {
+    setSelectedLayers(prevLayers =>
+      prevLayers.filter(
+        layer =>
+          layer.name !== layerToRemove.name || layer.url !== layerToRemove.url
+      )
+    );
   };
 
   return (
@@ -65,17 +71,22 @@ export default function Map() {
       scrollWheelZoom={true}
       attributionControl={false}
     >
-      {selectedLayers.map((layer, index) => (
-        <WMSTileLayer
-          key={index}
-          url={wmsUrl}
-          layers={layer.name}
-          format="image/png"
-          transparent
-          attribution="&copy; attribution"
-          zIndex={1000 + index}
-        />
-      ))}
+      {selectedLayers.map(
+        (layer, index) => (
+          console.log(layer.url),
+          (
+            <WMSTileLayer
+              key={index}
+              url={layer.url}
+              layers={layer.name}
+              format="image/png"
+              transparent
+              attribution="&copy; attribution"
+              zIndex={1000 + index}
+            />
+          )
+        )
+      )}
 
       <Button
         className="btn btn-light btn-sm w-30"
@@ -97,7 +108,7 @@ export default function Map() {
         handleSelectLayer={handleSelectLayer}
       />
 
-      {selectedLayers?.length > 0 && (
+      {selectedLayers.length > 0 && (
         <SelectedLayersSidebar
           selectedLayers={selectedLayers}
           removeLayer={removeLayer}
