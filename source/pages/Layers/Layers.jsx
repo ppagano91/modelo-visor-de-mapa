@@ -17,41 +17,17 @@ const Layers = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const query = searchTerm
-        ? {
-            query: {
-              multi_match: {
-                query: searchTerm,
-                fields: [
-                  "urbanismo.propiedades.name",
-                  "urbanismo.propiedades.description",
-                  "transporte.propiedades.name",
-                  "transporte.propiedades.description",
-                  "salud.propiedades.name",
-                  "salud.propiedades.description",
-                  "servicios.propiedades.name",
-                  "servicios.propiedades.description",
-                ],
-                fuzziness: "AUTO",
-              },
-            },
-          }
-        : {
-            query: {
-              match_all: {},
-            },
-          };
       try {
-        const response = await axios.post(
-          `${getEnv("VITE_ELATICSEARCH_URL")}/services_map/_search`,
-          query,
-          {
-            auth: {
-              username: getEnv("VITE_ELATICSEARCH_USERNAME"),
-              password: getEnv("VITE_ELATICSEARCH_PASSWORD"),
+        const res = await fetch(
+          `${getEnv("VITE_URL_BACKEND")}/search`, {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ searchTerm })
           }
         );
+        const response = await res.json()
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;

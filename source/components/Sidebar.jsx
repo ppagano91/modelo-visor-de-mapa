@@ -94,7 +94,6 @@ const Sidebar = ({ children }) => {
               <div className="fs-5 icon">{item.icon}</div>
             </NavLink>
           ))}
-          <hr style={{ width: "80%", margin: "auto", marginTop: "8rem" }} />
           <div className="mt-auto">
             {bottomMenuItems.map((item, index) => (
               <NavLink

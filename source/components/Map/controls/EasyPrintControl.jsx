@@ -10,18 +10,18 @@ const EasyPrintControl = () => {
 
   useEffect(() => {
     if (L.control.browserPrint && !printControlRef.current) {
-      console.log("Añadiendo control de impresión");
       printControlRef.current = L.control
         .browserPrint({
           title: "Imprimir Mapa",
           position: "bottomright",
-          modal: true,
+          modal: false,          
           printModes: [
             L.BrowserPrint.Mode.Portrait("A4", { title: "Vertical" }),
             L.BrowserPrint.Mode.Landscape("A4", { title: "Horizontal" }),
-            L.BrowserPrint.Mode.Custom("B5", { title: "Seleccione una area" }),
+            L.BrowserPrint.Mode.Custom("A4", { title: "Seleccione una area" })
           ],
           manualMode: false,
+
         })
 
         .addTo(map);
