@@ -8,16 +8,19 @@ import Servicios from "./Servicios/Servicios";
 import { Search } from "@mui/icons-material";
 import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
+import MetadataModal from "../../components/Sidebar/Modals/MetadataModal";
 
 const Layers = () => {
   const { handleHits } = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searching, setSearching] = useState(false)
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setSearching(true);
         const res = await fetch(
           `${getEnv("VITE_URL_BACKEND")}/search`, {
             method: "POST",
@@ -27,7 +30,7 @@ const Layers = () => {
             body: JSON.stringify({ searchTerm })
           }
         );
-        const response = await res.json()
+        const response = await res.json();
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
@@ -44,13 +47,13 @@ const Layers = () => {
               borderColor: getColorByName(key),
             }));
           });
-
           setSections(newSections);
           setActiveSection(null);
         } else {
           setSections([]);
           setActiveSection(null);
         }
+        setSearching(false);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
         setSections([]);
@@ -145,6 +148,7 @@ const Layers = () => {
     );
 
   return (
+    <>
     <div className="layer-wrapper">
       <div className="m-1 d-flex align-items-center justify-content-center w-90 layer-search border-bottom py-1">
         <input
@@ -162,6 +166,7 @@ const Layers = () => {
         className="h-100 layer-container"
         style={{ width: "21rem", position: "relative" }}
       >
+        {filteredSections && filteredSections.length > 0 &&
         <ul className="d-block layer-section-container">
           {filteredSections.map((section, index) => (
             <li
@@ -186,6 +191,13 @@ const Layers = () => {
             </li>
           ))}
         </ul>
+        }
+        { searching &&
+          <p className="d-block layer-section-container fs-6 p-2">Buscando capas...</p>
+        }
+        { !searching && sections.length === 0 &&
+          <p className="d-block layer-section-container fs-6 p-2">No se encontraron resultados.</p>
+        }
         {activeSection !== null && filteredSections[activeSection] && (
           <div
             className="section-content"
@@ -203,6 +215,8 @@ const Layers = () => {
         )}
       </div>
     </div>
+    <MetadataModal />
+    </>
   );
 };
 

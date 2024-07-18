@@ -3,9 +3,9 @@ export const PATHS = {
   urbanismo: "/urbanismo",
   contacto: "/contacto",
   masInformacion: "/masinformacion",
-  layers: "/layers",
-  temporalsLayers: "/temporalsLayers",
-  tutorials: "/tutorials",
+  layers: "/capas",
+  temporalsLayers: "/capastemporales",
+  tutorials: "/tutoriales",
   normativas: "/normativas",
   institucional: "/institucional",
 };

@@ -15,7 +15,6 @@ import { FaInfoCircle } from "react-icons/fa";
 const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
-  console.log(layers);
   const { setSelectedLayers } = useContext(AppContext);
 
   const handleUrlChange = event => {

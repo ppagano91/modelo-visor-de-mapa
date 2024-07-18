@@ -14,14 +14,15 @@ import {
   PublicOutlined,
 } from "@mui/icons-material";
 import DownloadModal from "../Modal/DownloadModal";
-import axios from "axios";
-import { getEnv } from "../../../config";
+import { AppContext } from "../../../context/AppContext";
 
 const Salud = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsSalud, setItemsSalud] = useState([]);
+  const [downloadProps, setDownloadProps] = useState(null);
   const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
+  const { handleMetadataModal } = useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,8 +78,15 @@ const Salud = ({ onBack, color }) => {
   };
 
   const handleModalClose = () => setShowModal(false);
-  const handleModalShow = e => {
+
+  const handleModal = (e, layerProps) => {
     e.stopPropagation();
+
+    if (layerProps){
+      setDownloadProps(layerProps);
+    } else{
+      setDownloadProps(null);
+    }
     setShowModal(true);
   };
 
@@ -100,7 +108,7 @@ const Salud = ({ onBack, color }) => {
 
   return (
     <div>
-      <DownloadModal show={showModal} handleClose={handleModalClose} />
+      {downloadProps && <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps}/>}
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -143,12 +151,17 @@ const Salud = ({ onBack, color }) => {
                   style={{ height: "16px" }}
                   tooltip="Acceso a Geoservicios"
                 />
-                <InfoOutlined style={{ height: "16px" }} tooltip="Info" />
+                <InfoOutlined
+                  style={{ height: "16px" }}
+                  tooltip="Info"
+                  onClick={(e) => {
+                    handleMetadataModal(e, item.layerProps)}}
+                  />
 
                 <CloudDownloadOutlined
                   style={{ height: "16px" }}
                   tooltip="Descargar Geoservicios"
-                  onClick={e => handleModalShow(e)}
+                  onClick={e => handleModal(e, item.layerProps)}
                 />
               </div>
             </li>
