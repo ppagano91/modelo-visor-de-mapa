@@ -1,14 +1,14 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { MapLayerContext } from './MapLayerContext';
-import { useNavigate } from 'react-router-dom';
-import {PATHS} from "../utils/consts/paths"
+import { createContext, useContext, useState, useEffect } from "react";
+import { MapLayerContext } from "./MapLayerContext";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "../utils/consts/paths";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const { info } = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
-  const [metadataModalShow, setMetadataModalShow] = useState(false)
+  const [metadataModalShow, setMetadataModalShow] = useState(false);
   const [metadata, setMetadata] = useState(null);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
@@ -16,17 +16,21 @@ export const AppProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  
-  const handleActiveSection = (path) => {
-    setActiveSection((prevState) => (prevState === path ? null : path));
+  const handleActiveSection = path => {
+    setActiveSection(prevState => (prevState === path ? null : path));
+  };
+
+  const addLayer = layer => {
+    setSelectedLayers(prevLayers => [...prevLayers, layer]);
   };
 
   const toggle = path => {
     handleActiveSection(path);
     setLastActiveSection(path);
   };
-  const toogleTemporalLayers = () => {
-    setShowTemporalLayers(prev => !prev);
+
+  const toggleTemporalLayers = () => {
+    setShowTemporalLayers(prevState => !prevState);
   };
 
   const toggleLastSection = () => {
@@ -37,27 +41,34 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    if (selectedLayers.length > 0) {
+      setShowTemporalLayers(true);
+    } else {
+      setShowTemporalLayers(false);
+    }
+  }, [selectedLayers]);
+
   const openMasInformacion = () => {
     setActiveSection(PATHS.masInformacion);
     setLastActiveSection(PATHS.masInformacion);
     navigate(PATHS.masInformacion);
   };
 
-  useEffect(() => {
-    if (Object.keys(info).length > 0) {
-      openMasInformacion();
-    }
-  }, [info]);
-  
   const handleMetadataModalClose = () => setMetadataModalShow(false);
 
   const handleMetadataModal = (event, props) => {
     setMetadataModalShow(true);
-  }
+  };
+
+  const removeLayer = layerToRemove => {
+    setSelectedLayers(selectedLayers.filter(layer => layer !== layerToRemove));
+  };
 
   return (
     <AppContext.Provider
-      value={{ activeSection,
+      value={{
+        activeSection,
         lastActiveSection,
         metadataModalShow,
         handleActiveSection,
@@ -67,9 +78,12 @@ export const AppProvider = ({ children }) => {
         selectedLayers,
         setSelectedLayers,
         showTemporalLayers,
-        toogleTemporalLayers,
+        toggleTemporalLayers,
         handleMetadataModal,
-        handleMetadataModalClose
+        handleMetadataModalClose,
+        setShowTemporalLayers,
+        removeLayer,
+        addLayer,
       }}
     >
       {children}

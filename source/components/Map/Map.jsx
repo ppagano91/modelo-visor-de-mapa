@@ -27,7 +27,7 @@ import Capas_temporales from "../../assets/images/layer-plus-regular-24.png";
 import WMSMap from "../WMSMap";
 import { Button } from "react-bootstrap";
 import zIndex from "@mui/material/styles/zIndex";
-import SelectedLayersSidebar from "./components/SelectedLayersSidebar";
+import SelectedLayersSidebar from "../../pages/SelectedLayersSidebar";
 
 import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";
@@ -70,21 +70,17 @@ export default function Map() {
       scrollWheelZoom={true}
       attributionControl={false}
     >
-      {selectedLayers.map(
-        (layer, index) => (
-          (
-            <WMSTileLayer
-              key={index}
-              url={layer.url}
-              layers={layer.name}
-              format="image/png"
-              transparent
-              attribution="&copy; attribution"
-              zIndex={1000 + index}
-            />
-          )
-        )
-      )}
+      {selectedLayers.map((layer, index) => (
+        <WMSTileLayer
+          key={index}
+          url={layer.url}
+          layers={layer.name}
+          format="image/png"
+          transparent
+          attribution="&copy; attribution"
+          zIndex={1000 + index}
+        />
+      ))}
 
       <Button
         title="Capas Temporales"
@@ -116,12 +112,12 @@ export default function Map() {
         handleSelectLayer={handleSelectLayer}
       />
 
-      {selectedLayers.length > 0 && (
+      {/* {selectedLayers.length > 0 && (
         <SelectedLayersSidebar
           selectedLayers={selectedLayers}
           removeLayer={removeLayer}
         />
-      )}
+      )} */}
 
       <SearchControl />
       <AddBaseLayerToMap />

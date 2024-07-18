@@ -64,7 +64,10 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
 
   return (
     <Modal show={showModal} onHide={handleCloseModal} className="mx-4 my-5">
-      <Modal.Header className="bg-warning p-2 px-3">
+      <Modal.Header
+        className=" p-2 px-3"
+        style={{ backgroundColor: "#FDD306" }}
+      >
         <Modal.Title className="h5 fw-medium">Capas Temporales</Modal.Title>
         <button
           type="button"

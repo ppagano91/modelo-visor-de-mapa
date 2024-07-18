@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import {
   AlternateEmail,
@@ -12,6 +12,7 @@ import {
 } from "@mui/icons-material";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { PATHS } from "../../utils/consts/paths";
+import SelectedLayersSidebar from "../../pages/SelectedLayersSidebar";
 
 const Sidebar = ({ children }) => {
   const {
@@ -22,8 +23,16 @@ const Sidebar = ({ children }) => {
     selectedLayers,
     toggleTemporalLayers,
     showTemporalLayers,
+    setShowTemporalLayers,
   } = useContext(AppContext);
   const widthComponent = 15;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (selectedLayers.length > 0) {
+      navigate(PATHS.temporalsLayers);
+    }
+  }, [selectedLayers, navigate]);
 
   const menuItems = [
     {
@@ -87,20 +96,22 @@ const Sidebar = ({ children }) => {
               <div className="fs-5 icon">{item.icon}</div>
             </NavLink>
           ))}
-
-          {selectedLayers.length > 0 && (
-            <button
+          {(selectedLayers.length > 0 || showTemporalLayers) && (
+            <NavLink
+              to={PATHS.temporalsLayers}
               title="Mostrar capas temporales"
-              className={`btn btn-dark d-flex align-items-center justify-content-center p-3 w-100  ${
-                showTemporalLayers ? "active" : ""
+              className={`d-flex align-items-center text-light gap-3 link p-3 ${
+                activeSection === PATHS.temporalsLayers ? "active" : ""
               }`}
-              onClick={toggleTemporalLayers}
-              style={{
-                transition: "background-color 0.3s",
+              onClick={() => {
+                toggle(PATHS.temporalsLayers);
+                setShowTemporalLayers(!showTemporalLayers);
               }}
             >
-              <Queue className="fs-5" />
-            </button>
+              <div className="fs-5 icon">
+                <Queue />
+              </div>
+            </NavLink>
           )}
 
           <div className="mt-auto">
@@ -132,6 +143,7 @@ const Sidebar = ({ children }) => {
         </div>
       </div>
       <main className="main">{activeSection && children}</main>
+      {showTemporalLayers && <SelectedLayersSidebar />}
     </div>
   );
 };

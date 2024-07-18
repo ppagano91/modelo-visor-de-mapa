@@ -14,22 +14,20 @@ const Layers = () => {
   const { handleHits } = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searching, setSearching] = useState(false)
+  const [searching, setSearching] = useState(false);
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setSearching(true);
-        const res = await fetch(
-          `${getEnv("VITE_URL_BACKEND")}/search`, {
-            method: "POST",
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ searchTerm })
-          }
-        );
+        const res = await fetch(`${getEnv("VITE_URL_BACKEND")}/search`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ searchTerm }),
+        });
         const response = await res.json();
 
         if (response.data && response.data.hits) {
@@ -149,73 +147,81 @@ const Layers = () => {
 
   return (
     <>
-    <div className="layer-wrapper">
-      <div className="m-1 d-flex align-items-center justify-content-center w-90 layer-search border-bottom py-1">
-        <input
-          type="text"
-          className="w-100 py-1 form-control border-3 border-warning flex-4 mx-2 px-2"
-          placeholder="Buscador de Capas"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        <button className="btn btn-dark flex-1 mx-1 py-1">
-          <Search />
-        </button>
-      </div>
-      <div
-        className="h-100 layer-container"
-        style={{ width: "21rem", position: "relative" }}
-      >
-        {filteredSections && filteredSections.length > 0 &&
-        <ul className="d-block layer-section-container">
-          {filteredSections.map((section, index) => (
-            <li
-              className="fs-4 p-2 layer-section"
-              style={{ borderLeft: `0.25rem solid ${section.borderColor}` }}
-              key={index}
-              onClick={() => handleSectionClick(index)}
-            >
-              {section.name}
-              <br />
-              {section.description && (
-                <span
-                  className="text-secondary"
-                  style={{
-                    fontSize: "0.8rem",
-                    display: "block",
-                  }}
+      <div className="layer-wrapper">
+        <div className="m-1 d-flex align-items-center justify-content-center w-90 layer-search border-bottom py-1">
+          <input
+            type="text"
+            className="w-100 py-1 form-control border-3 border-warning flex-4 mx-2 px-2"
+            placeholder="Buscador de Capas"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <button className="btn btn-dark flex-1 mx-1 py-1">
+            <Search />
+          </button>
+        </div>
+        <div
+          className="h-100 layer-container"
+          style={{ width: "21rem", position: "relative" }}
+        >
+          {filteredSections && filteredSections.length > 0 && (
+            <ul className="d-block layer-section-container">
+              {filteredSections.map((section, index) => (
+                <li
+                  className="fs-4 p-2 layer-section"
+                  style={{ borderLeft: `0.25rem solid ${section.borderColor}` }}
+                  key={index}
+                  onClick={() => handleSectionClick(index)}
                 >
-                  {section.description}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-        }
-        { searching &&
-          <p className="d-block layer-section-container fs-6 p-2">Buscando capas...</p>
-        }
-        { !searching && sections.length === 0 &&
-          <p className="d-block layer-section-container fs-6 p-2">No se encontraron resultados.</p>
-        }
-        {activeSection !== null && filteredSections[activeSection] && (
-          <div
-            className="section-content"
-            style={{
-              position: "absolute",
-              top: 0,
-              width: "100%",
-              height: "100%",
-              maxHeight: "100%",
-              overflow: "auto",
-            }}
-          >
-            {filteredSections[activeSection].component}
-          </div>
-        )}
+                  {section.name}
+                  <br />
+                  {section.description && (
+                    <span
+                      className="text-secondary"
+                      style={{
+                        fontSize: "0.8rem",
+                        display: "block",
+                      }}
+                    >
+                      {section.description}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+          {searching && (
+            <div className="text-center">
+              <div className="spinner-border" role="status"></div>
+              <span className="d-block layer-section-container fs-6 p-2">
+                {" "}
+                Buscando capas...
+              </span>
+            </div>
+          )}
+          {!searching && sections.length === 0 && (
+            <p className="d-block layer-section-container fs-6 p-2">
+              No se encontraron resultados.
+            </p>
+          )}
+          {activeSection !== null && filteredSections[activeSection] && (
+            <div
+              className="section-content"
+              style={{
+                position: "absolute",
+                top: 0,
+                width: "100%",
+                height: "100%",
+                maxHeight: "100%",
+                overflow: "auto",
+              }}
+            >
+              {filteredSections[activeSection].component}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-    <MetadataModal />
+      <MetadataModal />
     </>
   );
 };

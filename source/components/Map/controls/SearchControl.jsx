@@ -205,13 +205,14 @@ const SearchControl = () => {
         />
         <button
           type="button"
-          className="btn btn-warning flex-1 mx-1 py-1"
+          className="btn  flex-1 mx-1 py-1"
+          style={{ backgroundColor: "#FDD306" }}
           onClick={() => handleSearch(selectedIndex)}
         >
           <Search fontSize="medium" className="d-flex text-white" />
         </button>
       </form>
-      {suggestions && suggestions.length > 0 &&
+      {suggestions && suggestions.length > 0 && (
         <ul
           className={`bg-light my-1 p-0 border rounded ${
             suggestions.length > 0 ? suggestions.length : error
@@ -234,7 +235,7 @@ const SearchControl = () => {
             );
           })}
         </ul>
-      }
+      )}
       {error && (
         <div className="alert alert-danger my-1 py-2 border-2">
           <span className="text-danger p-1 fw-bold msg-error">
