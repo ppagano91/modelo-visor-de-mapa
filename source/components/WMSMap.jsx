@@ -1,8 +1,16 @@
 import React, { useState, useContext } from "react";
-import { Modal, Button, Dropdown, DropdownButton } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Dropdown,
+  DropdownButton,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import axios from "axios";
 import { parseString } from "xml2js";
 import { AppContext } from "../context/AppContext";
+import { FaInfoCircle } from "react-icons/fa";
 
 const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
@@ -49,23 +57,41 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
     handleCloseModal();
   };
 
+  const renderTooltip = props => (
+    <Tooltip id="button-tooltip" {...props}>
+      Ejemplo: http://tu-servidor.com/geoserver/wms
+    </Tooltip>
+  );
+
   return (
-    <Modal show={showModal} onHide={handleCloseModal}>
-      <Modal.Header closeButton>
-        <Modal.Title>Capas Temporales</Modal.Title>
+    <Modal show={showModal} onHide={handleCloseModal} className="mx-4 my-5">
+      <Modal.Header className="bg-warning p-2 px-3">
+        <Modal.Title className="h5 fw-medium">Capas Temporales</Modal.Title>
+        <button
+          type="button"
+          className="btn-close btn-close-sm"
+          aria-label="Close"
+          onClick={handleCloseModal}
+        ></button>
       </Modal.Header>
       <Modal.Body>
-        <input
-          type="text"
-          value={wmsUrl}
-          onChange={handleUrlChange}
-          placeholder="Ingresa URL del servicio WMS"
-          className="form-control mb-2"
-        />
-
+        <div className="input-group mb-2">
+          <input
+            type="text"
+            value={wmsUrl}
+            onChange={handleUrlChange}
+            placeholder="Ingresa URL del servicio WMS"
+            className="form-control"
+          />
+          <OverlayTrigger placement="right" overlay={renderTooltip}>
+            <span className="input-group-text">
+              <FaInfoCircle />
+            </span>
+          </OverlayTrigger>
+        </div>
         {layers.length > 0 && (
           <DropdownButton
-            className=" mb-2"
+            className="mb-2"
             title="Capas Disponibles"
             menuVariant="dark"
             variant="dark"
@@ -82,9 +108,6 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Cerrar
-        </Button>
         <Button variant="warning" onClick={handleLoadClick}>
           Cargar Capas
         </Button>

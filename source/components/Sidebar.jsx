@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import {
   AlternateEmail,
+  Description,
   Info,
   Layers,
   LibraryBooks,
@@ -28,7 +29,7 @@ const Sidebar = ({ children }) => {
     {
       path: PATHS.masInformacion,
       name: "Más Información",
-      icon: <Info />,
+      icon: <Description />,
       width: widthComponent,
     },
     {
@@ -43,17 +44,6 @@ const Sidebar = ({ children }) => {
       icon: <Layers />,
       width: widthComponent,
     },
-    // Condicional para mostrar el botón solo si hay capas seleccionadas
-    //   ...(selectedLayers.length > 0
-    //     ? [
-    //         {
-    //           path: PATHS.temporalsLayers,
-    //           name: "Layers",
-    //           icon: <Queue />,
-    //           width: widthComponent,
-    //         },
-    //       ]
-    //     : []),
   ];
 
   const bottomMenuItems = [
@@ -88,6 +78,7 @@ const Sidebar = ({ children }) => {
             <NavLink
               to={item.path}
               key={index}
+              title={item.name}
               className={`d-flex align-items-center text-light gap-3 link p-3 ${
                 activeSection === item.path ? "active" : ""
               }`}
@@ -99,7 +90,8 @@ const Sidebar = ({ children }) => {
 
           {selectedLayers.length > 0 && (
             <button
-              className={`btn btn-dark d-flex align-items-center justify-content-center p-3 w-100 ${
+              title="Mostrar capas temporales"
+              className={`btn btn-dark d-flex align-items-center justify-content-center p-3 w-100  ${
                 showTemporalLayers ? "active" : ""
               }`}
               onClick={toggleTemporalLayers}
