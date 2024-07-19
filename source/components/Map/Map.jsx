@@ -139,7 +139,8 @@ export default function Map() {
           <WMSTileLayer
             url={getEnv("VITE_MAPA_SATELITAL")}
             tms={true}
-            attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
+            attribution="imagen satelital"
+            zIndex={25}
           />
         </BaseLayer>
       </LayersControl>

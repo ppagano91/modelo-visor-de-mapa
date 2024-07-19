@@ -6,7 +6,16 @@ import { getEnv } from "../../../config";
 
 const AddBaseLayerToMap = () => {
   const map = useMap();
-  const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer } = useContext(MapLayerContext);
+  const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer, setGeoserverBaseUrl } = useContext(MapLayerContext);
+  // let geoserverBaseUrl;
+  // useEffect(() => {
+  //   geoserverBaseUrl = getEnv("VITE_GEOSERVER_URL");
+  //   const proxiedBaseLayerUrl = geoserverBaseUrl
+  //     ? `${geoserverBaseUrl}${new URL(baseMapLayer.url).pathname}`
+  //     : `/geoserver${new URL(baseMapLayer.url).pathname}`;
+
+  //   setGeoserverBaseUrl(proxiedBaseLayerUrl);
+  // }, []);
 
   const onMapRightClick = async (event) => {
     const latlng = event.latlng;
@@ -131,14 +140,14 @@ const AddBaseLayerToMap = () => {
     });
 
     // Añadir capa base al mapa
-    const baseLayer = L.tileLayer.wms(geoserverBaseUrl, {
-      layers: baseMapLayer.name,
-      format: 'image/png',
-      transparent: true,
-      zIndex: 5,
-      attribution: '&copy; attribution',
-    });
-    baseLayer.addTo(map);
+    // const baseLayer = L.tileLayer.wms(baseMapLayer.url, {
+    //   layers: baseMapLayer.name,
+    //   format: 'image/png',
+    //   transparent: true,
+    //   zIndex: 5,
+    //   attribution: '&copy; attribution',
+    // });
+    // baseLayer.addTo(map);
 
     map.on('contextmenu', onMapRightClick);
 
@@ -147,9 +156,9 @@ const AddBaseLayerToMap = () => {
       wmsLayers.forEach((layer) => {
         map.removeLayer(layer);
       });
-      map.removeLayer(baseLayer);
+      // map.removeLayer(baseLayer);
     };
-  }, [layers, geoserverBaseUrl, baseMapLayer, map]);
+  }, [layers]);
 
   return null;
 };
