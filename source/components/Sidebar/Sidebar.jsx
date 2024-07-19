@@ -29,11 +29,11 @@ const Sidebar = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (selectedLayers.length > 0) {
-      navigate(PATHS.temporalsLayers);
+    if (selectedLayers.length > 0 && !showTemporalLayers) {
+      setShowTemporalLayers(true);
+      toggle(PATHS.temporalsLayers);
     }
-  }, [selectedLayers, navigate]);
-
+  }, [selectedLayers]);
   const menuItems = [
     {
       path: PATHS.masInformacion,
