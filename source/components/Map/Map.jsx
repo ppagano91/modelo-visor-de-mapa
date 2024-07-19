@@ -70,17 +70,21 @@ export default function Map() {
       scrollWheelZoom={true}
       attributionControl={false}
     >
-      {selectedLayers.map((layer, index) => (
-        <WMSTileLayer
-          key={index}
-          url={layer.url}
-          layers={layer.name}
-          format="image/png"
-          transparent
-          attribution="&copy; attribution"
-          zIndex={1000 + index}
-        />
-      ))}
+      {selectedLayers.map((layer, index) => {
+        if (layer.isActive) {
+          return (
+            <WMSTileLayer
+              key={index}
+              url={layer.url}
+              layers={layer.name}
+              format="image/png"
+              transparent
+              attribution="&copy; attribution"
+              zIndex={1000 + index}
+            />
+          );
+        }
+      })}
 
       <Button
         title="Capas Temporales"

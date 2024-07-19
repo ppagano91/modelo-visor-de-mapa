@@ -46,6 +46,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
       layers.push({
         name: layerElement.Name[0] || layerElement.Title[0],
         url: wmsUrl,
+        isActive: true,
       });
     }
     return layers;

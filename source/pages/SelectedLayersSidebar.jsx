@@ -1,48 +1,71 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 
 const SelectedLayersSidebar = () => {
-  const { selectedLayers, removeLayer } = useContext(AppContext);
+  const { selectedLayers, setSelectedLayers } = useContext(AppContext);
+
+  const [activeLayers, setActiveLayers] = useState([]);
+
+  useEffect(() => {
+    const initialLayersState = selectedLayers.map(layer => ({
+      ...layer,
+    }));
+    setActiveLayers(initialLayersState);
+  }, [selectedLayers]);
+
+  const toggleActiveLayer = layerName => {
+    setSelectedLayers(prevLayers => {
+      const newLayers = prevLayers.map(layer =>
+        layer.name === layerName
+          ? { ...layer, isActive: !layer.isActive }
+          : layer
+      );
+      return newLayers;
+    });
+  };
+
+  const handleLayerClick = layerName => {
+    toggleActiveLayer(layerName);
+  };
 
   return (
     <div
-      className="d-flex flex-column justify-content-start align-items-center  "
+      className="d-flex flex-column justify-content-start align-items-center"
       style={{ width: "21rem" }}
     >
       <div
-        className="w-100 text-center p-3  "
+        className="w-100 text-center p-3"
         style={{ backgroundColor: "#007BC7" }}
       >
         <h5 className="m-0 text-light">Capas Temporales Seleccionadas</h5>
       </div>
       <div>
         <ul
-          className="list-group   p-0 rounded-1 my-2  "
+          className="list-group p-0 rounded-1 my-2"
           style={{ width: "20rem" }}
         >
-          {selectedLayers &&
-            selectedLayers.length > 0 &&
-            (console.log(selectedLayers),
-            selectedLayers.slice().map(
-              (layer, index) => (
-                console.log(layer.name),
-                (
-                  <li
-                    key={index}
-                    className="d-flex justify-content-between align-items-center list-group-item fw-bold list-item list-group-item-light "
-                  >
-                    <div className="text-truncate    ">{layer.name}</div>
+          {selectedLayers.length > 0 &&
+            selectedLayers.map((layer, index) => (
+              <li
+                key={index}
+                className={`d-flex   align-items-center list-group-item fw-bold list-item ${
+                  layer.isActive
+                    ? "list-group-item-warning"
+                    : "list-group-item-light"
+                }`}
+                style={{ cursor: "pointer" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={layer.isActive}
+                  onChange={() => handleLayerClick(layer.name)}
+                />
+                {/* alinear a la izquierda */}
 
-                    <Button
-                      onClick={() => removeLayer(layer)}
-                      type="button"
-                      className="btn-close btn-close-warning p-1 m-2 bg-transparent border-0 btn-sm"
-                      aria-label="Close"
-                    ></Button>
-                  </li>
-                )
-              )
+                <div className="text-truncate  justify-content-start px-2">
+                  {layer.name}
+                </div>
+              </li>
             ))}
         </ul>
       </div>
