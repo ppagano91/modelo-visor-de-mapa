@@ -171,7 +171,7 @@ const Layers = () => {
         <div className="m-1 d-flex align-items-center justify-content-center w-90 layer-search border-bottom py-1">
           <input
             type="text"
-            className="w-100 py-1 form-control border-3 border-warning flex-4 mx-2 px-2"
+            className="w-100 py-1 form-control border-3 flex-4 mx-2 px-2"
             placeholder="Buscador de Capas"
             value={searchTerm}
             onChange={handleSearchChange}

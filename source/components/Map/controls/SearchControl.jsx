@@ -214,7 +214,7 @@ const SearchControl = () => {
       </form>
       {suggestions && suggestions.length > 0 && (
         <ul
-          className={`bg-light my-1 p-0 border rounded ${
+          className={`bg-light my-1 p-0 border  ${
             suggestions.length > 0 ? suggestions.length : error
           }`}
           style={{ paddingLeft: "1rem" }}
@@ -224,9 +224,13 @@ const SearchControl = () => {
               <li
                 key={i}
                 className={`p-1 ${
-                  selectedIndex === i ? "bg-warning fw-bold" : ""
+                  selectedIndex === i ? "fw-bold" : ""
                 } suggestions-item-list`}
-                style={{ listStyle: "none", cursor: "pointer" }}
+                style={{
+                  listStyle: "none",
+                  cursor: "pointer",
+                  backgroundColor: selectedIndex === i ? "#FFDB2E" : "inherit",
+                }}
                 onClick={() => handleSearch(i)}
                 onMouseOver={() => setSelectedSuggestionIndex(i)}
               >

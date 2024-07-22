@@ -58,7 +58,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
   };
 
   const renderTooltip = props => (
-    <Tooltip id="button-tooltip" {...props}>
+    <Tooltip id="button-tooltip " {...props}>
       Ejemplo: http://tu-servidor.com/geoserver/wms
     </Tooltip>
   );
@@ -111,7 +111,14 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="warning" onClick={handleLoadClick}>
+        <Button
+          onClick={handleLoadClick}
+          style={{
+            backgroundColor: "#007BC7",
+            borderColor: "#007BC7",
+            hover: "FDD306",
+          }}
+        >
           Cargar Capas
         </Button>
       </Modal.Footer>

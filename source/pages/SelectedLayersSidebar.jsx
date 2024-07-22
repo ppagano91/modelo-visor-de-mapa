@@ -1,7 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-import temporalLayerIcon from "../assets/images/layer-plus-regular-24.png";
-import { Info } from "@mui/icons-material";
 
 const SelectedLayersSidebar = () => {
   const { selectedLayers, setSelectedLayers } = useContext(AppContext);
@@ -30,29 +28,37 @@ const SelectedLayersSidebar = () => {
     toggleActiveLayer(layerName);
   };
 
+  // Contar las capas activas
+  const activeLayerCount = selectedLayers.filter(
+    layer => layer.isActive
+  ).length;
+
   return (
     <div
       className="d-flex flex-column justify-content-start align-items-center"
       style={{ width: "21rem" }}
     >
-      {selectedLayers.length > 0 ?
-      <>
       <div
         className="w-100 text-center p-3"
         style={{ backgroundColor: "#007BC7" }}
       >
-        <h5 className="m-0 text-light">Capas Temporales Seleccionadas</h5>
+        <h6 className="m-0 text-light">
+          Capas Temporales Seleccionadas
+          <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
+            {activeLayerCount}
+          </div>
+        </h6>
       </div>
       <div>
         <ul
           className="list-group p-0 rounded-1 my-2"
           style={{ width: "20rem" }}
         >
-          
-            {selectedLayers.map((layer, index) => (
+          {selectedLayers.length > 0 &&
+            selectedLayers.map((layer, index) => (
               <li
                 key={index}
-                className={`d-flex   align-items-center list-group-item fw-bold list-item ${
+                className={`d-flex align-items-center list-group-item fw-bold list-item ${
                   layer.isActive
                     ? "list-group-item-warning"
                     : "list-group-item-light"
@@ -65,22 +71,13 @@ const SelectedLayersSidebar = () => {
                   onChange={() => handleLayerClick(layer.name)}
                 />
                 {/* alinear a la izquierda */}
-
-                <div className="text-truncate  justify-content-start px-2">
+                <div className="text-truncate justify-content-start px-2">
                   {layer.name}
                 </div>
               </li>
             ))}
         </ul>
       </div>
-      </>
-      :
-      <div className="d-flex flex-column justify-content-center align-items-center p-2 h-100" style={{ width: "21rem", position: "relative" }}>
-          <Info className="m-2" />
-        <p className="text-justify p-2">En esta sección se mostrarán las capas temporales. Para agregar una capa temporal debe utilizar la herramienta <img src={temporalLayerIcon} alt="Ícono de capas temporales" /> ubicada en la esquina superior derecha del mapa.</p>
-      </div>
-      }
-
     </div>
   );
 };
