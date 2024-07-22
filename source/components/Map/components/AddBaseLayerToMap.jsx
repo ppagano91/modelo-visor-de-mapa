@@ -3,19 +3,12 @@ import { MapLayerContext } from '../../../context/MapLayerContext';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { getEnv } from "../../../config";
+import { AppContext } from '../../../context/AppContext';
 
 const AddBaseLayerToMap = () => {
   const map = useMap();
-  const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer, setGeoserverBaseUrl } = useContext(MapLayerContext);
-  // let geoserverBaseUrl;
-  // useEffect(() => {
-  //   geoserverBaseUrl = getEnv("VITE_GEOSERVER_URL");
-  //   const proxiedBaseLayerUrl = geoserverBaseUrl
-  //     ? `${geoserverBaseUrl}${new URL(baseMapLayer.url).pathname}`
-  //     : `/geoserver${new URL(baseMapLayer.url).pathname}`;
-
-  //   setGeoserverBaseUrl(proxiedBaseLayerUrl);
-  // }, []);
+  const { openMasInformacion } = useContext(AppContext)
+  const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer, setGeoserverBaseUrl, handleSetMarker } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
     const latlng = event.latlng;
@@ -30,11 +23,12 @@ const AddBaseLayerToMap = () => {
       }
     });
 
-    let layerClicked = false;
-
     const marker = L.marker(latlng).addTo(map);
+    handleSetMarker(marker);
 
     map.setView(latlng);
+
+    let layerClicked = false;
 
     for (const layer of layers) {
       const params = {
@@ -75,53 +69,11 @@ const AddBaseLayerToMap = () => {
             };
           });
           handleInfoWMSLayers({ ...mappedFeatures, coordenadas: latlng });
+          openMasInformacion();
           break;
         }
       } catch (error) {
         console.error('Error al obtener datos de las capas:', error);
-      }
-    }
-
-    if (!layerClicked) {
-      const params = {
-        service: 'WMS',
-        version: '1.1.1',
-        request: 'GetFeatureInfo',
-        format: 'image/png',
-        transparent: true,
-        query_layers: baseMapLayer.name,
-        styles: '',
-        layers: baseMapLayer.name,
-        exceptions: 'application/vnd.ogc.se_inimage',
-        info_format: 'application/json',
-        feature_count: 50,
-        srs: 'EPSG:4326',
-        bbox: bbox,
-        width: mapSize.x,
-        height: mapSize.y,
-        x: Math.round(point.x),
-        y: Math.round(point.y),
-      };
-
-      const url = geoserverBaseUrl + L.Util.getParamString(params, '', true);
-
-      try {
-        const response = await fetch(url);
-        const text = await response.text();
-
-        const data = JSON.parse(text);
-        const mappedFeatures = {};
-
-        data.features.forEach((feature) => {
-          const { id, geometry, properties } = feature;
-          mappedFeatures[id] = {
-            ...properties,
-            geometry,
-          };
-        });
-        handleInfoBaseMap({ ...mappedFeatures, coordenadas: latlng });
-      } catch (error) {
-        console.error('Error al obtener datos del mapa base:', error);
       }
     }
   };
@@ -139,16 +91,6 @@ const AddBaseLayerToMap = () => {
       return wmsLayer;
     });
 
-    // Añadir capa base al mapa
-    // const baseLayer = L.tileLayer.wms(baseMapLayer.url, {
-    //   layers: baseMapLayer.name,
-    //   format: 'image/png',
-    //   transparent: true,
-    //   zIndex: 5,
-    //   attribution: '&copy; attribution',
-    // });
-    // baseLayer.addTo(map);
-
     map.on('contextmenu', onMapRightClick);
 
     return () => {
@@ -156,7 +98,6 @@ const AddBaseLayerToMap = () => {
       wmsLayers.forEach((layer) => {
         map.removeLayer(layer);
       });
-      // map.removeLayer(baseLayer);
     };
   }, [layers]);
 

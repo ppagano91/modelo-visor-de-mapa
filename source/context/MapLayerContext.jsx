@@ -10,6 +10,7 @@ export const MapLayerProvider = ({ children }) => {
   const [info, setInfo] = useState({});
   const [geoserverBaseUrl, setGeoserverBaseUrl] = useState('');
   const [activeLayers, setActiveLayers] = useState([]);
+  const [marker, setMarker] = useState(null); // Nuevo estado para el marcador
 
   const baseMapLayer = {
     url: getEnv("VITE_MAPA_BASE"),
@@ -26,7 +27,6 @@ export const MapLayerProvider = ({ children }) => {
 
     setGeoserverBaseUrl(proxiedBaseLayerUrl);
   }, []);
-
 
   const addLayer = (layer) => {
     setLayers((prevLayers) => [...prevLayers, layer]);
@@ -111,6 +111,14 @@ export const MapLayerProvider = ({ children }) => {
 
   const resetInfo = () => {
     setInfo({});
+    if (marker) {
+      marker.remove();
+      setMarker(null);
+    }
+  }
+
+  const handleSetMarker = (value) => {
+    setMarker(prevState => value)
   }
 
   const removeLayer = (layerName) => {
@@ -122,7 +130,7 @@ export const MapLayerProvider = ({ children }) => {
   }
 
   return (
-    <MapLayerContext.Provider value={{ layers, hits, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers, handleHits, setGeoserverBaseUrl  }}>
+    <MapLayerContext.Provider value={{ layers, hits, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers, handleHits, setGeoserverBaseUrl, handleSetMarker }}>
       {children}
     </MapLayerContext.Provider>
   );
