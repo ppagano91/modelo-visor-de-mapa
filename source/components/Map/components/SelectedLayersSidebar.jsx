@@ -16,7 +16,7 @@ const SelectedLayersSidebar = ({
         position: "absolute",
         left: 0,
         top: "12rem",
-        zIndex: 1000,
+        // zIndex: 1000,
       }}
     >
       <div className="w-100 bg-warning text-center  p-3 rounded-top-2">

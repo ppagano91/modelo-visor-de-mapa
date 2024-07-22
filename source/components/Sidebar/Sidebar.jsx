@@ -21,12 +21,10 @@ const Sidebar = ({ children }) => {
     toggleLastSection,
     lastActiveSection,
     selectedLayers,
-    toggleTemporalLayers,
     showTemporalLayers,
     setShowTemporalLayers,
   } = useContext(AppContext);
   const widthComponent = 15;
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedLayers.length > 0 && !showTemporalLayers) {
@@ -49,9 +47,16 @@ const Sidebar = ({ children }) => {
     },
     {
       path: PATHS.layers,
-      name: "Layers",
+      name: "Capas",
       icon: <Layers />,
       width: widthComponent,
+    },
+    {
+      path: PATHS.temporalsLayers,
+      name: "Capas temporales",
+      icon: <Queue />,
+      width: widthComponent,
+      show: false
     },
   ];
 
@@ -96,7 +101,7 @@ const Sidebar = ({ children }) => {
               <div className="fs-5 icon">{item.icon}</div>
             </NavLink>
           ))}
-          {(selectedLayers.length > 0 || showTemporalLayers) && (
+          {/* {(selectedLayers.length > 0 || showTemporalLayers) && (
             <NavLink
               to={PATHS.temporalsLayers}
               title="Mostrar capas temporales"
@@ -112,7 +117,7 @@ const Sidebar = ({ children }) => {
                 <Queue />
               </div>
             </NavLink>
-          )}
+          )} */}
 
           <div className="mt-auto">
             {/* <hr style={{ width: "80%", margin: "auto" }} /> */}
@@ -143,7 +148,7 @@ const Sidebar = ({ children }) => {
         </div>
       </div>
       <main className="main">{activeSection && children}</main>
-      {showTemporalLayers && <SelectedLayersSidebar />}
+      {/* {showTemporalLayers && <SelectedLayersSidebar />} */}
     </div>
   );
 };

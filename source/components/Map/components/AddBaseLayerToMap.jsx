@@ -39,7 +39,7 @@ const AddBaseLayerToMap = () => {
     for (const layer of layers) {
       const params = {
         service: 'WMS',
-        version: '1.1.1',
+        version: '1.1.0',
         request: 'GetFeatureInfo',
         format: 'image/png',
         transparent: true,
@@ -78,7 +78,7 @@ const AddBaseLayerToMap = () => {
           break;
         }
       } catch (error) {
-        console.error('Error fetching feature info:', error);
+        console.error('Error al obtener datos de las capas:', error);
       }
     }
 
@@ -121,7 +121,7 @@ const AddBaseLayerToMap = () => {
         });
         handleInfoBaseMap({ ...mappedFeatures, coordenadas: latlng });
       } catch (error) {
-        console.error('Error fetching feature info:', error);
+        console.error('Error al obtener datos del mapa base:', error);
       }
     }
   };
