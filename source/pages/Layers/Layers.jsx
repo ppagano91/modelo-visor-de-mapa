@@ -219,7 +219,7 @@ const Layers = () => {
               </span>
             </div>
           )}
-          {!searching && sections.length === 0 && (
+          {!searching && filteredSections.length === 0 && (
             <p className="d-block layer-section-container fs-6 p-2">
               No se encontraron resultados.
             </p>
