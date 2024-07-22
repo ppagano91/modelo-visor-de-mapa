@@ -122,7 +122,7 @@ export const MapLayerProvider = ({ children }) => {
   }
 
   return (
-    <MapLayerContext.Provider value={{ layers, hits, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers, handleHits  }}>
+    <MapLayerContext.Provider value={{ layers, hits, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers, handleHits, setGeoserverBaseUrl  }}>
       {children}
     </MapLayerContext.Provider>
   );

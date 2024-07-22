@@ -28,6 +28,7 @@ const AppRoutes = () => {
                   element={<MasInformacion />}
                 />
                 <Route path={PATHS.layers} element={<Layers />} />
+                <Route path={PATHS.temporalsLayers} element={<SelectedLayersSidebar />} />
               </Routes>
             </Sidebar>
             <Map />

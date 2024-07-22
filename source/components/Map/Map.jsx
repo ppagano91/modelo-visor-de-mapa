@@ -139,17 +139,12 @@ export default function Map() {
             transparent={true}
           />
         </BaseLayer>
-        <BaseLayer name="Mapa Topográfico">
-          <WMSTileLayer
-            url={tileLayers.baseLayers.openTopoMap.map}
-            transparent={true}
-          />
-        </BaseLayer>
         <BaseLayer name="Mapa Satelital">
           <WMSTileLayer
-            url={tileLayers.baseLayers.esri.worldImagery.url}
+            url={getEnv("VITE_MAPA_SATELITAL")}
             tms={true}
-            attribution={tileLayers.baseLayers.esri.worldImagery.attribution}
+            attribution="imagen satelital"
+            zIndex={25}
           />
         </BaseLayer>
       </LayersControl>

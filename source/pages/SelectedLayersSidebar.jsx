@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
+import temporalLayerIcon from "../assets/images/layer-plus-regular-24.png";
+import { Info } from "@mui/icons-material";
 
 const SelectedLayersSidebar = () => {
   const { selectedLayers, setSelectedLayers } = useContext(AppContext);
@@ -33,6 +35,8 @@ const SelectedLayersSidebar = () => {
       className="d-flex flex-column justify-content-start align-items-center"
       style={{ width: "21rem" }}
     >
+      {selectedLayers.length > 0 ?
+      <>
       <div
         className="w-100 text-center p-3"
         style={{ backgroundColor: "#007BC7" }}
@@ -44,8 +48,8 @@ const SelectedLayersSidebar = () => {
           className="list-group p-0 rounded-1 my-2"
           style={{ width: "20rem" }}
         >
-          {selectedLayers.length > 0 &&
-            selectedLayers.map((layer, index) => (
+          
+            {selectedLayers.map((layer, index) => (
               <li
                 key={index}
                 className={`d-flex   align-items-center list-group-item fw-bold list-item ${
@@ -69,6 +73,14 @@ const SelectedLayersSidebar = () => {
             ))}
         </ul>
       </div>
+      </>
+      :
+      <div className="d-flex flex-column justify-content-center align-items-center p-2 h-100" style={{ width: "21rem", position: "relative" }}>
+          <Info className="m-2" />
+        <p className="text-justify p-2">En esta sección se mostrarán las capas temporales. Para agregar una capa temporal debe utilizar la herramienta <img src={temporalLayerIcon} alt="Ícono de capas temporales" /> ubicada en la esquina superior derecha del mapa.</p>
+      </div>
+      }
+
     </div>
   );
 };

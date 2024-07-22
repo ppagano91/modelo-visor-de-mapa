@@ -19,16 +19,36 @@ const Layers = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setSearching(true);
+      const query = searchTerm
+        ? {
+            query: {
+              multi_match: {
+                query: searchTerm,
+                fields: [
+                  "urbanismo.propiedades.name",
+                  "urbanismo.propiedades.description",
+                  "transporte.propiedades.name",
+                  "transporte.propiedades.description",
+                  "salud.propiedades.name",
+                  "salud.propiedades.description",
+                  "servicios.propiedades.name",
+                  "servicios.propiedades.description",
+                ],
+                fuzziness: "AUTO",
+              },
+            },
+          }
+        : {
+            query: {
+              match_all: {},
+            },
+          };
       try {
-        setSearching(true);
-        const res = await fetch(`${getEnv("VITE_URL_BACKEND")}/search`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ searchTerm }),
-        });
-        const response = await res.json();
+        const response = await axios.post(
+          `${getEnv("VITE_ELASTICSEARCH_URL")}/services_map/_search`,
+          query,
+        );
 
         if (response.data && response.data.hits) {
           const hits = response.data.hits.hits;
@@ -199,7 +219,7 @@ const Layers = () => {
               </span>
             </div>
           )}
-          {!searching && sections.length === 0 && (
+          {!searching && filteredSections.length === 0 && (
             <p className="d-block layer-section-container fs-6 p-2">
               No se encontraron resultados.
             </p>

@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 
 const DownloadModal = ({ show, handleClose, downloadProps }) => {
   const handleDownload = (format) => {
-    const wfsUrl = `${downloadProps.url.replace('/wms', '/wfs')}`;
+    const wfsUrl = `${downloadProps.url.replace('/wms?', '/wfs')}`;
     const params = new URLSearchParams({
       service: 'WFS',
       version: '1.1.0',
@@ -29,7 +29,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
         a.remove();
       })
       .catch(error => {
-        console.error("Error downloading the data:", error);
+        console.error("Error al descargar la información de la capa:", error);
       });
   };
 
