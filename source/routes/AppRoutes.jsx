@@ -12,7 +12,7 @@ import SelectedLayersSidebar from "../pages/SelectedLayersSidebar";
 
 const AppRoutes = () => {
   return (
-    <BrowserRouter >
+    <HashRouter >
       <MapLayerProvider>
         <AppProvider>
           <Navbar />
@@ -23,14 +23,14 @@ const AppRoutes = () => {
                 <Route path={PATHS.masInformacion} element={<MasInformacion />} />
                 <Route path={PATHS.layers} element={<Layers />} />
                 <Route path={PATHS.temporalsLayers} element={<SelectedLayersSidebar />} />
-                <Route path="*" element={<Navigate replace to={PATHS.raiz} />} />
+                <Route path="*" element={<Navigate  to={PATHS.raiz} replace />} />
               </Routes>
             </Sidebar>
             <Map />
           </div>
         </AppProvider>
       </MapLayerProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 

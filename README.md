@@ -20,22 +20,56 @@ Antes de inicar el proyecto Visor de Mapa, es necesario crear los índices y doc
 Desde Postman, o alguna otra herramienta, se deberá crear el índice "services_map". En este ejemplo se crea el índice **services_map**:
 
 ```bash
-    PUT http://localhost:9200/services_map
+    PUT https://callejero-unico-elasticsearch-dev.gcba.gob.ar/services_map
 ```
-Tener en cuenta que el servicio de elasticsearch se está ejecutando en un host localhost y un puerto 9200
 
-#### Cargar Indices
-Desde Postman o alunga otra herramienta, se deberán cargar los documentos de [servicios.json](./servicios.json), en el índice creado anteriormente (services_map). En este ejemplo, el servicio de elasticsearch se está ejecutando en un host localhost y un puerto 9200. Con la siguiente query se debería agregar todos los documentos dentro del índice **services_map**
+#### Cargar Varios Documentos al Indice
+Desde Postman o alunga otra herramienta, se deberán cargar los documentos de [servicios.json](./servicios.json), en el índice creado anteriormente (services_map). Con la siguiente query se debería agregar todos los documentos dentro del índice **services_map**
 
 Consideraciones a tener en cuenta:
 
 - Headers: agregar `Content-Type: application/x-ndjson`
-- Body: Seleccionar raw-JSON y copiar el contenido del archivo [servicios.json](./servicios.json)
+- Body: Seleccionar raw-JSON y copiar el contenido del archivo [agregar_documentos.json](./source/es-json/agregar_documentos.json)
 - Ejecutar la siguiente petición de tipo POST:
 
 ```bash
-    POST http://localhost:9200/services_map/_bulk
+    POST https://callejero-unico-elasticsearch-dev.gcba.gob.ar/services_map/_bulk
 ```
+
+#### Cargar un elemento a un Documento específico
+Desde Postman o alunga otra herramienta, se puede agregar un elemento a un Documento específico según su ID. A continuación, se explica como agregar un elemento a una determinada sección.
+
+El siguiente ejemplo muestra como agregar un elemento a la sección de Urbanismo, para ello es necesario tener el id del documento (para el caso de Urbanismo es QxQ14ZABGvSghuUxmLIA).
+
+Consideraciones a tener en cuenta:
+- Verificar si el ID es correcto y corresponde al Docuemento que queremos editar.
+- Body: Seleccionar raw-JSON y copiar el contenido del archivo [agregar_elemento.json](./source/es-json/agregar_elemento.json). **Observar detalladamente el script**.
+- Ejecutar la siguiente petición de tipo POST:
+
+```bash
+POST https://callejero-unico-elasticsearch-dev.gcba.gob.ar/services_map/_update/QxQ14ZABGvSghuUxmLIA
+```
+
+El script "agregar_elemento.json", tiene la estructura para agregar un elemento al documento de Urbanismo. Para agregar un elemento a otro Docuemnto (Transporte, Servicios, Salud, etc), es necesario reemplazar "urbanismo" por el documento que se requiera editar (ejemplo "transporte"). Luego, se debe especificar los atributos del nuevo elemento (**id**, name, layerProps, etc). En caso de no tener información para layerProps colocar "null". Es **Importante** especificar el ID del elemento.
+
+#### Eliminar un elemento de un Documento específico
+Desde Postman o alunga otra herramienta, se puede eliminar un elemento de un Documento específico según su ID. El siguiente ejemplo muestra como eliminar un elemento a la sección de Urbanismo, para ello es necesario tener el ID del documento (para el caso de Urbanismo es QxQ14ZABGvSghuUxmLIA).
+
+Consideraciones a tener en cuenta:
+- Verificar si el ID es correcto y corresponde al Docuemento que queremos editar.
+- Determinar y verificar el ID del elemento que se desea eliminar.
+- Body: Seleccionar raw-JSON y copiar el contenido del archivo [eliminar_elemento.json](./source/es-json/eliminar_elemento.json). **Observar detalladamente el script**.
+- Ejecutar la siguiente petición de tipo POST:
+
+
+```bash
+POST https://callejero-unico-elasticsearch-dev.gcba.gob.ar/services_map/_update/QxQ14ZABGvSghuUxmLIA
+```
+
+El script "eliminar_elemento.json", tiene la estructura para eliminar un elemento del documento de Urbanismo. Para eliminar un elemento de otro Docuemnto (Transporte, Servicios, Salud, etc), es necesario reemplazar "urbanismo" por el documento que se requiera editar (ejemplo "transporte"). Luego, en el atributo params se debe especificar el ID del **elemento** a eliminar.
+
+
+### Iniciar Proyecto de Visor de Mapa
 
 
 Instalar dependencias

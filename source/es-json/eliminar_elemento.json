@@ -1,0 +1,9 @@
+{
+    "script": {
+      "source": "if (ctx._source.containsKey('urbanismo') && ctx._source.urbanismo.containsKey('propiedades')) {ctx._source.urbanismo.propiedades.removeIf(propiedad -> propiedad.id == params.id);}",
+      "params": {
+        "id": 13
+      }
+    }
+  }
+  

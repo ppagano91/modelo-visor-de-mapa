@@ -1,0 +1,17 @@
+{
+    "script": {
+      "source": "if (ctx._source.containsKey('transporte') == false) {ctx._source.transporte = new HashMap(); ctx._source.transporte.propiedades = [];} else {if (ctx._source.transporte.propiedades == null) { ctx._source.transporte.propiedades = []; } } ctx._source.transporte.propiedades.add(params.nuevoElemento);",
+      "params": {
+        "nuevoElemento": {
+          "name": "Nuevo Servicio",
+          "icon": "NewIcon",
+          "layerProps": {
+            "url": "https://example.com/new_layer",
+            "layers": "example:new_layer",
+            "name": "example:new_layer",
+            "attribution": "&copy; example attribution"
+          }
+        }
+      }
+    }
+  }
