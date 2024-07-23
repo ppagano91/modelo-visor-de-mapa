@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Contacto from "../pages/Contacto";
 import MasInformacion from "../pages/MasInformacion";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -12,7 +12,7 @@ import SelectedLayersSidebar from "../pages/SelectedLayersSidebar";
 
 const AppRoutes = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       <MapLayerProvider>
         <AppProvider>
           <Navbar />
@@ -23,6 +23,7 @@ const AppRoutes = () => {
                 <Route path={PATHS.masInformacion} element={<MasInformacion />} />
                 <Route path={PATHS.layers} element={<Layers />} />
                 <Route path={PATHS.temporalsLayers} element={<SelectedLayersSidebar />} />
+                <Route path="*" element={<Navigate replace to={PATHS.raiz} />} />
               </Routes>
             </Sidebar>
             <Map />
