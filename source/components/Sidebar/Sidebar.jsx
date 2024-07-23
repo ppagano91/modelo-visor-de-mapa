@@ -82,7 +82,7 @@ const Sidebar = ({ children }) => {
   ];
 
   return (
-    <div className="d-flex">
+    <div className="d-flex print-hidden">
       <div
         className="bg-dark text-light sidebar d-flex flex-column align-items-center"
         style={{ width: "4rem" }}

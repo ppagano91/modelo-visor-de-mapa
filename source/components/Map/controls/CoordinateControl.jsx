@@ -15,7 +15,7 @@ const CoordinatesControl = ({ position }) => {
 
     const control = L.Control.extend({
       onAdd: function (map) {
-        const element = L.DomUtil.create('div', 'coordinates-control');
+        const element = L.DomUtil.create('div', 'coordinates-control print-hidden');
         element.innerHTML = `Lat: ${coordinates.lat.toFixed(4)}, Lng: ${coordinates.lng.toFixed(4)}`;
         map.on('mousemove', function (e) {
           element.innerHTML = `Lat: ${e.latlng.lat.toFixed(4)}, Lng: ${e.latlng.lng.toFixed(4)}`;

@@ -7,7 +7,6 @@ import {
   useMap,
   WMSTileLayer,
 } from "react-leaflet";
-import L from "leaflet";
 
 import "../../styles/map.css";
 import MiniMap from "./controls/MiniMap";
@@ -17,20 +16,18 @@ import LinearMeasureControl from "./controls/LinearMeasurementControl";
 
 import LocateControl from "./controls/LocateControl";
 import { MapLayerContext } from "../../context/MapLayerContext";
-import { tileLayers } from "../../utils/consts/consts";
 import SearchControl from "./controls/SearchControl";
 import { getEnv } from "../../config";
 import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
-import EasyPrintControl from "./controls/EasyPrintControl";
 import Capas_temporales from "../../assets/images/layer-plus-regular-24.png";
 
 import WMSMap from "../WMSMap";
 import { Button } from "react-bootstrap";
-import zIndex from "@mui/material/styles/zIndex";
 import SelectedLayersSidebar from "../../pages/SelectedLayersSidebar";
 
 import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";
+import PrintMapButton from "./controls/PrintMapButton";
 
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -88,7 +85,7 @@ export default function Map() {
 
       <Button
         title="Capas Temporales"
-        className="btn bg-light  border-2 border-opacity-25 border-black d-flex justify-content-center align-items-center "
+        className="btn bg-light  border-2 border-opacity-25 border-black d-flex justify-content-center align-items-center print-hidden"
         onClick={handleShowModal}
         style={{
           position: "absolute",
@@ -149,7 +146,7 @@ export default function Map() {
         </BaseLayer>
       </LayersControl>
 
-      <CoordinatesControl position="bottomleft" />
+      <CoordinatesControl position="bottomleft" className="print-hidden"/>
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />
 
@@ -158,7 +155,8 @@ export default function Map() {
 
       <LinearMeasureControl />
       <InitialView />
-      <EasyPrintControl />
+      {/* <EasyPrintControl /> */}
+      <PrintMapButton position="bottomright" />
     </MapContainer>
   );
 }

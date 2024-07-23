@@ -4,7 +4,7 @@ import LOGO from "../assets/images/logo-bsas.png";
 const Navbar = () => {
   return (
     <nav
-      className="navbar  "
+      className="navbar print-hidden"
       style={{ height: "10vh", backgroundColor: "#FDD306" }}
     >
       <div className="container-fluid">

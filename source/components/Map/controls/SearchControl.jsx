@@ -189,6 +189,7 @@ const SearchControl = () => {
         borderRadius: "1rem",
         width: "22rem",
       }}
+      className="print-hidden"
     >
       <form className="d-flex" role="search">
         <input
