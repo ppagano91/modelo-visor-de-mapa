@@ -20,18 +20,10 @@ const Sidebar = ({ children }) => {
     toggle,
     toggleLastSection,
     lastActiveSection,
-    selectedLayers,
-    showTemporalLayers,
-    setShowTemporalLayers,
   } = useContext(AppContext);
   const widthComponent = 15;
 
-  useEffect(() => {
-    if (selectedLayers.length > 0 && !showTemporalLayers) {
-      setShowTemporalLayers(true);
-      toggle(PATHS.temporalsLayers);
-    }
-  }, [selectedLayers]);
+
   const menuItems = [
     {
       path: PATHS.masInformacion,

@@ -11,11 +11,12 @@ import axios from "axios";
 import { parseString } from "xml2js";
 import { AppContext } from "../context/AppContext";
 import { FaInfoCircle } from "react-icons/fa";
+import { PATHS } from "../utils/consts/paths";
 
 const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
-  const { setSelectedLayers } = useContext(AppContext);
+  const { setSelectedLayers, openSection } = useContext(AppContext);
 
   const handleUrlChange = event => {
     setWmsUrl(event.target.value);
@@ -54,6 +55,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
 
   const handleLayerSelect = layer => {
     setSelectedLayers(prevLayers => [...prevLayers, layer]);
+    openSection(PATHS.temporalsLayers);
     handleCloseModal();
   };
 

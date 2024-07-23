@@ -1,20 +1,18 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { MapLayerContext } from "./MapLayerContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PATHS } from "../utils/consts/paths";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const { info } = useContext(MapLayerContext);
   const [activeSection, setActiveSection] = useState(null);
   const [metadataModalShow, setMetadataModalShow] = useState(false);
-  const [metadata, setMetadata] = useState(null);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
   const [showTemporalLayers, setShowTemporalLayers] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleActiveSection = path => {
     setActiveSection(prevState => (prevState === path ? null : path));
@@ -49,10 +47,10 @@ export const AppProvider = ({ children }) => {
     }
   }, [selectedLayers]);
 
-  const openMasInformacion = () => {
-    setActiveSection(PATHS.masInformacion);
-    setLastActiveSection(PATHS.masInformacion);
-    navigate(PATHS.masInformacion);
+  const openSection = (page) => {
+    setActiveSection(page);
+    setLastActiveSection(page);
+    navigate(page);
   };
 
   const handleMetadataModalClose = () => setMetadataModalShow(false);
@@ -65,16 +63,20 @@ export const AppProvider = ({ children }) => {
     setSelectedLayers(selectedLayers.filter(layer => layer !== layerToRemove));
   };
 
+  useEffect(() => {
+    const currentPath = location.pathname;
+    setActiveSection(currentPath);
+    setLastActiveSection(currentPath);
+  }, [location.pathname]);
+
   return (
     <AppContext.Provider
       value={{
         activeSection,
         lastActiveSection,
         metadataModalShow,
-        handleActiveSection,
         toggle,
         toggleLastSection,
-        openMasInformacion,
         selectedLayers,
         setSelectedLayers,
         showTemporalLayers,
@@ -82,6 +84,7 @@ export const AppProvider = ({ children }) => {
         handleMetadataModal,
         handleMetadataModalClose,
         setShowTemporalLayers,
+        openSection,
         removeLayer,
         addLayer,
       }}

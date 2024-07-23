@@ -4,10 +4,11 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { getEnv } from "../../../config";
 import { AppContext } from '../../../context/AppContext';
+import { PATHS } from '../../../utils/consts/paths';
 
 const AddBaseLayerToMap = () => {
   const map = useMap();
-  const { openMasInformacion } = useContext(AppContext)
+  const { openSection } = useContext(AppContext)
   const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer, setGeoserverBaseUrl, handleSetMarker } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
@@ -69,7 +70,7 @@ const AddBaseLayerToMap = () => {
             };
           });
           handleInfoWMSLayers({ ...mappedFeatures, coordenadas: latlng });
-          openMasInformacion();
+          openSection(PATHS.masInformacion);
           break;
         }
       } catch (error) {

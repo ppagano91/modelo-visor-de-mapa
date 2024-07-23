@@ -1,6 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ComoLlego from "../pages/ComoLlego";
-import Favoritos from "../pages/Favoritos";
 import Contacto from "../pages/Contacto";
 import MasInformacion from "../pages/MasInformacion";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -21,12 +19,8 @@ const AppRoutes = () => {
           <div style={{ display: "flex" }}>
             <Sidebar>
               <Routes>
-                <Route path={PATHS.raiz} element={<ComoLlego />} />
                 <Route path={PATHS.contacto} element={<Contacto />} />
-                <Route
-                  path={PATHS.masInformacion}
-                  element={<MasInformacion />}
-                />
+                <Route path={PATHS.masInformacion} element={<MasInformacion />} />
                 <Route path={PATHS.layers} element={<Layers />} />
                 <Route path={PATHS.temporalsLayers} element={<SelectedLayersSidebar />} />
               </Routes>
