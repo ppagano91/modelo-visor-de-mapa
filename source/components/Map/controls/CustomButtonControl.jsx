@@ -9,6 +9,7 @@ const CustomButtonControl = ({
   onClick: onClickFunction,
   postion,
   buttonStyle,
+  title,
 }) => {
   const map = useMap();
 
@@ -32,6 +33,9 @@ const CustomButtonControl = ({
         }
         if (onClickFunction) {
           element.onclick = onClickFunction;
+        }
+        if (title) {
+          element.title = title;
         }
 
         return element;

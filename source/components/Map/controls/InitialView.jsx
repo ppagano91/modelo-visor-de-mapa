@@ -16,6 +16,7 @@ const InitialView = () => {
       // iconImage={View}
       iconClassName="initial-view-button"
       postion={"bottomright"}
+      title={"Vista Inicial"}
     />
   );
 };
