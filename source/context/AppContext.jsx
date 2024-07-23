@@ -7,6 +7,7 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [activeSection, setActiveSection] = useState(null);
   const [metadataModalShow, setMetadataModalShow] = useState(false);
+  const [geoserviciosModalShow, setGeoserviciosModalShow] = useState(false);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
   const [showTemporalLayers, setShowTemporalLayers] = useState(false);
@@ -56,7 +57,14 @@ export const AppProvider = ({ children }) => {
   const handleMetadataModalClose = () => setMetadataModalShow(false);
 
   const handleMetadataModal = (event, props) => {
+    event.stopPropagation();
     setMetadataModalShow(true);
+  };
+
+  const handleGeoserviciosModalClose = () => setGeoserviciosModalShow(false);
+  const handleGeoserviciosModal = (event, props) => {
+    event.stopPropagation();
+    setGeoserviciosModalShow(true);
   };
 
   const removeLayer = layerToRemove => {
@@ -87,6 +95,9 @@ export const AppProvider = ({ children }) => {
         openSection,
         removeLayer,
         addLayer,
+        handleGeoserviciosModalClose,
+        handleGeoserviciosModal,
+        geoserviciosModalShow,
       }}
     >
       {children}

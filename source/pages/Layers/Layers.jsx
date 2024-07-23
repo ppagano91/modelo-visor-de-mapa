@@ -9,6 +9,7 @@ import { Search } from "@mui/icons-material";
 import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
 import MetadataModal from "../../components/Sidebar/Modals/MetadataModal";
+import GeoserviciosModal from "../../components/Sidebar/Modals/GeoserviciosModal";
 
 const Layers = () => {
   const { handleHits } = useContext(MapLayerContext);
@@ -47,7 +48,7 @@ const Layers = () => {
       try {
         const response = await axios.post(
           `${getEnv("VITE_ELASTICSEARCH_URL")}/services_map/_search`,
-          query,
+          query
         );
 
         if (response.data && response.data.hits) {
@@ -242,6 +243,7 @@ const Layers = () => {
         </div>
       </div>
       <MetadataModal />
+      <GeoserviciosModal />
     </>
   );
 };
