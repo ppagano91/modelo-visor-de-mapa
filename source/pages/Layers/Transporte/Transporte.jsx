@@ -24,31 +24,31 @@ import { AppContext } from "../../../context/AppContext";
 const Transporte = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsTransporte, setItemsTransporte] = useState([]);
-  const [downloadProps, setDownloadProps] = useState(null)
-  const { toggleLayer, setActiveLayers, activeLayers, hits } = useContext(MapLayerContext);
-  const { handleMetadataModal } = useContext(AppContext);
+  const [downloadProps, setDownloadProps] = useState(null);
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
+    useContext(MapLayerContext);
+  const { handleMetadataModal, handleGeoserviciosModal } =
+    useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-          const transporteItems = hits
-            .filter(hit => hit._source.transporte)
-            .flatMap(hit =>
-              (hit._source.transporte.propiedades || [])
-                .filter(propiedad => propiedad !== null)
-                .map(propiedad => ({
-                  id: propiedad.layerProps
-                    ? propiedad.layerProps.name
-                    : `${hit._id}_${propiedad.id}`,
-                  nombre: propiedad.name || "",
-                  icono: renderIcon(propiedad.icon),
-                  layerProps: propiedad.layerProps
-                    ? propiedad.layerProps
-                    : null,
-                }))
-            );
-            
-          setItemsTransporte(transporteItems);
+        const transporteItems = hits
+          .filter(hit => hit._source.transporte)
+          .flatMap(hit =>
+            (hit._source.transporte.propiedades || [])
+              .filter(propiedad => propiedad !== null)
+              .map(propiedad => ({
+                id: propiedad.layerProps
+                  ? propiedad.layerProps.name
+                  : `${hit._id}_${propiedad.id}`,
+                nombre: propiedad.name || "",
+                icono: renderIcon(propiedad.icon),
+                layerProps: propiedad.layerProps ? propiedad.layerProps : null,
+              }))
+          );
+
+        setItemsTransporte(transporteItems);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
@@ -103,17 +103,15 @@ const Transporte = ({ onBack, color }) => {
   const handleModal = (e, layerProps) => {
     e.stopPropagation();
 
-    if (layerProps){
+    if (layerProps) {
       setDownloadProps(layerProps);
-    } else{
+    } else {
       setDownloadProps(null);
     }
     setShowModal(true);
   };
 
   const handleItemClick = (id, layerProps) => {
-
-
     if (layerProps !== null) {
       toggleLayer(layerProps);
     }
@@ -131,7 +129,11 @@ const Transporte = ({ onBack, color }) => {
   return (
     <div>
       {downloadProps && (
-        <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps} />
+        <DownloadModal
+          show={showModal}
+          handleClose={handleModalClose}
+          downloadProps={downloadProps}
+        />
       )}
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
@@ -140,7 +142,9 @@ const Transporte = ({ onBack, color }) => {
         <div className="fs-4 text-light list-group-item">
           Transporte
           <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
-            {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
+            {activeLayers && activeLayers.length
+              ? `${activeLayers.length}`
+              : null}
           </div>
         </div>
         <div></div>
@@ -152,7 +156,7 @@ const Transporte = ({ onBack, color }) => {
         ></button>
       </div>
       <ul className="m-0 p-0">
-        {itemsTransporte.map((item) => {
+        {itemsTransporte.map(item => {
           const isActive = activeLayers && activeLayers.includes(item.id);
           return (
             <div
@@ -180,18 +184,24 @@ const Transporte = ({ onBack, color }) => {
                 <p className="m-0 flex-grow-1">{item.nombre}</p>
               </li>
               <div className="d-flex gap-1 ms-auto">
-                <PublicOutlined style={{ height: "1rem" }} tooltip="Acceso a Geoservicios" />
+                <PublicOutlined
+                  style={{ height: "1rem" }}
+                  tooltip="Acceso a Geoservicios"
+                  onClick={e => {
+                    handleGeoserviciosModal(e, item.layerProps);
+                  }}
+                />
                 <InfoOutlined
                   style={{ height: "1rem" }}
                   tooltip="Info"
-                  onClick={(e) => {
+                  onClick={e => {
                     handleMetadataModal(e, item.layerProps);
                   }}
                 />
                 <CloudDownloadOutlined
                   style={{ height: "1rem" }}
                   tooltip="Descargar Geoservicios"
-                  onClick={(e) => {
+                  onClick={e => {
                     handleModal(e, item.layerProps);
                   }}
                 />
@@ -202,7 +212,6 @@ const Transporte = ({ onBack, color }) => {
       </ul>
     </div>
   );
-}
-  
+};
 
 export default Transporte;

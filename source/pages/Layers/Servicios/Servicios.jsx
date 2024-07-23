@@ -28,30 +28,28 @@ const Servicios = ({ onBack, color }) => {
   const [downloadProps, setDownloadProps] = useState(null);
   const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
-  const { handleMetadataModal } = useContext(AppContext);
+  const { handleMetadataModal, handleGeoserviciosModal } =
+    useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const serviciosItems = hits
+          .filter(hit => hit._source.servicios)
+          .flatMap(hit =>
+            (hit._source.servicios.propiedades || [])
+              .filter(propiedad => propiedad !== null)
+              .map(propiedad => ({
+                id: propiedad.layerProps
+                  ? propiedad.layerProps.name
+                  : `${hit._id}_${propiedad.id}`,
+                nombre: propiedad.name || "",
+                icono: renderIcon(propiedad.icon),
+                layerProps: propiedad.layerProps ? propiedad.layerProps : null,
+              }))
+          );
 
-          const serviciosItems = hits
-            .filter(hit => hit._source.servicios)
-            .flatMap(hit =>
-              (hit._source.servicios.propiedades || [])
-                .filter(propiedad => propiedad !== null)
-                .map(propiedad => ({
-                  id: propiedad.layerProps
-                    ? propiedad.layerProps.name
-                    : `${hit._id}_${propiedad.id}`,
-                  nombre: propiedad.name || "",
-                  icono: renderIcon(propiedad.icon),
-                  layerProps: propiedad.layerProps
-                    ? propiedad.layerProps
-                    : null,
-                }))
-            );
-
-          setItemsServicios(serviciosItems);
+        setItemsServicios(serviciosItems);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
@@ -92,16 +90,15 @@ const Servicios = ({ onBack, color }) => {
   const handleModal = (e, layerProps) => {
     e.stopPropagation();
 
-    if (layerProps){
+    if (layerProps) {
       setDownloadProps(layerProps);
-    } else{
+    } else {
       setDownloadProps(null);
     }
     setShowModal(true);
   };
 
   const handleItemClick = (id, layerProps) => {
-
     if (layerProps !== null) {
       toggleLayer(layerProps);
     }
@@ -118,7 +115,13 @@ const Servicios = ({ onBack, color }) => {
 
   return (
     <div>
-      {downloadProps && <DownloadModal show={showModal} handleClose={handleModalClose} downloadProps={downloadProps}/>}
+      {downloadProps && (
+        <DownloadModal
+          show={showModal}
+          handleClose={handleModalClose}
+          downloadProps={downloadProps}
+        />
+      )}
       <div
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
@@ -160,13 +163,17 @@ const Servicios = ({ onBack, color }) => {
                 <PublicOutlined
                   style={{ height: "16px" }}
                   tooltip="Acceso a Geoservicios"
+                  onClick={e => {
+                    handleGeoserviciosModal(e, item.layerProps);
+                  }}
                 />
                 <InfoOutlined
                   style={{ height: "16px" }}
                   tooltip="Info"
-                  onClick={(e) => {
-                    handleMetadataModal(e, item.layerProps)}}
-                  />
+                  onClick={e => {
+                    handleMetadataModal(e, item.layerProps);
+                  }}
+                />
 
                 <CloudDownloadOutlined
                   style={{ height: "16px" }}
