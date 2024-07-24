@@ -24,7 +24,7 @@ Desde Postman, o alguna otra herramienta, se deberá crear el índice "services_
 ```
 
 #### Cargar Varios Documentos al Indice
-Desde Postman o alunga otra herramienta, se deberán cargar los documentos de [servicios.json](./servicios.json), en el índice creado anteriormente (services_map). Con la siguiente query se debería agregar todos los documentos dentro del índice **services_map**
+Desde Postman o alguna otra herramienta, se deberán cargar los documentos de [agregar_documentos.json](./source/es-json/agregar_documentos.json), en el índice creado anteriormente (services_map). Con la siguiente query se debería agregar todos los documentos dentro del índice **services_map**
 
 Consideraciones a tener en cuenta:
 
@@ -37,12 +37,13 @@ Consideraciones a tener en cuenta:
 ```
 
 #### Cargar un elemento a un Documento específico
-Desde Postman o alunga otra herramienta, se puede agregar un elemento a un Documento específico según su ID. A continuación, se explica como agregar un elemento a una determinada sección.
+Desde Postman o alguna otra herramienta, se puede agregar un elemento a un Documento específico según su ID. A continuación, se explica como agregar un elemento a una determinada sección.
 
 El siguiente ejemplo muestra como agregar un elemento a la sección de Urbanismo, para ello es necesario tener el id del documento (para el caso de Urbanismo es QxQ14ZABGvSghuUxmLIA).
 
 Consideraciones a tener en cuenta:
 - Verificar si el ID es correcto y corresponde al Docuemento que queremos editar.
+- Headers: agregar `Content-Type: application/json`
 - Body: Seleccionar raw-JSON y copiar el contenido del archivo [agregar_elemento.json](./source/es-json/agregar_elemento.json). **Observar detalladamente el script**.
 - Ejecutar la siguiente petición de tipo POST:
 
@@ -53,11 +54,12 @@ POST https://callejero-unico-elasticsearch-dev.gcba.gob.ar/services_map/_update/
 El script "agregar_elemento.json", tiene la estructura para agregar un elemento al documento de Urbanismo. Para agregar un elemento a otro Docuemnto (Transporte, Servicios, Salud, etc), es necesario reemplazar "urbanismo" por el documento que se requiera editar (ejemplo "transporte"). Luego, se debe especificar los atributos del nuevo elemento (**id**, name, layerProps, etc). En caso de no tener información para layerProps colocar "null". Es **Importante** especificar el ID del elemento.
 
 #### Eliminar un elemento de un Documento específico
-Desde Postman o alunga otra herramienta, se puede eliminar un elemento de un Documento específico según su ID. El siguiente ejemplo muestra como eliminar un elemento a la sección de Urbanismo, para ello es necesario tener el ID del documento (para el caso de Urbanismo es QxQ14ZABGvSghuUxmLIA).
+Desde Postman o alguna otra herramienta, se puede eliminar un elemento de un Documento específico según su ID. El siguiente ejemplo muestra como eliminar un elemento a la sección de Urbanismo, para ello es necesario tener el ID del documento (para el caso de Urbanismo es QxQ14ZABGvSghuUxmLIA).
 
 Consideraciones a tener en cuenta:
 - Verificar si el ID es correcto y corresponde al Docuemento que queremos editar.
 - Determinar y verificar el ID del elemento que se desea eliminar.
+- Headers: agregar `Content-Type: application/json`
 - Body: Seleccionar raw-JSON y copiar el contenido del archivo [eliminar_elemento.json](./source/es-json/eliminar_elemento.json). **Observar detalladamente el script**.
 - Ejecutar la siguiente petición de tipo POST:
 
