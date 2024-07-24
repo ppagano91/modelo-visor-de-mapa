@@ -8,6 +8,7 @@ import {
   InfoOutlined,
   LocalParking,
   LocalTaxi,
+  Map,
   PublicOutlined,
   Subway,
   Train,
@@ -94,7 +95,7 @@ const Transporte = ({ onBack, color }) => {
       case "Train":
         return <Train />;
       default:
-        return null;
+        return <Map />;
     }
   };
 

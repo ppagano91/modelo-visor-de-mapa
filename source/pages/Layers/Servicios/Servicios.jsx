@@ -16,6 +16,7 @@ import DownloadModal from "../Modal/DownloadModal";
 import {
   CloudDownloadOutlined,
   InfoOutlined,
+  Map,
   PublicOutlined,
 } from "@mui/icons-material";
 import axios from "axios";
@@ -81,7 +82,7 @@ const Servicios = ({ onBack, color }) => {
       case "FaMapMarkedAlt":
         return <FaMapMarkedAlt />;
       default:
-        return null;
+        return <Map />;
     }
   };
 

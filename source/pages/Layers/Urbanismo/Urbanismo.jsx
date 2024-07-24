@@ -20,6 +20,7 @@ import {
   CloudDownloadOutlined,
   PublicOffOutlined,
   PublicOutlined,
+  Map,
 } from "@mui/icons-material";
 import DownloadModal from "../Modal/DownloadModal";
 import { getEnv } from "../../../config";
@@ -79,7 +80,7 @@ const Urbanismo = ({ onBack, color }) => {
       case "AccountBalance":
         return <AccountBalance />;
       default:
-        return null;
+        return <Map />;
     }
   };
 

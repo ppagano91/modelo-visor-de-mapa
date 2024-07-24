@@ -12,6 +12,7 @@ import {
   CloudDownloadOutlined,
   InfoOutlined,
   PublicOutlined,
+  Map    
 } from "@mui/icons-material";
 import DownloadModal from "../Modal/DownloadModal";
 import { AppContext } from "../../../context/AppContext";
@@ -71,7 +72,7 @@ const Salud = ({ onBack, color }) => {
       case "TbVaccine":
         return <TbVaccine />;
       default:
-        return null;
+        return <Map/>;
     }
   };
 
