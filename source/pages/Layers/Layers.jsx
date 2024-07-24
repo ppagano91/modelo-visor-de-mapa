@@ -221,9 +221,11 @@ const Layers = () => {
             </div>
           )}
           {!searching && filteredSections.length === 0 && (
-            <p className="d-block layer-section-container fs-6 p-2">
-              No se encontraron resultados.
-            </p>
+            <div className="text-center">
+              <p className="d-block layer-section-container fs-6 p-2">
+                No se encontraron resultados.
+              </p>
+            </div>
           )}
           {activeSection !== null && filteredSections[activeSection] && (
             <div
