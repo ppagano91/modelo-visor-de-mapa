@@ -21,30 +21,24 @@ const Salud = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsSalud, setItemsSalud] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits2 } =
     useContext(MapLayerContext);
   const { handleMetadataModal, handleGeoserviciosModal } =
     useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const saludItems = hits
-          .filter(hit => hit._source.salud)
-          .flatMap(hit =>
-            (hit._source.salud.propiedades || [])
-              .filter(propiedad => propiedad !== null)
-              .map(propiedad => ({
-                id: propiedad.layerProps
-                  ? propiedad.layerProps.name
-                  : `${hit._id}_${propiedad.id}`,
-                nombre: propiedad.name || "",
-                icono: renderIcon(propiedad.icon),
-                layerProps: propiedad.layerProps ? propiedad.layerProps : null,
-              }))
-          );
-
-        setItemsSalud(saludItems);
+      try {        
+        const data = Object.keys(hits2)
+        .filter(key => key === 'salud')
+        .reduce((obj, key) => {
+          obj[key] = hits2[key];
+          return obj;
+        }, {});
+        const items = data.salud.elements.map(element => (
+          element
+        ))
+        setItemsSalud(items);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
@@ -53,29 +47,7 @@ const Salud = ({ onBack, color }) => {
     fetchData();
   }, []);
 
-  const renderIcon = iconName => {
-    switch (iconName) {
-      case "FaHospital":
-        return <FaHospital />;
-      case "MdHealthAndSafety":
-        return <MdHealthAndSafety />;
-      case "MdOutlineHealthAndSafety":
-        return <MdOutlineHealthAndSafety />;
-      case "RiHospitalLine":
-        return <RiHospitalLine />;
-      case "FaHospitalUser":
-        return <FaHospitalUser />;
-      case "MdOutlineLocalPharmacy":
-        return <MdOutlineLocalPharmacy />;
-      case "FaHospitalSymbol":
-        return <FaHospitalSymbol />;
-      case "TbVaccine":
-        return <TbVaccine />;
-      default:
-        return <Map/>;
-    }
-  };
-
+  
   const handleModalClose = () => setShowModal(false);
 
   const handleModal = (e, layerProps) => {
@@ -140,36 +112,36 @@ const Salud = ({ onBack, color }) => {
               key={item.id}
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              title={item.nombre}
-              onClick={() => handleItemClick(item.id, item.layerProps)}
+              title={item.name}
+              onClick={() => handleItemClick(item.id, item.props)}
             >
               <input
                 type="checkbox"
                 checked={isActive}
-                onChange={() => handleItemClick(item.id, item.layerProps)}
+                onChange={() => handleItemClick(item.id, item.props)}
               />
               {item.icono}
-              <p className="m-0">{item.nombre}</p>
+              <p className="m-0">{item.name}</p>
               <div className="d-flex gap-1 ms-auto">
                 <PublicOutlined
                   style={{ height: "16px" }}
                   tooltip="Acceso a Geoservicios"
                   onClick={e => {
-                    handleGeoserviciosModal(e, item.layerProps);
+                    handleGeoserviciosModal(e, item.props);
                   }}
                 />
                 <InfoOutlined
                   style={{ height: "16px" }}
                   tooltip="Info"
                   onClick={e => {
-                    handleMetadataModal(e, item.layerProps);
+                    handleMetadataModal(e, item.props);
                   }}
                 />
 
                 <CloudDownloadOutlined
                   style={{ height: "16px" }}
                   tooltip="Descargar Geoservicios"
-                  onClick={e => handleModal(e, item.layerProps)}
+                  onClick={e => handleModal(e, item.props)}
                 />
               </div>
             </li>

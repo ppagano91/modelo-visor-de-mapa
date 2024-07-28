@@ -25,23 +25,31 @@ const Layers = () => {
       setSearching(true);
       const query = searchTerm
         ? {
-            query: {
-              multi_match: {
-                query: searchTerm,
-                fields: [
-                  "urbanismo.propiedades.name",
-                  "urbanismo.propiedades.description",
-                  "transporte.propiedades.name",
-                  "transporte.propiedades.description",
-                  "salud.propiedades.name",
-                  "salud.propiedades.description",
-                  "servicios.propiedades.name",
-                  "servicios.propiedades.description",
-                ],
-                fuzziness: "AUTO",
-              },
-            },
-          }
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "match": {
+                    "tag.default": "VISOR"
+                  }
+                }
+              ],
+              should: [
+                {
+                    match: {
+                        "resourceAbstractObject.default": searchTerm
+                    }
+                },
+                {
+                    match: {
+                        "resourceTitleObject.default": searchTerm
+                    }
+                }
+            ],
+            }
+          },
+          "size":100
+        }
         : {
             query: {
               match_all: {},
@@ -66,84 +74,107 @@ const Layers = () => {
                       "tag.default": "VISOR"
                     }
                   }
-                ]
+                ],
+                should: [
+                  {
+                      match: {
+                          "resourceAbstractObject.default": "Antenas de la Ciudad de Buenos Aires"
+                      }
+                  },
+                  {
+                      match: {
+                          "resourceTitleObject.default": "Antenas CABA"
+                      }
+                  }
+              ],
               }
-            }
+            },
+            "size":100
           }
           // `${getEnv("VITE_ELASTICSEARCH_GEO")}/gn-records/_search/`
         );
         
-        if (response.data && response.data.hits) {
-          const hits = response.data.hits.hits;          
-          handleHits(hits);
+        if (gnRecords.data && gnRecords.data.hits) {
+          // const hits = response.data.hits.hits;          
+          // handleHits(hits);
 
           const records = gnRecords.data.hits.hits;          
           
-          const elements = records?.map((doc) => {
+          const elements = records?.flatMap((doc) => {
             const layerProps = Array.isArray(doc._source.link)
                 ? doc._source.link.find(link => link.protocol === "OGC:WMS" && link.function === "information")
                 : null;
-            
+        
             const metadata = Array.isArray(doc._source.link)
                 ? doc._source.link.find(link => link.protocol === "WWW:LINK-1.0-http--link")
                 : null;
-
-            const groupPublished = Array.isArray(doc._source.groupPublished)
-                ? doc._source.groupPublished[0]
-                : doc._source.groupPublished;
-            
-            let groupPublishedId = Array.isArray(doc._source.groupPublishedId)
-                ? doc._source.groupPublishedId[0]
-                : doc._source.groupPublishedId;
-
-            // console.log(doc._source.groupPublished)
         
-            return {
-                sectionId: groupPublishedId,
-                id: doc._source.metadataIdentifier,
-                name: doc._source.resourceTitleObject.default,
-                description: doc._source.resourceAbstractObject.default,
-                props: layerProps ? {
-                    url: layerProps.urlObject?.default || "",
-                    name: layerProps.nameObject?.default || "",
-                    description: layerProps.descriptionObject?.default || "",
-                    attribution: ""
-                } : {
-                    url: "",
-                    name: "",
-                    description: "",
-                    attribution: ""
-                },
-                metadata: metadata ? {
-                    url: metadata.urlObject?.default || "",
-                    name: metadata.nameObject?.default || "",
-                    description: metadata.descriptionObject?.default || "",
-                    attribution: ""
-                } : {
-                    url: "",
-                    name: "",
-                    description: "",
-                    attribution: ""
-                },
-                section: groupPublished
-                };
-            });          
-
-          const groupedBySection = elements.reduce((acc, obj) => {
+            const groupPublished = Array.isArray(doc._source.groupPublished)
+                ? doc._source.groupPublished
+                : [doc._source.groupPublished];
+        
+            const groupPublishedId = Array.isArray(doc._source.groupPublishedId)
+                ? doc._source.groupPublishedId
+                : [doc._source.groupPublishedId];
+        
+            // Definimos las opciones a considerar
+            const options = ["transporte", "servicios", "salud", "urbanismo", "otros"];
+        
+            // Mapeamos los elementos desglosados por opción que coincida
+            return groupPublished.flatMap((section, index) => {
+                if (options.includes(section)) {
+                    return {
+                        sectionId: groupPublishedId[index],
+                        id: doc._source.metadataIdentifier,
+                        name: doc._source.resourceTitleObject.default,
+                        description: doc._source.resourceAbstractObject.default,
+                        props: layerProps ? {
+                            url: layerProps.urlObject?.default || "",
+                            name: layerProps.nameObject?.default || "",
+                            description: layerProps.descriptionObject?.default || "",
+                            attribution: ""
+                        } : {
+                            url: "",
+                            name: "",
+                            description: "",
+                            attribution: ""
+                        },
+                        metadata: metadata ? {
+                            url: metadata.urlObject?.default || "",
+                            name: metadata.nameObject?.default || "",
+                            description: metadata.descriptionObject?.default || "",
+                            attribution: ""
+                        } : {
+                            url: "",
+                            name: "",
+                            description: "",
+                            attribution: ""
+                        },
+                        section: section
+                    };
+                } else {
+                    return [];
+                }
+            });
+        });
+        
+        const groupedBySection = elements.reduce((acc, obj) => {
             const section = obj.section;
-          
+        
             if (!acc[section]) {
-
-              acc[section] = {
-                id: Number(obj.sectionId),
-                description: findSectionDescription(section),
-                elements: []
-              };
+                acc[section] = {
+                    id: Number(obj.sectionId),
+                    description: findSectionDescription(section),
+                    elements: []
+                };
             }
-          
+        
             acc[section].elements.push(obj);
             return acc;
-          }, {});
+        }, {});
+        
+        console.log(groupedBySection);
+        
 
           // console.log("groupedBySection:", groupedBySection);
 

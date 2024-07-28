@@ -44,20 +44,6 @@ const Transporte = ({ onBack, color }) => {
           element
         ))
         // console.log(items)
-        const transporteItems = hits
-          .filter(hit => hit._source.transporte)
-          .flatMap(hit =>
-            (hit._source.transporte.propiedades || [])
-              .filter(propiedad => propiedad !== null)
-              .map(propiedad => ({
-                id: propiedad.layerProps
-                  ? propiedad.layerProps.name
-                  : `${hit._id}_${propiedad.id}`,
-                nombre: propiedad.name || "",
-                icono: renderIcon(propiedad.icon),
-                layerProps: propiedad.layerProps ? propiedad.layerProps : null,
-              }))
-          );
           // console.log(transporteItems)
         setItemsTransporte(items);
       } catch (error) {
@@ -67,48 +53,6 @@ const Transporte = ({ onBack, color }) => {
 
     fetchData();
   }, []);
-
-  const renderIcon = iconName => {
-    switch (iconName) {
-      case "FaRoad":
-        return <FaRoad />;
-      case "FaTrain":
-        return <FaTrain />;
-      case "FaSubway":
-        return <FaSubway />;
-      case "FaTram":
-        return <FaTram />;
-      case "FaBus":
-        return <FaBus />;
-      case "FaBusAlt":
-        return <FaBusAlt />;
-      case "FaTaxi":
-        return <FaTaxi />;
-      case "FaParking":
-        return <FaParking />;
-      case "DirectionsBike":
-        return <DirectionsBike />;
-      case "ElectricBike":
-        return <ElectricBike />;
-      case "DirectionsTransit":
-        return <DirectionsTransit />;
-      case "DirectionsBus":
-        return <DirectionsBus />;
-      case "LocalTaxi":
-        return <LocalTaxi />;
-      case "LocalParking":
-        return <LocalParking />;
-      case "BiSolidTrafficBarrier":
-        return <BiSolidTrafficBarrier />;
-      case "Subway":
-        return <Subway />;
-      case "Train":
-        return <Train />;
-      default:
-        // return <Map />;
-        return null;
-    }
-  };
 
   const handleModalClose = () => setShowModal(false);
 
