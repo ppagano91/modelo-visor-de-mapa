@@ -1,16 +1,21 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PATHS } from "../utils/consts/paths";
+import Urbanismo from "../pages/Layers/Urbanismo/Urbanismo";
+import Transporte from "../pages/Layers/Transporte/Transporte";
+import Salud from "../pages/Layers/Salud/Salud";
+import Servicios from "../pages/Layers/Servicios/Servicios";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [activeSection, setActiveSection] = useState(null);
+  const [activeSectionName, setActiveSectionName] = useState(null);
   const [metadataModalShow, setMetadataModalShow] = useState(false);
   const [geoserviciosModalShow, setGeoserviciosModalShow] = useState(false);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
-  const [showTemporalLayers, setShowTemporalLayers] = useState(false);
+  const [showTemporalLayers, setShowTemporalLayers] = useState(false);  
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -67,8 +72,53 @@ export const AppProvider = ({ children }) => {
     setGeoserviciosModalShow(true);
   };
 
-  const removeLayer = layerToRemove => {
-    setSelectedLayers(selectedLayers.filter(layer => layer !== layerToRemove));
+  const handleActiveSectionName = (sectionName) => {
+    setActiveSectionName(prevState => sectionName);
+  }
+
+
+
+  const getComponentByName = (name, source) => {
+    switch (name.toLowerCase()) {
+      case "urbanismo":
+        return (
+          <Urbanismo
+            onBack={() => setActiveSectionName(null)}
+            color={"#FF5733"}
+            activeLayers={source.propiedades}
+            setActiveLayers={() => {}}
+          />
+        );
+      case "transporte":
+        return (
+          <Transporte
+            onBack={() => setActiveSectionName(null)}
+            color={"#0dcaf0"}
+            activeTransporteLayers={source.propiedades}
+            setActiveTransporteLayers={() => {}}
+          />
+        );
+      case "salud":
+        return (
+          <Salud
+            onBack={() => setActiveSectionName(null)}
+            color={"#3357FF"}
+            activeSaludLayers={source.propiedades}
+            setActiveSaludLayers={() => {}}
+          />
+        );
+      case "servicios":
+        return (
+          <Servicios
+            onBack={() => setActiveSectionName(null)}
+            color={"#FF33A1"}
+            activeServiciosLayers={source.propiedades}
+            setActiveServiciosLayers={() => {}}
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   useEffect(() => {
@@ -93,11 +143,13 @@ export const AppProvider = ({ children }) => {
         handleMetadataModalClose,
         setShowTemporalLayers,
         openSection,
-        removeLayer,
         addLayer,
         handleGeoserviciosModalClose,
         handleGeoserviciosModal,
         geoserviciosModalShow,
+        getComponentByName,
+        activeSectionName,
+        handleActiveSectionName,
       }}
     >
       {children}

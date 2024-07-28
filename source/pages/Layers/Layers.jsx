@@ -10,10 +10,12 @@ import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
 import MetadataModal from "../../components/Sidebar/Modals/MetadataModal";
 import GeoserviciosModal from "../../components/Sidebar/Modals/GeoserviciosModal";
+import { findSectionDescription } from "../../utils/temp";
+import { AppContext } from "../../context/AppContext";
 
 const Layers = () => {
-  const { handleHits } = useContext(MapLayerContext);
-  const [activeSection, setActiveSection] = useState(null);
+  const { handleHits, handleHits2 } = useContext(MapLayerContext);
+  const { getComponentByName, activeSectionName, handleActiveSectionName } = useContext(AppContext);  
   const [searchTerm, setSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
   const [sections, setSections] = useState([]);
@@ -45,15 +47,81 @@ const Layers = () => {
               match_all: {},
             },
           };
-      try {
+      try {        
         const response = await axios.post(
           `${getEnv("VITE_ELASTICSEARCH_URL")}/services_map/_search`,
           query
         );
 
+        // console.log(`${getEnv("VITE_ELASTICSEARCH_GEO")}/gn-records/_search/`)
+
+        const gnRecords = await axios.post(
+          `${getEnv("VITE_ELASTICSEARCH_URL")}/gn-records/_search/`,
+          {
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "tag.default": "VISOR"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+          // `${getEnv("VITE_ELASTICSEARCH_GEO")}/gn-records/_search/`
+        );
+        
         if (response.data && response.data.hits) {
-          const hits = response.data.hits.hits;
+          const hits = response.data.hits.hits;          
           handleHits(hits);
+
+          const records = gnRecords.data.hits.hits;
+          
+          const elements = records?.map((doc)=>{
+
+            const layerProps = doc._source.link.find(link => link.protocol === "OGC:WMS" && link.function === "information");            
+            const metadata = doc._source.link.find(link => link.protocol === "WWW:LINK-1.0-http--link");
+
+            
+            return {
+              id: doc._source.metadataIdentifier,
+              name: doc._source.resourceTitleObject.default,
+              description: doc._source.resourceAbstractObject.default,
+              props: {
+                url: layerProps.urlObject.default,
+                name: layerProps.nameObject.default,
+                description: layerProps.descriptionObject.default,
+                attribution: ""
+              },
+              metadata: {
+                url: metadata?.urlObject.default,
+                name: metadata?.nameObject.default,
+                description: metadata?.descriptionObject.default,
+                attribution: ""
+              },
+              section: doc._source.groupPublished
+            }
+          })
+
+          const groupedBySection = elements.reduce((acc, obj) => {
+            const section = obj.section;
+          
+            if (!acc[section]) {
+              acc[section] = {
+                description: findSectionDescription(section),
+                elements: []
+              };
+            }
+          
+            acc[section].elements.push(obj);
+            return acc;
+          }, {});
+
+          console.log("groupedBySection:", groupedBySection);
+
+          handleHits2(groupedBySection);
 
           const newSections = hits.flatMap(hit => {
             const source = hit._source;
@@ -66,68 +134,26 @@ const Layers = () => {
               borderColor: getColorByName(key),
             }));
           });
+          console.log("newSections:",newSections);
           setSections(newSections);
-          setActiveSection(null);
+          handleActiveSectionName(null);
         } else {
           setSections([]);
-          setActiveSection(null);
+          handleActiveSectionName(null);
         }
         setSearching(false);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
         setSections([]);
-        setActiveSection(null);
+        handleActiveSectionName(null);
       }
     };
 
     fetchData();
   }, [searchTerm]);
 
-  const getComponentByName = (name, source) => {
-    switch (name.toLowerCase()) {
-      case "urbanismo":
-        return (
-          <Urbanismo
-            onBack={() => setActiveSection(null)}
-            color={"#FF5733"}
-            activeLayers={source.propiedades}
-            setActiveLayers={() => {}}
-          />
-        );
-      case "transporte":
-        return (
-          <Transporte
-            onBack={() => setActiveSection(null)}
-            color={"#0dcaf0"}
-            activeTransporteLayers={source.propiedades}
-            setActiveTransporteLayers={() => {}}
-          />
-        );
-      case "salud":
-        return (
-          <Salud
-            onBack={() => setActiveSection(null)}
-            color={"#3357FF"}
-            activeSaludLayers={source.propiedades}
-            setActiveSaludLayers={() => {}}
-          />
-        );
-      case "servicios":
-        return (
-          <Servicios
-            onBack={() => setActiveSection(null)}
-            color={"#FF33A1"}
-            activeServiciosLayers={source.propiedades}
-            setActiveServiciosLayers={() => {}}
-          />
-        );
-      default:
-        return null;
-    }
-  };
-
   const handleSectionClick = id => {
-    setActiveSection(activeSection === id ? null : id);
+    handleActiveSectionName(activeSectionName === id ? null : id);
   };
 
   const handleSearchChange = e => {
@@ -227,7 +253,7 @@ const Layers = () => {
               </p>
             </div>
           )}
-          {activeSection !== null && filteredSections[activeSection] && (
+          {activeSectionName !== null && filteredSections[activeSectionName] && (
             <div
               className="section-content"
               style={{
@@ -239,7 +265,7 @@ const Layers = () => {
                 overflow: "auto",
               }}
             >
-              {filteredSections[activeSection].component}
+              {filteredSections[activeSectionName].component}
             </div>
           )}
         </div>

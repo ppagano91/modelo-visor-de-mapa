@@ -16,24 +16,34 @@ import {
 import { BiSolidTrafficBarrier } from "react-icons/bi";
 import "../../../styles/Layers/Transporte/transporte.css";
 import { useContext, useState, useEffect } from "react";
-import axios from "axios";
 import { MapLayerContext } from "../../../context/MapLayerContext";
 import DownloadModal from "../Modal/DownloadModal";
-import { getEnv } from "../../../config";
 import { AppContext } from "../../../context/AppContext";
 
 const Transporte = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsTransporte, setItemsTransporte] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits, hits2 } =
     useContext(MapLayerContext);
   const { handleMetadataModal, handleGeoserviciosModal } =
     useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
+      try {        
+        const data = Object.keys(hits2)
+        .filter(key => key === 'transporte')
+        .reduce((obj, key) => {
+          obj[key] = hits2[key];
+          return obj;
+        }, {});
+        
+        console.log(data);
+        const items = data.transporte.elements.map(element => (
+          element
+        ))
+        console.log(items)
         const transporteItems = hits
           .filter(hit => hit._source.transporte)
           .flatMap(hit =>
@@ -48,8 +58,8 @@ const Transporte = ({ onBack, color }) => {
                 layerProps: propiedad.layerProps ? propiedad.layerProps : null,
               }))
           );
-
-        setItemsTransporte(transporteItems);
+          console.log(transporteItems)
+        setItemsTransporte(items);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
@@ -95,7 +105,8 @@ const Transporte = ({ onBack, color }) => {
       case "Train":
         return <Train />;
       default:
-        return <Map />;
+        // return <Map />;
+        return null;
     }
   };
 
@@ -169,9 +180,8 @@ const Transporte = ({ onBack, color }) => {
                 className="d-flex align-items-center flex-grow-1 gap-2 m-1 p-1 list-item"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
-                title={item.nombre}
-                option={item.opciones}
-                onClick={() => handleItemClick(item.id, item.layerProps)}
+                title={item.name}
+                onClick={() => handleItemClick(item.id, item.props)}
                 style={{
                   cursor: "pointer",
                   backgroundColor: isActive ? "#f0f0f0" : "transparent",
@@ -181,29 +191,29 @@ const Transporte = ({ onBack, color }) => {
                 }}
               >
                 <input type="checkbox" checked={isActive} readOnly />
-                {item.icono}
-                <p className="m-0 flex-grow-1">{item.nombre}</p>
+                {/* {item.icono} */}
+                <p className="m-0 flex-grow-1">{item.name}</p>
               </li>
               <div className="d-flex gap-1 ms-auto">
                 <PublicOutlined
                   style={{ height: "1rem" }}
                   tooltip="Acceso a Geoservicios"
                   onClick={e => {
-                    handleGeoserviciosModal(e, item.layerProps);
+                    handleGeoserviciosModal(e, item.props);
                   }}
                 />
                 <InfoOutlined
                   style={{ height: "1rem" }}
                   tooltip="Info"
                   onClick={e => {
-                    handleMetadataModal(e, item.layerProps);
+                    handleMetadataModal(e, item.props);
                   }}
                 />
                 <CloudDownloadOutlined
                   style={{ height: "1rem" }}
                   tooltip="Descargar Geoservicios"
                   onClick={e => {
-                    handleModal(e, item.layerProps);
+                    handleModal(e, item.props);
                   }}
                 />
               </div>

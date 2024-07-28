@@ -38,9 +38,9 @@ const AddBaseLayerToMap = () => {
         request: 'GetFeatureInfo',
         format: 'image/png',
         transparent: true,
-        query_layers: layer.layers,
+        query_layers: layer.name,
         styles: '',
-        layers: layer.layers,
+        layers: layer.name,
         exceptions: 'application/vnd.ogc.se_inimage',
         info_format: 'application/json',
         feature_count: 50,
@@ -82,7 +82,7 @@ const AddBaseLayerToMap = () => {
   useEffect(() => {
     const wmsLayers = layers.map((layer) => {
       const wmsLayer = L.tileLayer.wms(layer.url, {
-        layers: layer.layers,
+        layers: layer.name,
         format: 'image/png',
         transparent: true,
         zIndex: 10,

@@ -82,7 +82,8 @@ const Servicios = ({ onBack, color }) => {
       case "FaMapMarkedAlt":
         return <FaMapMarkedAlt />;
       default:
-        return <Map />;
+        return null;
+        // return <Map />;
     }
   };
 
