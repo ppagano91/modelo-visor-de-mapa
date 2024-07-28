@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const DownloadModal = ({ show, handleClose, downloadProps }) => {
+const DownloadModal = ({ show, handleClose, downloadProps }) => {  
   const handleDownload = (format) => {
     const wfsUrl = `${downloadProps.url.replace('/wms?', '/wfs')}`;
     const params = new URLSearchParams({

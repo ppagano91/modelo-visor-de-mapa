@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 
 const MetadataModal = () => {
-  const { metadataModalShow, handleMetadataModalClose } =
+  const { metadataModalShow, metadata, handleMetadataModalClose } =
     useContext(AppContext);
+  console.log(metadata)
   return (
     <Modal
       show={metadataModalShow}
@@ -13,13 +14,13 @@ const MetadataModal = () => {
       dialogClassName="modal-l"
     >
       <Modal.Header className="bg-warning p-2 fw-bolder px-3" closeButton>
-        <Modal.Title className="h5 fw-bold">Metadata</Modal.Title>
+        <Modal.Title className="h5 fw-bold">{metadata.name || "Metadata"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="fw-bold">
           Resumen:{" "}
           <span className="fw-normal">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, quam.
+            {metadata.description || "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, quam."}
           </span>
         </p>
         <p className="fw-bold">
@@ -31,7 +32,7 @@ const MetadataModal = () => {
         </p>
         <p>
           <a
-            href={"#"}
+            href={metadata.url||"#"}
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: "none" }}

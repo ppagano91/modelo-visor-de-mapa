@@ -27,14 +27,26 @@ const Servicios = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsServicios, setItemsServicios] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits, hits2 } =
     useContext(MapLayerContext);
   const { handleMetadataModal, handleGeoserviciosModal } =
     useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(hits2)
       try {
+        const data = Object.keys(hits2)
+        .filter(key => key === 'servicios')
+        .reduce((obj, key) => {
+          obj[key] = hits2[key];
+          return obj;
+        }, {});
+
+        const items = data.servicios.elements.map(element => (
+          element
+        ))
+
         const serviciosItems = hits
           .filter(hit => hit._source.servicios)
           .flatMap(hit =>
@@ -50,7 +62,7 @@ const Servicios = ({ onBack, color }) => {
               }))
           );
 
-        setItemsServicios(serviciosItems);
+        setItemsServicios(items);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
       }
@@ -151,36 +163,36 @@ const Servicios = ({ onBack, color }) => {
               key={item.id}
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              title={item.nombre}
-              onClick={() => handleItemClick(item.id, item.layerProps)}
+              title={item.name}
+              onClick={() => handleItemClick(item.id, item.props)}
             >
               <input
                 type="checkbox"
                 checked={isActive}
-                onChange={() => handleItemClick(item.id, item.layerProps)}
+                onChange={() => handleItemClick(item.id, item.props)}
               />
-              {item.icono}
-              <p className="m-0">{item.nombre}</p>
+              {/* {item.icono} */}
+              <p className="m-0">{item.name}</p>
               <div className="d-flex gap-1 ms-auto">
                 <PublicOutlined
                   style={{ height: "16px" }}
                   tooltip="Acceso a Geoservicios"
                   onClick={e => {
-                    handleGeoserviciosModal(e, item.layerProps);
+                    handleGeoserviciosModal(e, item.props);
                   }}
                 />
                 <InfoOutlined
                   style={{ height: "16px" }}
                   tooltip="Info"
                   onClick={e => {
-                    handleMetadataModal(e, item.layerProps);
+                    handleMetadataModal(e, item.metadata);
                   }}
                 />
 
                 <CloudDownloadOutlined
                   style={{ height: "16px" }}
                   tooltip="Descargar Geoservicios"
-                  onClick={e => handleModal(e, item.layerProps)}
+                  onClick={e => handleModal(e, item.props)}
                 />
               </div>
             </li>

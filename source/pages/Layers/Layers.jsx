@@ -77,39 +77,65 @@ const Layers = () => {
           const hits = response.data.hits.hits;          
           handleHits(hits);
 
-          const records = gnRecords.data.hits.hits;
+          const records = gnRecords.data.hits.hits;          
           
-          const elements = records?.map((doc)=>{
-
-            const layerProps = doc._source.link.find(link => link.protocol === "OGC:WMS" && link.function === "information");            
-            const metadata = doc._source.link.find(link => link.protocol === "WWW:LINK-1.0-http--link");
-
+          const elements = records?.map((doc) => {
+            const layerProps = Array.isArray(doc._source.link)
+                ? doc._source.link.find(link => link.protocol === "OGC:WMS" && link.function === "information")
+                : null;
             
+            const metadata = Array.isArray(doc._source.link)
+                ? doc._source.link.find(link => link.protocol === "WWW:LINK-1.0-http--link")
+                : null;
+
+            const groupPublished = Array.isArray(doc._source.groupPublished)
+                ? doc._source.groupPublished[0]
+                : doc._source.groupPublished;
+            
+            let groupPublishedId = Array.isArray(doc._source.groupPublishedId)
+                ? doc._source.groupPublishedId[0]
+                : doc._source.groupPublishedId;
+
+            // console.log(doc._source.groupPublished)
+        
             return {
-              id: doc._source.metadataIdentifier,
-              name: doc._source.resourceTitleObject.default,
-              description: doc._source.resourceAbstractObject.default,
-              props: {
-                url: layerProps.urlObject.default,
-                name: layerProps.nameObject.default,
-                description: layerProps.descriptionObject.default,
-                attribution: ""
-              },
-              metadata: {
-                url: metadata?.urlObject.default,
-                name: metadata?.nameObject.default,
-                description: metadata?.descriptionObject.default,
-                attribution: ""
-              },
-              section: doc._source.groupPublished
-            }
-          })
+                sectionId: groupPublishedId,
+                id: doc._source.metadataIdentifier,
+                name: doc._source.resourceTitleObject.default,
+                description: doc._source.resourceAbstractObject.default,
+                props: layerProps ? {
+                    url: layerProps.urlObject?.default || "",
+                    name: layerProps.nameObject?.default || "",
+                    description: layerProps.descriptionObject?.default || "",
+                    attribution: ""
+                } : {
+                    url: "",
+                    name: "",
+                    description: "",
+                    attribution: ""
+                },
+                metadata: metadata ? {
+                    url: metadata.urlObject?.default || "",
+                    name: metadata.nameObject?.default || "",
+                    description: metadata.descriptionObject?.default || "",
+                    attribution: ""
+                } : {
+                    url: "",
+                    name: "",
+                    description: "",
+                    attribution: ""
+                },
+                section: groupPublished
+                };
+            });          
 
           const groupedBySection = elements.reduce((acc, obj) => {
             const section = obj.section;
           
             if (!acc[section]) {
+
               acc[section] = {
+                id: Number(obj.sectionId),
                 description: findSectionDescription(section),
                 elements: []
               };
@@ -119,22 +145,19 @@ const Layers = () => {
             return acc;
           }, {});
 
-          console.log("groupedBySection:", groupedBySection);
+          // console.log("groupedBySection:", groupedBySection);
 
           handleHits2(groupedBySection);
+          // console.log("hits:", hits);
 
-          const newSections = hits.flatMap(hit => {
-            const source = hit._source;
-            if (!source) return [];
-            return Object.entries(source).map(([key, value]) => ({
-              name: key.charAt(0).toUpperCase() + key.slice(1),
+          const newSections = Object.entries(groupedBySection).map(([key, value]) => ({
+              name: key.charAt(0).toUpperCase() + key.substring(1),
               description: value.description,
-              propiedades: value.propiedades,
+              elements: value.elements || [],
               component: getComponentByName(key, value),
               borderColor: getColorByName(key),
             }));
-          });
-          console.log("newSections:",newSections);
+          // console.log("newSections:",newSections);
           setSections(newSections);
           handleActiveSectionName(null);
         } else {
@@ -171,13 +194,13 @@ const Layers = () => {
       case "servicios":
         return "#FF33A1";
       default:
-        return "#000000";
+        return "#123456";
     }
   };
 
   const filteredSections = sections
     .map(section => {
-      const filteredItems = section.propiedades.filter(
+      const filteredItems = section.elements.filter(
         propiedad =>
           (propiedad.name &&
             propiedad.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -186,10 +209,10 @@ const Layers = () => {
               .toLowerCase()
               .includes(searchTerm.toLowerCase()))
       );
-      return { ...section, propiedades: filteredItems };
+      return { ...section, elements: filteredItems };
     })
     .filter(
-      section => section.propiedades.length > 0 || searchTerm.trim() === ""
+      section => section.elements.length > 0 || searchTerm.trim() === ""
     );
 
   return (

@@ -1,26 +1,15 @@
-import { FaRoad } from "react-icons/fa";
 import {
   CloudDownloadOutlined,
-  DirectionsBike,
-  DirectionsBus,
-  DirectionsTransit,
-  ElectricBike,
   InfoOutlined,
-  LocalParking,
-  LocalTaxi,
-  Map,
   PublicOutlined,
-  Subway,
-  Train,
 } from "@mui/icons-material";
-import { BiSolidTrafficBarrier } from "react-icons/bi";
 import "../../../styles/Layers/Transporte/transporte.css";
 import { useContext, useState, useEffect } from "react";
 import { MapLayerContext } from "../../../context/MapLayerContext";
 import DownloadModal from "../Modal/DownloadModal";
 import { AppContext } from "../../../context/AppContext";
 
-const Transporte = ({ onBack, color }) => {
+const Otros = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsTransporte, setItemsTransporte] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
@@ -33,32 +22,17 @@ const Transporte = ({ onBack, color }) => {
     const fetchData = async () => {
       try {        
         const data = Object.keys(hits2)
-        .filter(key => key === 'transporte')
+        .filter(key => key === 'otros')
         .reduce((obj, key) => {
           obj[key] = hits2[key];
           return obj;
         }, {});
         
-        // console.log(data);
-        const items = data.transporte.elements.map(element => (
+        console.log(data);
+        const items = data.otros.elements.map(element => (
           element
         ))
-        // console.log(items)
-        const transporteItems = hits
-          .filter(hit => hit._source.transporte)
-          .flatMap(hit =>
-            (hit._source.transporte.propiedades || [])
-              .filter(propiedad => propiedad !== null)
-              .map(propiedad => ({
-                id: propiedad.layerProps
-                  ? propiedad.layerProps.name
-                  : `${hit._id}_${propiedad.id}`,
-                nombre: propiedad.name || "",
-                icono: renderIcon(propiedad.icon),
-                layerProps: propiedad.layerProps ? propiedad.layerProps : null,
-              }))
-          );
-          // console.log(transporteItems)
+        console.log(items)
         setItemsTransporte(items);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
@@ -67,48 +41,6 @@ const Transporte = ({ onBack, color }) => {
 
     fetchData();
   }, []);
-
-  const renderIcon = iconName => {
-    switch (iconName) {
-      case "FaRoad":
-        return <FaRoad />;
-      case "FaTrain":
-        return <FaTrain />;
-      case "FaSubway":
-        return <FaSubway />;
-      case "FaTram":
-        return <FaTram />;
-      case "FaBus":
-        return <FaBus />;
-      case "FaBusAlt":
-        return <FaBusAlt />;
-      case "FaTaxi":
-        return <FaTaxi />;
-      case "FaParking":
-        return <FaParking />;
-      case "DirectionsBike":
-        return <DirectionsBike />;
-      case "ElectricBike":
-        return <ElectricBike />;
-      case "DirectionsTransit":
-        return <DirectionsTransit />;
-      case "DirectionsBus":
-        return <DirectionsBus />;
-      case "LocalTaxi":
-        return <LocalTaxi />;
-      case "LocalParking":
-        return <LocalParking />;
-      case "BiSolidTrafficBarrier":
-        return <BiSolidTrafficBarrier />;
-      case "Subway":
-        return <Subway />;
-      case "Train":
-        return <Train />;
-      default:
-        // return <Map />;
-        return null;
-    }
-  };
 
   const handleModalClose = () => setShowModal(false);
 
@@ -152,7 +84,7 @@ const Transporte = ({ onBack, color }) => {
         style={{ backgroundColor: `${color}` }}
       >
         <div className="fs-4 text-light list-group-item">
-          Transporte
+          Otros
           <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
             {activeLayers && activeLayers.length
               ? `${activeLayers.length}`
@@ -225,4 +157,4 @@ const Transporte = ({ onBack, color }) => {
   );
 };
 
-export default Transporte;
+export default Otros;

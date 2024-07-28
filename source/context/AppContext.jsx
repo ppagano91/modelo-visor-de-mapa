@@ -5,6 +5,7 @@ import Urbanismo from "../pages/Layers/Urbanismo/Urbanismo";
 import Transporte from "../pages/Layers/Transporte/Transporte";
 import Salud from "../pages/Layers/Salud/Salud";
 import Servicios from "../pages/Layers/Servicios/Servicios";
+import Otros from "../pages/Layers/Otros/Otros";
 
 export const AppContext = createContext();
 
@@ -12,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [activeSection, setActiveSection] = useState(null);
   const [activeSectionName, setActiveSectionName] = useState(null);
   const [metadataModalShow, setMetadataModalShow] = useState(false);
+  const [metadata, setMetadata] = useState({});
   const [geoserviciosModalShow, setGeoserviciosModalShow] = useState(false);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
@@ -59,11 +61,15 @@ export const AppProvider = ({ children }) => {
     navigate(page);
   };
 
-  const handleMetadataModalClose = () => setMetadataModalShow(false);
+  const handleMetadataModalClose = () => {
+    setMetadataModalShow(false);
+    setMetadata({});
+  };
 
-  const handleMetadataModal = (event, props) => {
+  const handleMetadataModal = (event, data) => {
     event.stopPropagation();
     setMetadataModalShow(true);
+    setMetadata(prevState => data);
   };
 
   const handleGeoserviciosModalClose = () => setGeoserviciosModalShow(false);
@@ -116,6 +122,15 @@ export const AppProvider = ({ children }) => {
             setActiveServiciosLayers={() => {}}
           />
         );
+      case "otros":
+        return (
+          <Otros
+            onBack={() => setActiveSectionName(null)}
+            color={"#123456"}
+            activeServiciosLayers={source.propiedades}
+            setActiveServiciosLayers={() => {}}
+          />
+        );
       default:
         return null;
     }
@@ -132,12 +147,14 @@ export const AppProvider = ({ children }) => {
       value={{
         activeSection,
         lastActiveSection,
+        metadata,
         metadataModalShow,
+        geoserviciosModalShow,
+        selectedLayers,
+        showTemporalLayers,
         toggle,
         toggleLastSection,
-        selectedLayers,
         setSelectedLayers,
-        showTemporalLayers,
         toggleTemporalLayers,
         handleMetadataModal,
         handleMetadataModalClose,
@@ -146,7 +163,6 @@ export const AppProvider = ({ children }) => {
         addLayer,
         handleGeoserviciosModalClose,
         handleGeoserviciosModal,
-        geoserviciosModalShow,
         getComponentByName,
         activeSectionName,
         handleActiveSectionName,
