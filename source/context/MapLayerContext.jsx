@@ -6,6 +6,7 @@ export const MapLayerContext = createContext();
 
 export const MapLayerProvider = ({ children }) => {
   const [hits, setHits] = useState([]);
+  const [hits2, setHits2] = useState([]);
   const [layers, setLayers] = useState([]);
   const [info, setInfo] = useState({});
   const [geoserverBaseUrl, setGeoserverBaseUrl] = useState('');
@@ -121,16 +122,16 @@ export const MapLayerProvider = ({ children }) => {
     setMarker(prevState => value)
   }
 
-  const removeLayer = (layerName) => {
-    setLayers((prevLayers) => prevLayers.filter(layer => layer.name !== layerName));
-  };
-
   const handleHits = (data) =>{
     setHits(prevState => {return prevState !== data ? data : prevState});
   }
 
+  const handleHits2 = (data) =>{
+    setHits2(prevState => {return prevState !== data ? data : prevState});
+  }
+
   return (
-    <MapLayerContext.Provider value={{ layers, hits, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, removeLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers, handleHits, setGeoserverBaseUrl, handleSetMarker }}>
+    <MapLayerContext.Provider value={{ layers, hits, hits2, activeLayers, info, baseMapLayer, geoserverBaseUrl, addLayer, toggleLayer, handleInfoBaseMap, handleInfoWMSLayers, resetInfo, setActiveLayers, handleHits, handleHits2, setGeoserverBaseUrl, handleSetMarker }}>
       {children}
     </MapLayerContext.Provider>
   );

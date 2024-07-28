@@ -50,14 +50,6 @@ export default function Map() {
     setSelectedLayers(prevLayers => [...prevLayers, { ...layer, url: wmsUrl }]);
   };
 
-  const removeLayer = layerToRemove => {
-    setSelectedLayers(prevLayers =>
-      prevLayers.filter(
-        layer =>
-          layer.name !== layerToRemove.name || layer.url !== layerToRemove.url
-      )
-    );
-  };
 
   return (
     <MapContainer
@@ -112,13 +104,6 @@ export default function Map() {
         handleLoadLayer={handleLoadLayer}
         handleSelectLayer={handleSelectLayer}
       />
-
-      {/* {selectedLayers.length > 0 && (
-        <SelectedLayersSidebar
-          selectedLayers={selectedLayers}
-          removeLayer={removeLayer}
-        />
-      )} */}
 
       <SearchControl />
       <AddBaseLayerToMap />
