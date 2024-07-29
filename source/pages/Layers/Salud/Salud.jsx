@@ -21,7 +21,7 @@ const Salud = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsSalud, setItemsSalud] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits2 } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
   const { handleMetadataModal, handleGeoserviciosModal } =
     useContext(AppContext);
@@ -29,10 +29,10 @@ const Salud = ({ onBack, color }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {        
-        const data = Object.keys(hits2)
+        const data = Object.keys(hits)
         .filter(key => key === 'salud')
         .reduce((obj, key) => {
-          obj[key] = hits2[key];
+          obj[key] = hits[key];
           return obj;
         }, {});
         const items = data.salud.elements.map(element => (

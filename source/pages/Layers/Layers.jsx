@@ -1,70 +1,30 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../../styles/layers.css";
-import Urbanismo from "./Urbanismo/Urbanismo";
-import Transporte from "./Transporte/Transporte";
-import Salud from "./Salud/Salud";
-import Servicios from "./Servicios/Servicios";
 import { Search } from "@mui/icons-material";
 import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
 import MetadataModal from "../../components/Sidebar/Modals/MetadataModal";
 import GeoserviciosModal from "../../components/Sidebar/Modals/GeoserviciosModal";
-import { findSectionDescription } from "../../utils/temp";
+import { findSectionDescription, getColorByName } from "../../utils/temp";
 import { AppContext } from "../../context/AppContext";
 
 const Layers = () => {
-  const { handleHits, handleHits2 } = useContext(MapLayerContext);
+  const { handleHits } = useContext(MapLayerContext);
   const { getComponentByName, activeSectionName, handleActiveSectionName } = useContext(AppContext);  
   const [searchTerm, setSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
+    console.log("useEffect")
     const fetchData = async () => {
-      setSearching(true);
-      const query = searchTerm
-        ? {
-          "query": {
-            "bool": {
-              "must": [
-                {
-                  "match": {
-                    "tag.default": "VISOR"
-                  }
-                }
-              ],
-              should: [
-                {
-                    match: {
-                        "resourceAbstractObject.default": searchTerm
-                    }
-                },
-                {
-                    match: {
-                        "resourceTitleObject.default": searchTerm
-                    }
-                }
-            ],
-            }
-          },
-          "size":100
-        }
-        : {
-            query: {
-              match_all: {},
-            },
-          };
-      try {        
-        const response = await axios.post(
-          `${getEnv("VITE_ELASTICSEARCH_URL")}/services_map/_search`,
-          query
-        );
-
-        // console.log(`${getEnv("VITE_ELASTICSEARCH_GEO")}/gn-records/_search/`)
-
+      setSearching(true);      
+      try {
         const gnRecords = await axios.post(
+          // `${getEnv("VITE_ELASTICSEARCH_GEO")}/gn-records/_search/`,
           `${getEnv("VITE_ELASTICSEARCH_URL")}/gn-records/_search/`,
+          // Esta Query debe ir a un Backend (API)
           {
             "query": {
               "bool": {
@@ -75,28 +35,25 @@ const Layers = () => {
                     }
                   }
                 ],
-                should: [
-                  {
-                      match: {
-                          "resourceAbstractObject.default": "Antenas de la Ciudad de Buenos Aires"
-                      }
-                  },
-                  {
-                      match: {
-                          "resourceTitleObject.default": "Antenas CABA"
-                      }
-                  }
-              ],
+              //   "should": [
+              //     {
+              //         "match": {
+              //             "resourceAbstractObject.default": searchTerm
+              //         }
+              //     },
+              //     {
+              //         "match": {
+              //             "resourceTitleObject.default": searchTerm
+              //         }
+              //     }
+              // ],
               }
             },
             "size":100
           }
-          // `${getEnv("VITE_ELASTICSEARCH_GEO")}/gn-records/_search/`
         );
         
         if (gnRecords.data && gnRecords.data.hits) {
-          // const hits = response.data.hits.hits;          
-          // handleHits(hits);
 
           const records = gnRecords.data.hits.hits;          
           
@@ -172,14 +129,8 @@ const Layers = () => {
             acc[section].elements.push(obj);
             return acc;
         }, {});
-        
-        console.log(groupedBySection);
-        
 
-          // console.log("groupedBySection:", groupedBySection);
-
-          handleHits2(groupedBySection);
-          // console.log("hits:", hits);
+        handleHits(groupedBySection);
 
           const newSections = Object.entries(groupedBySection).map(([key, value]) => ({
               name: key.charAt(0).toUpperCase() + key.substring(1),
@@ -188,7 +139,7 @@ const Layers = () => {
               component: getComponentByName(key, value),
               borderColor: getColorByName(key),
             }));
-          // console.log("newSections:",newSections);
+
           setSections(newSections);
           handleActiveSectionName(null);
         } else {
@@ -204,7 +155,7 @@ const Layers = () => {
     };
 
     fetchData();
-  }, [searchTerm]);
+  }, []);
 
   const handleSectionClick = id => {
     handleActiveSectionName(activeSectionName === id ? null : id);
@@ -212,39 +163,31 @@ const Layers = () => {
 
   const handleSearchChange = e => {
     setSearchTerm(e.target.value);
-  };
+  };  
 
-  const getColorByName = name => {
-    switch (name.toLowerCase()) {
-      case "urbanismo":
-        return "#FF5733";
-      case "transporte":
-        return "#0dcaf0";
-      case "salud":
-        return "#3357FF";
-      case "servicios":
-        return "#FF33A1";
-      default:
-        return "#123456";
-    }
-  };
-
+  // Filtro para el buscador de capas. Esto se debería hacer desde Elasticsearch
   const filteredSections = sections
     .map(section => {
       const filteredItems = section.elements.filter(
-        propiedad =>
-          (propiedad.name &&
-            propiedad.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (propiedad.description &&
-            propiedad.description
+        element =>
+          (element.name &&
+            element.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (element.description &&
+            element.description
               .toLowerCase()
               .includes(searchTerm.toLowerCase()))
       );
-      return { ...section, elements: filteredItems };
+
+      const sectionMatches = 
+        (section.name && section.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (section.description && section.description.toLowerCase().includes(searchTerm.toLowerCase()));
+      
+      return { ...section, elements: filteredItems, sectionMatches };
     })
     .filter(
-      section => section.elements.length > 0 || searchTerm.trim() === ""
+      section => section.elements.length > 0 || section.sectionMatches || searchTerm.trim() === ""
     );
+
 
   return (
     <>
@@ -265,7 +208,7 @@ const Layers = () => {
           className="h-100 layer-container"
           style={{ width: "21rem", position: "relative" }}
         >
-          {filteredSections && filteredSections.length > 0 && (
+          {!searching && filteredSections && filteredSections.length > 0 && (
             <ul className="d-block layer-section-container">
               {filteredSections.map((section, index) => (
                 <li

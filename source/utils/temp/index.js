@@ -25,3 +25,17 @@ export const findSectionDescription = (section)  => {
     return description
 }
 
+export const getColorByName = name => {
+    switch (name.toLowerCase()) {
+      case "urbanismo":
+        return "#FF5733";
+      case "transporte":
+        return "#0dcaf0";
+      case "salud":
+        return "#3357FF";
+      case "servicios":
+        return "#FF33A1";
+      default:
+        return "#123456";
+    }
+  };

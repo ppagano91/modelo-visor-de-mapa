@@ -24,7 +24,7 @@ const Transporte = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsTransporte, setItemsTransporte] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits, hits2 } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
   const { handleMetadataModal, handleGeoserviciosModal } =
     useContext(AppContext);
@@ -32,14 +32,13 @@ const Transporte = ({ onBack, color }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {        
-        const data = Object.keys(hits2)
+        const data = Object.keys(hits)
         .filter(key => key === 'transporte')
         .reduce((obj, key) => {
-          obj[key] = hits2[key];
+          obj[key] = hits[key];
           return obj;
         }, {});
         
-        // console.log(data);
         const items = data.transporte.elements.map(element => (
           element
         ))

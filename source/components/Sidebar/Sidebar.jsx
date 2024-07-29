@@ -12,7 +12,6 @@ import {
 } from "@mui/icons-material";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { PATHS } from "../../utils/consts/paths";
-import SelectedLayersSidebar from "../../pages/SelectedLayersSidebar";
 
 const Sidebar = ({ children }) => {
   const {

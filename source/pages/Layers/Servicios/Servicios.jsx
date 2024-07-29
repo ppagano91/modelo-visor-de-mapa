@@ -27,40 +27,24 @@ const Servicios = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsServicios, setItemsServicios] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits, hits2 } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
   const { handleMetadataModal, handleGeoserviciosModal } =
     useContext(AppContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(hits2)
       try {
-        const data = Object.keys(hits2)
+        const data = Object.keys(hits)
         .filter(key => key === 'servicios')
         .reduce((obj, key) => {
-          obj[key] = hits2[key];
+          obj[key] = hits[key];
           return obj;
         }, {});
 
         const items = data.servicios.elements.map(element => (
           element
         ))
-
-        const serviciosItems = hits
-          .filter(hit => hit._source.servicios)
-          .flatMap(hit =>
-            (hit._source.servicios.propiedades || [])
-              .filter(propiedad => propiedad !== null)
-              .map(propiedad => ({
-                id: propiedad.layerProps
-                  ? propiedad.layerProps.name
-                  : `${hit._id}_${propiedad.id}`,
-                nombre: propiedad.name || "",
-                icono: renderIcon(propiedad.icon),
-                layerProps: propiedad.layerProps ? propiedad.layerProps : null,
-              }))
-          );
 
         setItemsServicios(items);
       } catch (error) {
@@ -71,34 +55,7 @@ const Servicios = ({ onBack, color }) => {
     fetchData();
   }, []);
 
-  const renderIcon = iconName => {
-    switch (iconName) {
-      case "FaBuilding":
-        return <FaBuilding />;
-      case "FaShieldAlt":
-        return <FaShieldAlt />;
-      case "FaFireExtinguisher":
-        return <FaFireExtinguisher />;
-      case "FaGavel":
-        return <FaGavel />;
-      case "FaShoppingCart":
-        return <FaShoppingCart />;
-      case "FaFlag":
-        return <FaFlag />;
-      case "FaWifi":
-        return <FaWifi />;
-      case "FaBriefcase":
-        return <FaBriefcase />;
-      case "FaChurch":
-        return <FaChurch />;
-      case "FaMapMarkedAlt":
-        return <FaMapMarkedAlt />;
-      default:
-        return null;
-        // return <Map />;
-    }
-  };
-
+ 
   const handleModalClose = () => setShowModal(false);
 
   const handleModal = (e, layerProps) => {

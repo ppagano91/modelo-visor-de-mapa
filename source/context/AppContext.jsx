@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PATHS } from "../utils/consts/paths";
 import Urbanismo from "../pages/Layers/Urbanismo/Urbanismo";

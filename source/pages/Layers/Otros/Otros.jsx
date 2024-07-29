@@ -13,7 +13,7 @@ const Otros = ({ onBack, color }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsTransporte, setItemsTransporte] = useState([]);
   const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits, hits2 } =
+  const { toggleLayer, setActiveLayers, activeLayers, hits } =
     useContext(MapLayerContext);
   const { handleMetadataModal, handleGeoserviciosModal } =
     useContext(AppContext);
@@ -21,10 +21,10 @@ const Otros = ({ onBack, color }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {        
-        const data = Object.keys(hits2)
+        const data = Object.keys(hits)
         .filter(key => key === 'otros')
         .reduce((obj, key) => {
-          obj[key] = hits2[key];
+          obj[key] = hits[key];
           return obj;
         }, {});
         
