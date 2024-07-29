@@ -1,21 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { MapLayerContext } from "../../../context/MapLayerContext";
-import {
-  InfoOutlined,
-  CloudDownloadOutlined,
-  PublicOutlined
-} from "@mui/icons-material";
-import DownloadModal from "../Modal/DownloadModal";
-import { AppContext } from "../../../context/AppContext";
+import ListItems from "../../../components/ListItems";
 
-const Urbanismo = ({ onBack, color }) => {
-  const [showModal, setShowModal] = useState(false);
+const Urbanismo = ({ color }) => {
   const [itemsUrbanismo, setItemsUrbanismo] = useState([]);
-  const [downloadProps, setDownloadProps] = useState(null);
-  const { toggleLayer, setActiveLayers, activeLayers, hits } =
+  const { hits } =
     useContext(MapLayerContext);
-  const { handleMetadataModal, handleGeoserviciosModal } =
-    useContext(AppContext);
 
     useEffect(() => {
       const fetchData = async () => {
@@ -39,111 +29,8 @@ const Urbanismo = ({ onBack, color }) => {
       fetchData();
     }, []);
 
-  const handleModalClose = () => setShowModal(false);
-
-  const handleModal = (e, layerProps) => {
-    e.stopPropagation();
-
-    if (layerProps) {
-      setDownloadProps(layerProps);
-    } else {
-      setDownloadProps(null);
-    }
-    setShowModal(true);
-  };
-
-  const handleItemClick = (id, layerProps) => {
-    // Actualizar el estado de activeLayers
-    setActiveLayers(prevActiveLayers => {
-      if (prevActiveLayers.includes(id)) {
-        return prevActiveLayers.filter(layerId => layerId !== id);
-      } else {
-        return [...prevActiveLayers, id];
-      }
-    });
-
-    // Activar o desactivar la capa en el mapa
-    if (layerProps !== null) {
-      toggleLayer(layerProps);
-    }
-  };
-
   return (
-    <div>
-      {downloadProps && (
-        <DownloadModal
-          show={showModal}
-          handleClose={handleModalClose}
-          downloadProps={downloadProps}
-        />
-      )}
-      <div
-        className="d-flex m-0 p-2 justify-content-between align-items-center"
-        style={{ backgroundColor: `${color}` }}
-      >
-        <div className="fs-4 text-light list-group-item">
-          Urbanismo
-          <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
-            {activeLayers && activeLayers.length
-              ? `${activeLayers.length}`
-              : null}
-          </div>
-        </div>
-        <div></div>
-        <button
-          onClick={onBack}
-          type="button"
-          className="btn-close btn-close-white p-0 m-2"
-          aria-label="Close"
-        ></button>
-      </div>
-      <ul className="m-0 p-0">
-        {itemsUrbanismo &&
-          itemsUrbanismo.map(item => {
-            const isActive = activeLayers && activeLayers.includes(item.id);
-            return (
-              <li
-                className="d-flex gap-2 m-1 p-1 align-items-center list-item"
-                key={item.id}
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                title={item.name}
-                onClick={() => handleItemClick(item.id, item.props)}
-                style={{
-                  cursor: "pointer",
-                  backgroundColor: isActive ? "#f0f0f0" : "transparent",
-                }}
-              >
-                <input type="checkbox" checked={isActive} readOnly />
-                {item.icono}
-                <p className="m-0">{item.name}</p>
-
-                <div className="d-flex gap-1 ms-auto">
-                  <PublicOutlined
-                    style={{ height: "16px" }}
-                    title="Acceso a Geoservicios"
-                    onClick={e => {
-                      handleGeoserviciosModal(e, item.props);
-                    }}
-                  />
-                  <InfoOutlined
-                    style={{ height: "16px" }}
-                    tooltip="Info"
-                    onClick={e => {
-                      handleMetadataModal(e, item.metadata);
-                    }}
-                  />
-                  <CloudDownloadOutlined
-                    style={{ height: "16px" }}
-                    tooltip="Descargar Geoservicios"
-                    onClick={e => handleModal(e, item.props)}
-                  />
-                </div>
-              </li>
-            );
-          })}
-      </ul>
-    </div>
+    <ListItems nameSection={"Urbanismo"} color={color} items={itemsUrbanismo}/>
   );
 };
 

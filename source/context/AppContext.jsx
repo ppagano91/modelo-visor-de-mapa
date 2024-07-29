@@ -82,6 +82,10 @@ export const AppProvider = ({ children }) => {
     setActiveSectionName(prevState => sectionName);
   }
 
+  const setActiveSectionNameNull = () =>{
+    setActiveSectionName(null);
+  }
+
 
 
   const getComponentByName = (name, source) => {
@@ -89,46 +93,31 @@ export const AppProvider = ({ children }) => {
       case "urbanismo":
         return (
           <Urbanismo
-            onBack={() => setActiveSectionName(null)}
             color={"#FF5733"}
-            activeLayers={source.propiedades}
-            setActiveLayers={() => {}}
           />
         );
       case "transporte":
         return (
           <Transporte
-            onBack={() => setActiveSectionName(null)}
             color={"#0dcaf0"}
-            activeTransporteLayers={source.propiedades}
-            setActiveTransporteLayers={() => {}}
           />
         );
       case "salud":
         return (
           <Salud
-            onBack={() => setActiveSectionName(null)}
             color={"#3357FF"}
-            activeSaludLayers={source.propiedades}
-            setActiveSaludLayers={() => {}}
           />
         );
       case "servicios":
         return (
           <Servicios
-            onBack={() => setActiveSectionName(null)}
             color={"#FF33A1"}
-            activeServiciosLayers={source.propiedades}
-            setActiveServiciosLayers={() => {}}
           />
         );
       case "otros":
         return (
           <Otros
-            onBack={() => setActiveSectionName(null)}
             color={"#123456"}
-            activeServiciosLayers={source.propiedades}
-            setActiveServiciosLayers={() => {}}
           />
         );
       default:
@@ -152,6 +141,7 @@ export const AppProvider = ({ children }) => {
         geoserviciosModalShow,
         selectedLayers,
         showTemporalLayers,
+        activeSectionName,
         toggle,
         toggleLastSection,
         setSelectedLayers,
@@ -164,8 +154,8 @@ export const AppProvider = ({ children }) => {
         handleGeoserviciosModalClose,
         handleGeoserviciosModal,
         getComponentByName,
-        activeSectionName,
         handleActiveSectionName,
+        setActiveSectionNameNull
       }}
     >
       {children}
