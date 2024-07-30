@@ -16,7 +16,6 @@ const Urbanismo = ({ color }) => {
             obj[key] = hits[key];
             return obj;
           }, {});
-          console.log("data",data)
           const items = data.urbanismo.elements.map(element => (
             element
           ))

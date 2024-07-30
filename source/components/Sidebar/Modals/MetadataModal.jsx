@@ -5,7 +5,6 @@ import { AppContext } from "../../../context/AppContext";
 const MetadataModal = () => {
   const { metadataModalShow, metadata, handleMetadataModalClose } =
     useContext(AppContext);
-  console.log(metadata)
   return (
     <Modal
       show={metadataModalShow}

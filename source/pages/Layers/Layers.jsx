@@ -17,7 +17,6 @@ const Layers = () => {
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
-    console.log("useEffect")
     const fetchData = async () => {
       setSearching(true);      
       try {
@@ -187,6 +186,12 @@ const Layers = () => {
     .filter(
       section => section.elements.length > 0 || section.sectionMatches || searchTerm.trim() === ""
     );
+
+    filteredSections.sort((a, b) => {
+      if (a.name.toLowerCase() === 'Otros'.toLowerCase()) return 1;
+      if (b.name.toLowerCase() === 'Otros'.toLowerCase()) return -1;
+      return a.name.localeCompare(a.name);
+    });
 
 
   return (

@@ -50,14 +50,13 @@ const ListItems = ({nameSection, color, items }) => {
             style={{ backgroundColor: `${color}` }}
         >
             <div className="fs-4 text-light list-group-item">
-            {nameSection}
-            <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
-                {activeLayers && activeLayers.length
-                ? `${activeLayers.length}`
-                : null}
+                {nameSection}
+                <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
+                    {activeLayers && activeLayers.length
+                    ? `${activeLayers.length}`
+                    : null}
+                </div>
             </div>
-            </div>
-            <div></div>
             <button
             onClick={setActiveSectionNameNull}
             type="button"
