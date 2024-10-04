@@ -170,7 +170,7 @@ const Layers = () => {
       const filteredItems = section.elements.filter(
         element =>
           (element.name &&
-            element.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            element.name.toLowerCase().includes(searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ''))) ||
           (element.description &&
             element.description
               .toLowerCase()
@@ -178,7 +178,7 @@ const Layers = () => {
       );
 
       const sectionMatches = 
-        (section.name && section.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (section.name && section.name.toLowerCase().includes(searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ''))) ||
         (section.description && section.description.toLowerCase().includes(searchTerm.toLowerCase()));
       
       return { ...section, elements: filteredItems, sectionMatches };

@@ -12,14 +12,18 @@ import { parseString } from "xml2js";
 import { AppContext } from "../context/AppContext";
 import { FaInfoCircle } from "react-icons/fa";
 import { PATHS } from "../utils/consts/paths";
+import Alerts from "../components/Alerts/Alerts";
 
 const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
+  const [error, setError] = useState(false);
   const { setSelectedLayers, openSection } = useContext(AppContext);
 
   const handleUrlChange = event => {
     setWmsUrl(event.target.value);
+    setLayers([]);
+    setError(false)
   };
 
   const handleLoadClick = async () => {
@@ -29,13 +33,16 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
       parseString(response.data, (err, result) => {
         if (err) {
           console.error("Error WMS capabilities:", err);
+          setError(true);
           return;
         }
         const layerList = extractLayers(result);
         setLayers(layerList);
+        setError(false)
       });
     } catch (error) {
       console.error("Error fetching WMS capabilities:", error);
+      setError(true)
     }
   };
 
@@ -110,6 +117,11 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
               </Dropdown.Item>
             ))}
           </DropdownButton>
+        )}
+        {error &&(
+          <div className="error-message">
+          <Alerts type="danger" message="La URL ingresada es incorrecta"/>
+          </div>
         )}
       </Modal.Body>
       <Modal.Footer>

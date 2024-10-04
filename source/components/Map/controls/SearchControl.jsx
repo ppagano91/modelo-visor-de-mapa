@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Autocompleter } from "autocompleter-caba/dist/src/services/Autocompleter";
+//import { Autocompleter } from "autocompleter-caba/dist/src/services/Autocompleter";
+import { Autocompleter } from "autocompleter-geo-pp/dist/src/index";
 import { getEnv } from "../../../config";
 import { Search } from "@mui/icons-material";
 
@@ -143,11 +144,14 @@ const SearchControl = () => {
     } else if (event.key === "Enter") {
       event.preventDefault();
       handleSearch(selectedIndex);
+      setInput(suggestions[selectedIndex].value)
     }
   };
 
-  const handleMouseDown = event => {
+  const handleMouseDown = (event, i) => {
     event.stopPropagation();
+    setInput(suggestions[i].value);
+    handleSearch(i);
   };
 
   const disableMapInteraction = () => {
@@ -232,7 +236,7 @@ const SearchControl = () => {
                   cursor: "pointer",
                   backgroundColor: selectedIndex === i ? "#FFDB2E" : "inherit",
                 }}
-                onClick={() => handleSearch(i)}
+                onClick={e => handleMouseDown(e, i)}
                 onMouseOver={() => setSelectedSuggestionIndex(i)}
               >
                 {sug.value}
