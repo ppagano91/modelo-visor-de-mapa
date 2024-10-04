@@ -8,7 +8,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
       service: 'WFS',
       version: '1.1.0',
       request: 'GetFeature',
-      typename: downloadProps.layers,
+      typename: downloadProps.name,
       outputFormat: format === 'shp' ? 'SHAPE-ZIP' : `application/${format}`
     });
 

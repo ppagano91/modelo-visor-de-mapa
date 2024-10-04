@@ -55,7 +55,7 @@ export default function Map() {
     <MapContainer
       className="map-container"
       center={[-34.600174, -58.453122]}
-      zoom={15}
+      zoom={12}
       scrollWheelZoom={true}
       attributionControl={false}
     >
@@ -119,6 +119,14 @@ export default function Map() {
             layers="mapa_base"
             format="image/png"
             transparent={true}
+          />
+        </BaseLayer>        
+        <BaseLayer name="ArgenMap">
+          <WMSTileLayer
+            url="https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png"
+            tms={true}
+            attribution="&copy; IGN https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/ServiciosOGC"
+            zIndex={25}
           />
         </BaseLayer>
         <BaseLayer name="Mapa Satelital">

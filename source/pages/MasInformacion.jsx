@@ -38,7 +38,7 @@ const MasInformacion = () => {
       >
         <WMSTileLayer
           url={getEnv("VITE_MAPA_BASE")}
-          layers="mapa_base"
+          layers="mapa_base_prod"
           format="image/png"
           transparent={true}
         />
