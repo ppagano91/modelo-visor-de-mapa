@@ -74,6 +74,7 @@ const SearchControl = () => {
     }
 
     if (res.status_code == 200) {
+      clearMarkers();
       if ("coordenadas" in res.data) {
         // Sitios de Interés
         const { x, y } = res.data.coordenadas;
