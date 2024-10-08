@@ -9,16 +9,16 @@ const ListItems = ({ nameSection, color, items }) => {
     const [downloadProps, setDownloadProps] = useState(null);
     const [legendImageURLs, setLegendImageURLs] = useState({});
     const handleModalClose = () => setShowModal(false);
-    const { toggleLayer, setActiveLayers, activeLayers } = useContext(MapLayerContext);
+    const { toggleLayer, setActiveLayers, activeLayers, clearAllSelections } = useContext(MapLayerContext);
     const { handleMetadataModal, handleGeoserviciosModal, setActiveSectionNameNull } = useContext(AppContext);
 
     const handleModal = (e, layerProps) => {
         e.stopPropagation();
-    
+
         if (layerProps) {
-          setDownloadProps(layerProps);
+            setDownloadProps(layerProps);
         } else {
-          setDownloadProps(null);
+            setDownloadProps(null);
         }
         setShowModal(true);
     };
@@ -37,6 +37,10 @@ const ListItems = ({ nameSection, color, items }) => {
         });
     };
 
+    const handleClearSelection = () => {
+        clearAllSelections();
+    };
+
     const fetchLegend = (layerName, urlBase) => {
         const params = {
             service: 'WMS',
@@ -47,7 +51,7 @@ const ListItems = ({ nameSection, color, items }) => {
             style: '',
         };
         const url = urlBase + L.Util.getParamString(params, '', true);
-        
+
         return fetch(url)
             .then(response => response.blob())
             .then(blob => {
@@ -95,6 +99,14 @@ const ListItems = ({ nameSection, color, items }) => {
                     <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
                         {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
                     </div>
+                    <div>
+                        <button
+                            onClick={handleClearSelection}
+                            type="button"
+                            className=""
+                            aria-label="Eliminar selección"
+                        >Eliminar selección</button>
+                    </div>
                 </div>
                 <button
                     onClick={setActiveSectionNameNull}
@@ -109,7 +121,7 @@ const ListItems = ({ nameSection, color, items }) => {
                     const legendURL = legendImageURLs[item.id];
                     return (
                         <details key={item.id} className="m-1 p-1">
-                            <summary 
+                            <summary
                                 className="d-flex justify-content-between align-items-center list-item"
                                 style={{ position: "relative", cursor: "pointer" }}
                             >
@@ -159,7 +171,7 @@ const ListItems = ({ nameSection, color, items }) => {
                                     <img src={legendURL} alt={`Leyenda de ${item.name}`} />
                                 </div>
                             )}
-                            
+
                         </details>
                     );
                 })}
