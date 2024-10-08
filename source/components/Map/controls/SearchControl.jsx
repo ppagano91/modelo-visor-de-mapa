@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 import "bootstrap/dist/css/bootstrap.min.css";
-//import { Autocompleter } from "autocompleter-caba/dist/src/services/Autocompleter";
-import { Autocompleter } from "autocompleter-geo-pp/dist/src/index";
+import { Autocompleter } from "autocompleter-caba/dist/src/services/Autocompleter";
 import { getEnv } from "../../../config";
 import { Search } from "@mui/icons-material";
 

@@ -23,7 +23,6 @@ import Capas_temporales from "../../assets/images/layer-plus-regular-24.png";
 
 import WMSMap from "../WMSMap";
 import { Button } from "react-bootstrap";
-import SelectedLayersSidebar from "../../pages/SelectedLayersSidebar";
 
 import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";

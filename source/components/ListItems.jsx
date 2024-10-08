@@ -79,93 +79,102 @@ const ListItems = ({ nameSection, color, items }) => {
 
     return (
         <div>
-            {downloadProps && (
-                <DownloadModal
-                    show={showModal}
-                    handleClose={handleModalClose}
-                    downloadProps={downloadProps}
-                />
-            )}
-            <div
-                className="d-flex m-0 p-2 justify-content-between align-items-center"
-                style={{ backgroundColor: `${color}` }}
-            >
-                <div className="fs-4 text-light list-group-item">
-                    {nameSection}
-                    <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
-                        {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
-                    </div>
-                </div>
-                <button
-                    onClick={setActiveSectionNameNull}
-                    type="button"
-                    className="btn-close btn-close-white p-0 m-2"
-                    aria-label="Close"
-                ></button>
+          {downloadProps && (
+            <DownloadModal
+              show={showModal}
+              handleClose={handleModalClose}
+              downloadProps={downloadProps}
+            />
+          )}
+          <div
+            className="d-flex m-0 p-2 justify-content-between align-items-center"
+            style={{ backgroundColor: `${color}` }}
+          >
+            <div className="fs-4 text-light list-group-item">
+              {nameSection}
+              <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
+                {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
+              </div>
             </div>
-            <ul className="m-0 p-0">
-                {items.map(item => {
-                    const isActive = activeLayers && activeLayers.includes(item.id);
-                    const legendURL = legendImageURLs[item.id];
-                    return (
-                        <details key={item.id} className="m-1 p-1">
-                            <summary 
-                                className="d-flex justify-content-between align-items-center list-item"
-                                style={{ position: "relative", cursor: "pointer" }}
-                            >
-                                <li
-                                    className="d-flex align-items-center flex-grow-1 gap-2"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title={item.name}
-                                    onClick={() => handleItemClick(item.id, item.props)}
-                                    style={{
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        whiteSpace: "nowrap",
-                                    }}
-                                >
-                                    <input type="checkbox" checked={isActive} readOnly />
-                                    <p className="m-0 flex-grow-1">{item.name}</p>
-                                </li>
-                                <div className="d-flex gap-1 ms-auto">
-                                    <PublicOutlined
-                                        style={{ height: "1rem" }}
-                                        titleAccess="Acceso a Geoservicios"
-                                        onClick={e => {
-                                            handleGeoserviciosModal(e, item.props);
-                                        }}
-                                    />
-                                    <InfoOutlined
-                                        style={{ height: "1rem" }}
-                                        tooltip="Metadatos"
-                                        titleAccess="Metadatos"
-                                        onClick={e => {
-                                            handleMetadataModal(e, item.metadata);
-                                        }}
-                                    />
-                                    <CloudDownloadOutlined
-                                        style={{ height: "1rem" }}
-                                        tooltip="Descargar Geoservicios"
-                                        titleAccess="Descargar Geoservicios"
-                                        onClick={e => {
-                                            handleModal(e, item.props);
-                                        }}
-                                    />
-                                </div>
-                            </summary>
-                            {legendURL && (
-                                <div style={{ paddingLeft: "20px", backgroundColor: "white" }}>
-                                    <img src={legendURL} alt={`Leyenda de ${item.name}`} />
-                                </div>
-                            )}
-                            
-                        </details>
-                    );
-                })}
-            </ul>
+            <button
+              onClick={setActiveSectionNameNull}
+              type="button"
+              className="btn-close btn-close-white p-0 m-2"
+              aria-label="Close"
+            ></button>
+          </div>
+          
+          <ul className="m-0 p-0">
+  {items.map(item => {
+    const isActive = activeLayers && activeLayers.includes(item.id);
+    const legendURL = legendImageURLs[item.id];
+
+    return (
+      <li key={item.id} className="d-flex align-items-center justify-content-between p-2" style={{position: "relative"}}>
+        {/* Detalles para la leyenda y el nombre */}
+        <details className="flex-grow-1" style={{ marginRight: "20px" }}>
+          <summary 
+            className="d-flex align-items-center gap-2" 
+            style={{ cursor: 'pointer', outline: 'none' }}
+          >
+            <input type="checkbox" checked={isActive} readOnly />
+            <p
+              className="m-0 flex-grow-1"
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                maxWidth: '14rem'
+              }}
+              onClick={() => handleItemClick(item.id, item.props)}
+              title={item.name}
+            >
+              {item.name}
+            </p>
+          </summary>
+
+          {/* Contenido de la leyenda */}
+          {legendURL && (
+            <div style={{ paddingLeft: "20px", backgroundColor: "white" }}>
+              <img src={legendURL} alt={`Leyenda de ${item.name}`} />
+            </div>
+          )}
+        </details>
+        <div className="d-flex gap-1 align-items-center" style={{position: "absolute", right: "0.25rem", top: "0.75rem"}}>
+          <PublicOutlined
+            style={{ height: "1rem", cursor: "pointer" }}
+            titleAccess="Acceso a Geoservicios"
+            onClick={e => {
+              handleGeoserviciosModal(e, item.props);
+            }}
+          />
+          <InfoOutlined
+            style={{ height: "1rem", cursor: "pointer" }}
+            tooltip="Metadatos"
+            titleAccess="Metadatos"
+            onClick={e => {
+              handleMetadataModal(e, item.metadata);
+            }}
+          />
+          <CloudDownloadOutlined
+            style={{ height: "1rem", cursor: "pointer" }}
+            tooltip="Descargar Geoservicios"
+            titleAccess="Descargar Geoservicios"
+            onClick={e => {
+              handleModal(e, item.props);
+            }}
+          />
         </div>
+      </li>
     );
+  })}
+</ul>
+
+        </div>
+      );
+      
+      
+               
 };
 
 export default ListItems;
