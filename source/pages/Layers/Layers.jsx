@@ -170,18 +170,18 @@ const Layers = () => {
       const filteredItems = section.elements.filter(
         element =>
           (element.name &&
-            element.name.toLowerCase().includes(searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ''))) ||
+            element.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '').includes(searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ''))) ||
           (element.description &&
             element.description
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()))
+              .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '')
+              .includes(searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '')))
       );
 
       const sectionMatches = 
         (section.name && section.name.toLowerCase().includes(searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ''))) ||
-        (section.description && section.description.toLowerCase().includes(searchTerm.toLowerCase()));
-      
+        (section.description && section.description.toLowerCase().includes(searchTerm.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '')));
       return { ...section, elements: filteredItems, sectionMatches };
+      
     })
     .filter(
       section => section.elements.length > 0 || section.sectionMatches || searchTerm.trim() === ""
