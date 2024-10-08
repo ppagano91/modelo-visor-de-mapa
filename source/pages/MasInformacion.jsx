@@ -17,7 +17,7 @@ const UpdateMap = ({ position }) => {
 };
 
 const MasInformacion = () => {
-  const { info, resetInfo } = useContext(MapLayerContext);
+  const { info, resetInfo, baseMapLayer } = useContext(MapLayerContext);
 
   const renderMap = () => {
     if (!info.Longitud || !info.Latitud) {
@@ -37,8 +37,8 @@ const MasInformacion = () => {
         className="border border-dark rounded"
       >
         <WMSTileLayer
-          url={getEnv("VITE_MAPA_BASE")}
-          layers="mapa_base_prod"
+          url={baseMapLayer.url}
+          layers={baseMapLayer.name}
           format="image/png"
           transparent={true}
         />

@@ -14,8 +14,8 @@ export const MapLayerProvider = ({ children }) => {
 
   const baseMapLayer = {
     url: getEnv("VITE_MAPA_BASE"),
-    layers: "mapa_base_prod",
-    name: "mapa_base_prod",
+    layers: "mapa_base",
+    name: "mapa_base",
     attribution: "&copy; attribution"
   };
 

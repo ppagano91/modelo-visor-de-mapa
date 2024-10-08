@@ -115,7 +115,7 @@ export default function Map() {
         <BaseLayer checked name="Mapa Base">
           <WMSTileLayer
             url={baseMapLayer.url}
-            layers="mapa_base"
+            layers={baseMapLayer.name}
             format="image/png"
             transparent={true}
           />
