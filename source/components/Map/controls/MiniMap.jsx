@@ -7,7 +7,7 @@ const MiniMap = ({ position }) => {
   const map = useMap();
 
   useEffect(() => {
-    const minimapLayer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const minimapLayer = new L.TileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png', {
       minZoom: 0,
       maxZoom: 13,
       // bounds: map.getBounds()
