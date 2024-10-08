@@ -99,15 +99,19 @@ const ListItems = ({ nameSection, color, items }) => {
                     <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
                         {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
                     </div>
-                    <div>
+                    {activeLayers && activeLayers.length > 0 && (
+                    <div className='badge fs-6 text-dark fw-bold'>
                         <button
                             onClick={handleClearSelection}
                             type="button"
-                            className=""
+                            className="btn btn-warning d-flex flex-column align-items-center"
                             aria-label="Eliminar selección"
-                        >Eliminar selección</button>
+                        ><span className="small">Eliminar</span>
+                            <span className="small">Selección</span></button>
                     </div>
+                    )}
                 </div>
+                
                 <button
                     onClick={setActiveSectionNameNull}
                     type="button"
