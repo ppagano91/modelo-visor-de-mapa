@@ -10,6 +10,7 @@ import { findSectionDescription, getColorByName } from "../../utils/temp";
 import { AppContext } from "../../context/AppContext";
 
 const Layers = () => {
+  const elasticsearchOptions = "transporte,servicios,salud,urbanismo,otros";
   const { handleHits } = useContext(MapLayerContext);
   const { getComponentByName, activeSectionName, handleActiveSectionName } = useContext(AppContext);  
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,7 +22,6 @@ const Layers = () => {
       setSearching(true);      
       try {
         const gnRecords = await axios.post(
-          // `${getEnv("VITE_ELASTICSEARCH_GEO")}/gn-records/_search/`,
           `${getEnv("VITE_ELASTICSEARCH_URL")}/gn-records/_search/`,
           // Esta Query debe ir a un Backend (API)
           {
@@ -74,7 +74,7 @@ const Layers = () => {
                 : [doc._source.groupPublishedId];
         
             // Definimos las opciones a considerar
-            const options = ["transporte", "servicios", "salud", "urbanismo", "otros"];
+            const options = (getEnv("VITE_ELASTICSEARCH_OPCIONES") || elasticsearchOptions).split(",").map(option => option.trim().toLowerCase())
         
             // Mapeamos los elementos desglosados por opción que coincida
             return groupPublished.flatMap((section, index) => {
@@ -99,11 +99,13 @@ const Layers = () => {
                             url: metadata.urlObject?.default || "",
                             name: metadata.nameObject?.default || "",
                             description: metadata.descriptionObject?.default || "",
+                            contact: doc._source.contact,
                             attribution: ""
                         } : {
                             url: "",
                             name: "",
                             description: "",
+                            contact: "",
                             attribution: ""
                         },
                         section: section
