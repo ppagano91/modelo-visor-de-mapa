@@ -24,14 +24,21 @@ const MetadataModal = () => {
         </p>
         <p className="fw-bold">
           Contacto:{" "}
-          <span className="fw-normal">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum sit
-            provident minus doloremque voluptates quae maxime.
+          <span className="fw-normal">{metadata.contact && metadata.contact.length > 0 ? (
+              metadata.contact.map((item, index) => (
+                <span key={index}>
+                  {item.organisationObject.default} <a onClick={(e) => window.location.href=`mailto:${item.email}`}>{item.email}</a>
+                  {index < metadata.contact.length - 1 && "/ "}
+                </span>
+              ))
+            ) : (
+              "No hay información de contacto disponible."
+            )}
           </span>
         </p>
         <p>
           <a
-            href={metadata.url||"#"}
+            href={metadata.url || "#"}
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: "none" }}
