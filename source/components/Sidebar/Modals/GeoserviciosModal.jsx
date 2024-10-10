@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 
 const GeoserviciosModal = () => {
-  const { geoserviciosModalShow, handleGeoserviciosModalClose } =
+  const { geoserviciosModalShow, handleGeoserviciosModalClose, metadata} =
     useContext(AppContext);
   const [copiedStates, setCopiedStates] = useState({
     wms: false,
@@ -81,7 +81,11 @@ const GeoserviciosModal = () => {
         <p className="fw-bold">
           <CheckCircleOutlineSharp className="text-success p-1" />
           Nombre de Capa:{" "}
-          <span className="fw-normal">{getTextToCopy("layerName")}</span>
+          <span className="fw-normal">{metadata.name && metadata.name.length > 0 ? (
+            metadata.name 
+          ) : (
+              "No hay información disponible."
+            )}</span>
           <span>{renderCopyIcon("layerName")}</span>
         </p>
       </Modal.Body>

@@ -19,7 +19,7 @@ const MetadataModal = () => {
         <p className="fw-bold">
           Resumen:{" "}
           <span className="fw-normal">
-            {metadata.description || "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos, quam."}
+            {metadata.description || "No hay información disponible."}
           </span>
         </p>
         <p className="fw-bold">
@@ -27,7 +27,7 @@ const MetadataModal = () => {
           <span className="fw-normal">{metadata.contact && metadata.contact.length > 0 ? (
               metadata.contact.map((item, index) => (
                 <span key={index}>
-                  {item.organisationObject.default} <a onClick={(e) => window.location.href=`mailto:${item.email}`}>{item.email}</a>
+                  {item.organisationObject.default}: <a onClick={(e) => window.location.href=`mailto:${item.email}`}>{item.email}</a>
                   {index < metadata.contact.length - 1 && "/ "}
                 </span>
               ))
