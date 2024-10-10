@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { ScaleControl } from "react-leaflet/ScaleControl";
 import {
   MapContainer,
@@ -19,16 +19,19 @@ import { MapLayerContext } from "../../context/MapLayerContext";
 import SearchControl from "./controls/SearchControl";
 import { getEnv } from "../../config";
 import AddBaseLayerToMap from "./components/AddBaseLayerToMap";
-import Capas_temporales from "../../assets/images/layer-plus-regular-24.png";
 
 import WMSMap from "../WMSMap";
-import { Button } from "react-bootstrap";
 
 import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";
-import PrintMapButton from "./controls/PrintMapButton";
+import PrintControl from "./controls/PrintControl";
+import WMSControl from "./controls/WMSControl";
+
+// import PrintControlDefault from "react-leaflet-easyprint"
 
 const { BaseLayer, Overlay } = LayersControl;
+
+// const PrintControl = withLeaflet(PrintControlDefault);
 
 export default function Map() {
   const { baseMapLayer } = useContext(MapLayerContext);
@@ -36,6 +39,7 @@ export default function Map() {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
   const { selectedLayers, setSelectedLayers } = useContext(AppContext);
+  // const printControlRef = useRef();
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -73,38 +77,17 @@ export default function Map() {
           );
         }
       })}
-
-      <Button
-        title="Capas Temporales"
-        className="btn bg-light  border-2 border-opacity-25 border-black d-flex justify-content-center align-items-center print-hidden"
-        onClick={handleShowModal}
-        style={{
-          position: "absolute",
-          top: "4rem",
-          right: ".5rem",
-          zIndex: 400,
-          width: "50px",
-          height: "50px",
-
-          fontSize: "0.7rem",
-          lineHeight: "1",
-        }}
-      >
-        <img
-          className="  h-auto opacity-75"
-          src={Capas_temporales}
-          alt=" Capas Temporales"
-        />
-      </Button>
-
+      
+      <WMSControl handleClick={handleShowModal} />
       <WMSMap
         showModal={showModal}
         handleCloseModal={handleCloseModal}
         handleLoadLayer={handleLoadLayer}
         handleSelectLayer={handleSelectLayer}
       />
+      
 
-      <SearchControl />
+      <SearchControl className="search-control leaflet-control" />
       <AddBaseLayerToMap />
 
       <LayersControl
@@ -122,8 +105,7 @@ export default function Map() {
         </BaseLayer>        
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
-            url="https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png"
-            tms={true}
+            url={getEnv("VITE_ARGENMAP")}
             attribution="&copy; IGN https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/ServiciosOGC"
             zIndex={25}
           />
@@ -147,8 +129,7 @@ export default function Map() {
 
       <LinearMeasureControl />
       <InitialView />
-      {/* <EasyPrintControl /> */}
-      <PrintMapButton position="bottomright" />
+      <PrintControl />
     </MapContainer>
   );
 }

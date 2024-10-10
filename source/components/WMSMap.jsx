@@ -130,7 +130,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
           style={{
             backgroundColor: "#007BC7",
             borderColor: "#007BC7",
-            hover: "FDD306",
+            hover: "#FDD306",
           }}
         >
           Cargar Capas
