@@ -96,6 +96,11 @@ const SearchControl = () => {
           map.setView(latLng, 16);
         }
       }
+      if(selectedIndex ==-1){
+        setInput(suggestions[0].value)
+      }else{
+        setInput(suggestions[selectedIndex].value)
+      }
       setSuggestions([]);
     } else {
       if ("response" in res) {
@@ -144,7 +149,6 @@ const SearchControl = () => {
     } else if (event.key === "Enter") {
       event.preventDefault();
       handleSearch(selectedIndex);
-      setInput(suggestions[selectedIndex].value)
     }
   };
 
@@ -219,18 +223,16 @@ const SearchControl = () => {
       </form>
       {suggestions && suggestions.length > 0 && (
         <ul
-          className={`bg-light my-1 p-0 border  ${
-            suggestions.length > 0 ? suggestions.length : error
-          }`}
+          className={`bg-light my-1 p-0 border  ${suggestions.length > 0 ? suggestions.length : error
+            }`}
           style={{ paddingLeft: "1rem" }}
         >
           {suggestions.map((sug, i) => {
             return (
               <li
                 key={i}
-                className={`p-1 ${
-                  selectedIndex === i ? "fw-bold" : ""
-                } suggestions-item-list`}
+                className={`p-1 ${selectedIndex === i ? "fw-bold" : ""
+                  } suggestions-item-list`}
                 style={{
                   listStyle: "none",
                   cursor: "pointer",
