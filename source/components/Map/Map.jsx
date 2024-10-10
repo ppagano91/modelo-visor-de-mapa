@@ -26,6 +26,7 @@ import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";
 import PrintControl from "./controls/PrintControl";
 import WMSControl from "./controls/WMSControl";
+import PrintMapButton from "./controls/PrintMapButton";
 
 // import PrintControlDefault from "react-leaflet-easyprint"
 
@@ -51,6 +52,28 @@ export default function Map() {
 
   const handleSelectLayer = layer => {
     setSelectedLayers(prevLayers => [...prevLayers, { ...layer, url: wmsUrl }]);
+  };
+
+  const handlePrint = () => {
+    const link = document.createElement('a');
+    link.download = 'map.png';
+    link.href = captureMapImage();
+    link.click();
+  };
+
+  const captureMapImage = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = mapRef.current.leafletElement.getSize()[0];
+    canvas.height = mapRef.current.leafletElement.getSize()[1];
+
+    const ctx = canvas.getContext('2d');
+    mapRef.current.leafletElement._container.style.position = 'absolute';
+    mapRef.current.leafletElement._container.style.top = '0px';
+    mapRef.current.leafletElement._container.style.left = '0px';
+
+    ctx.drawImage(mapRef.current.leafletElement._tilePane, 0, 0);
+    
+    return canvas.toDataURL();
   };
 
 
@@ -96,12 +119,17 @@ export default function Map() {
         zIndex={500}
       >
         <BaseLayer checked name="Mapa Base">
-          <WMSTileLayer
-            url={baseMapLayer.url}
-            layers={baseMapLayer.name}
-            format="image/png"
+          <TileLayer
+            url={getEnv("VITE_MAPA_BASE")}
+            tms={true}
+            attribution="Mapa Base"
+            zIndex={25}
+            // url={baseMapLayer.url}
+            // layers={baseMapLayer.name}
+            // format="image/png"
             transparent={true}
           />
+          {/* https://geoserver.buenosaires.gob.ar/geoserver/mapa_base_prod/wms?service=WMS&version=1.1.0&request=GetMap&layers=mapa_base_prod%3Amapa_base&bbox=13831.887476771106%2C61708.32547485026%2C31778.069575850328%2C81291.41085047911&width=703&height=768&srs=EPSG%3A9498&styles=&format=application/openlayers */}
         </BaseLayer>        
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
@@ -129,7 +157,8 @@ export default function Map() {
 
       <LinearMeasureControl />
       <InitialView />
-      <PrintControl />
+      {/* <PrintControl /> */}
+      <PrintMapButton/>
     </MapContainer>
   );
 }

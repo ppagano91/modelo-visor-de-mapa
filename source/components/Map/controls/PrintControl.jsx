@@ -3,63 +3,72 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-easyprint';
 
-const PrintControl = ({ size = 'A4', filename = 'map' }) => {
+const PrintControl = ({ size = 'A4', filename = 'map', printTitle = 'Mapa Impreso' }) => {
   const map = useMap();
 
   useEffect(() => {
     const printControl = L.easyPrint({
-      title: 'Imprimir mapa',
+      title: 'Imprimir',
       position: 'bottomright',
-      sizeModes: ['Current', 'A4Portrait', 'A4Landscape'],
-    },
-  ).addTo(map);
+      sizeModes: ['Current'],
+      customWindowTitle: "Imprimir Mapa",
+      spinnerBgColor: "#000000",
+    }).addTo(map);
 
-    const hideControls = () => {
-      console.log(searchControl)
-      const searchControl = document.querySelector('.search-control');
-      const wmsMap = document.querySelector('.wms-map');
-
-      if (searchControl) searchControl.classList.add('print-hidden-control');
-      if (wmsMap) wmsMap.classList.add('print-hidden-control');
+    // Función para agregar el título al mapa antes de imprimir
+    const addPrintTitle = () => {
+      const mapContainer = document.querySelector('.leaflet-container');
+      if (mapContainer) {
+        const titleElement = document.createElement('div');
+        titleElement.id = 'print-title';
+        titleElement.style.position = 'absolute';
+        titleElement.style.top = '10px';
+        titleElement.style.left = '50%';
+        titleElement.style.transform = 'translateX(-50%)';
+        titleElement.style.backgroundColor = 'white';
+        titleElement.style.padding = '10px';
+        titleElement.style.fontSize = '20px';
+        titleElement.style.fontWeight = 'bold';
+        titleElement.style.zIndex = '9999'; // Asegura que el título esté encima de todo
+        titleElement.innerText = printTitle;
+        mapContainer.appendChild(titleElement);
+      }
     };
 
-    // Función para mostrar nuevamente los controles personalizados
-    const showControls = () => {
-      const searchControl = document.querySelector('.search-control');
-      const wmsMap = document.querySelector('.wms-map');
-
-      if (searchControl) searchControl.classList.remove('print-hidden-control');
-      if (wmsMap) wmsMap.classList.remove('print-hidden-control');
+    // Función para remover el título después de imprimir
+    const removePrintTitle = () => {
+      const titleElement = document.getElementById('print-title');
+      if (titleElement) {
+        titleElement.remove();
+      }
     };
 
-    // Función personalizada para manejar la impresión con ocultar/mostrar controles
-    const handlePrintClick = (e) => {
-      hideControls(); // Oculta los controles personalizados antes de la impresión
+    // Agregar la lógica de ocultar controles y agregar título
+    const handlePrintClick = () => {
+      addPrintTitle(); // Agrega el título antes de la impresión
       setTimeout(() => {
-        printControl.printMap(`${size} page`, filename); // Llama a la función de impresión
+        printControl.printMap(`${size} page`, filename); // Realiza la impresión
       }, 300);
 
-      setTimeout(showControls, 1000); // Muestra los controles después de la impresión
+      setTimeout(removePrintTitle, 1000); // Remueve el título después de la impresión
     };
 
-    // Acceder al botón de impresión y asignar el evento click personalizado
+    // Agregar el listener para el botón de impresión
     const printButton = document.querySelector('.leaflet-control-easyPrint-button');
     if (printButton) {
       printButton.addEventListener('click', handlePrintClick);
     }
 
     return () => {
-      // Remover el control de impresión del mapa
+      // Limpiar el evento al desmontar el componente
       map.removeControl(printControl);
-
-      // Remover el listener de click cuando el componente se desmonta
       if (printButton) {
         printButton.removeEventListener('click', handlePrintClick);
       }
     };
-  }, [map, size, filename]);
+  }, [map, size, filename, printTitle]);
 
-  return null; // No renderiza nada visualmente
+  return null;
 };
 
 export default PrintControl;

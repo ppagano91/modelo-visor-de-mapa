@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L from "leaflet";
 
-const PrintMapButton = ({ position }) => {
+const PrintMapButton = ({ position="topleft" }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -33,7 +33,8 @@ const PrintMapButton = ({ position }) => {
                 display: none !important;
               }
               @page {
-                margin: 20mm;
+                size: auto;
+                margin: 5mm;
               }
               .print-title {
                 position: absolute;
