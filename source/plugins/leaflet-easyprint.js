@@ -1,4 +1,5 @@
 import domtoimage from 'dom-to-image';
+import domtoimagemore from "dom-to-image-more"
 import filesaver from 'file-saver';
 
 L.Control.EasyPrint = L.Control.extend({
@@ -82,7 +83,7 @@ L.Control.EasyPrint = L.Control.extend({
       this.options.filename = filename
     }
     if (!this.options.exportOnly) {
-      this._page = window.open("", "_blank", 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=10, top=10, width=200, height=250, visible=none');
+      this._page = window.open("", "_blank", 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=10, top=10, visible=none');
       this._page.document.write(this._createSpinner(this.options.customWindowTitle, this.options.customSpinnerClass, this.options.spinnerBgCOlor));
     }
     this.originalState = {
@@ -113,7 +114,7 @@ L.Control.EasyPrint = L.Control.extend({
     }
     var sizeMode = typeof event !== 'string' ? event.target.className : event;
     if (sizeMode === 'CurrentSize') {
-      return this._printOpertion(sizeMode);
+      return this._printOperation(sizeMode);
     }
     this.outerContainer = this._createOuterContainer(this.mapContainer)
     if (this.originalState.widthWasAuto) {
@@ -165,7 +166,7 @@ L.Control.EasyPrint = L.Control.extend({
     if (this.options.tileLayer) {
       this._pausePrint(sizeMode)
     } else {
-      this._printOpertion(sizeMode)
+      this._printOperation(sizeMode)
     }
   },
 
@@ -174,20 +175,21 @@ L.Control.EasyPrint = L.Control.extend({
     var loadingTest = setInterval(function () { 
       if(!plugin.options.tileLayer.isLoading()) {
         clearInterval(loadingTest);
-        plugin._printOpertion(sizeMode)
+        plugin._printOperation(sizeMode)
       }
     }, plugin.options.tileWait);
   },
 
-  _printOpertion: function (sizemode) {
+  _printOperation: function (sizeMode) {
     var plugin = this;
     var widthForExport = this.mapContainer.style.width
-    if (this.originalState.widthWasAuto && sizemode === 'CurrentSize' || this.originalState.widthWasPercentage && sizemode === 'CurrentSize') {
+    if (this.originalState.widthWasAuto && sizeMode === 'CurrentSize' || this.originalState.widthWasPercentage && sizeMode === 'CurrentSize') {
       widthForExport = this.originalState.mapWidth
     }
-    domtoimage.toPng(plugin.mapContainer, {
-        width: parseInt(widthForExport),
-        height: parseInt(plugin.mapContainer.style.height.replace('px'))
+    domtoimagemore.toPng(plugin.mapContainer, {
+        style:{
+            "margin":"0 auto",
+        }
       })
       .then(function (dataUrl) {
           var blob = plugin._dataURItoBlob(dataUrl);
@@ -222,7 +224,7 @@ L.Control.EasyPrint = L.Control.extend({
   },
 
   _sendToBrowserPrint: function (img, orientation) {
-    this._page.resizeTo(600, 800); 
+    // this._page.resizeTo(800, 600); 
     var pageContent = this._createNewWindow(img, orientation, this)
     this._page.document.body.innerHTML = ''
     this._page.document.write(pageContent);
@@ -306,17 +308,59 @@ L.Control.EasyPrint = L.Control.extend({
   },
 
   _createNewWindow: function (img, orientation, plugin) {
-    return `<html><head>
-        <style>@media print {
-          img { max-width: 98%!important; max-height: 98%!important; }
-          @page { size: ` + orientation + `;}}
-        </style>
-        <script>function step1(){
-        setTimeout('step2()', 10);}
-        function step2(){window.print();window.close()}
-        </script></head><body onload='step1()'>
-        <img src="` + img + `" style="display:block; margin:auto;"></body></html>`;
+    return `
+      <html>
+        <head>
+          <title>${plugin.options.customWindowTitle}</title>
+          <style>
+            @media print {
+              body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+              }
+              .print-header {
+                text-align: center;
+                font-size: 24px;
+                margin-bottom: 20px;
+              }
+              .additional-content {
+                text-align: center;
+                font-size: 16px;
+              }
+              .map-container {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .map-container img {
+                max-width: 100%; /* Limitar el ancho máximo */
+                height: auto; /* Mantener la proporción */
+              }
+            }
+          </style>
+          <script>
+            function step1(){
+              setTimeout(step2, 10);
+            }
+            function step2(){
+              window.print();
+              window.close();
+            }
+          </script>
+        </head>
+        <body onload="step1()">
+        ${plugin.options.additionalContent ? `<div class="additional-content">${plugin.options.additionalContent}</div>` : ''}
+        <div class="print-header">${plugin.options.printHeader}</div>
+        <div class="map-container">            
+            <img src="${img}" alt="Mapa">
+          </div>
+        </body>
+      </html>
+    `;
   },
+  
 
   _createOuterContainer: function (mapDiv) {
     var outerContainer = document.createElement('div'); 
