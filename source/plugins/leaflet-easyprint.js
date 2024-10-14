@@ -311,53 +311,113 @@ L.Control.EasyPrint = L.Control.extend({
     return `
       <html>
         <head>
-          <title>${plugin.options.customWindowTitle}</title>
-          <style>
+            <title>${plugin.options.customWindowTitle}</title>
+            <style>
             @media print {
-              body {
+                body {
                 font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 0;
-              }
-              .print-header {
+                height: 100vh;
+                background-color: white;
+                }
+
+                .print-header {
                 text-align: center;
+                background-color: #FDD306;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                }
+
+                .header-text {              
                 font-size: 24px;
-                margin-bottom: 20px;
-              }
-              .additional-content {
+                font-weight: 600;
+                }
+
+                .additional-content {
                 text-align: center;
                 font-size: 16px;
-              }
-              .map-container {
+                }
+
+                .print-container {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                }
+
+                .content {
+                flex: 1;
+                background-color: #FDD306;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                }
+
+                .map-container {
+                position: relative;
                 width: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-              }
-              .map-container img {
-                max-width: 100%; /* Limitar el ancho máximo */
-                height: auto; /* Mantener la proporción */
-              }
+                margin: 0;
+                padding: 0;
+                }
+
+                .map-container img {
+                max-width: 100%;
+                height: auto;
+                }
+
+                /* Estilo para la fecha en la esquina inferior derecha del mapa con mayor transparencia */
+                .date-container {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                font-size: 12px;
+                color: black;
+                background-color: rgba(255, 255, 255, 0.2); /* Más transparencia */
+                padding: 5px;
+                border-radius: 3px;
+                opacity: 0.8; /* Transparencia del texto */
+                }
             }
-          </style>
-          <script>
-            function step1(){
-              setTimeout(step2, 10);
+            </style>
+            <script>
+            function step1() {
+                const dateElement = document.getElementById('current-date');
+                const currentDate = new Date();
+                const formattedDate = currentDate.toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+                });
+                dateElement.textContent = "Fecha: " + formattedDate;
+                setTimeout(step2, 10);
             }
-            function step2(){
-              window.print();
-              window.close();
+
+            function step2() {
+                window.print();
+                window.close();
             }
-          </script>
+            </script>
         </head>
         <body onload="step1()">
-        ${plugin.options.additionalContent ? `<div class="additional-content">${plugin.options.additionalContent}</div>` : ''}
-        <div class="print-header">${plugin.options.printHeader}</div>
-        <div class="map-container">            
-            <img src="${img}" alt="Mapa">
-          </div>
+            ${plugin.options.additionalContent ? `<div class="additional-content">${plugin.options.additionalContent}</div>` : ''}
+            <div class="print-container">
+            <div class="print-header">
+                <h2 class="header-text">${plugin.options.printHeader}</h2>
+            </div>            
+            <div class="map-container">            
+                <img src="${img}" alt="Mapa">
+                <div class="date-container">
+                <span id="current-date"></span>
+                </div>
+            </div>
+            <div class="content">
+            </div>
+            </div>
         </body>
-      </html>
+    </html>
     `;
   },
   
