@@ -123,10 +123,11 @@ const ListItems = ({ nameSection, color, items }) => {
     return (
       <li key={item.id} className="d-flex align-items-center justify-content-between p-2" style={{position: "relative"}}>
         {/* Detalles para la leyenda y el nombre */}
-        <details className="flex-grow-1" style={{ marginRight: "20px" }}>
-          <summary 
+        <div className="flex-grow-1" style={{ marginRight: "20px" }}>
+          <div 
             className="d-flex align-items-center gap-2" 
             style={{ cursor: 'pointer', outline: 'none' }}
+            onClick={() => handleItemClick(item.id, item.props)}
           >
             <input type="checkbox" checked={isActive} readOnly />
             <p
@@ -137,20 +138,19 @@ const ListItems = ({ nameSection, color, items }) => {
                 whiteSpace: "nowrap",
                 maxWidth: '14rem'
               }}
-              onClick={() => handleItemClick(item.id, item.props)}
               title={item.name}
             >
               {item.name}
             </p>
-          </summary>
+          </div>
 
           {/* Contenido de la leyenda */}
-          {legendURL && (
+          {isActive && legendURL && (
             <div style={{ paddingLeft: "20px", backgroundColor: "white" }}>
               <img src={legendURL} alt={`Leyenda de ${item.name}`} />
             </div>
           )}
-        </details>
+        </div>
         <div className="d-flex gap-1 align-items-center" style={{position: "absolute", right: "0.25rem", top: "0.75rem"}}>
           <PublicOutlined
             style={{ height: "1rem", cursor: "pointer" }}
