@@ -103,7 +103,7 @@ const ListItems = ({ nameSection, color, items }) => {
                         <Recycling
                             onClick={handleClearSelection}
                             style={{cursor: "pointer"}}
-                            titleAccess="Eliminar selección"
+                            titleAccess="Limpiar capas"
                         ></Recycling>
                 )}
             </div>
@@ -112,6 +112,7 @@ const ListItems = ({ nameSection, color, items }) => {
               type="button"
               className="btn-close btn-close-white p-0 m-2"
               aria-label="Close"
+              title='Cerrar'
             ></button>
           </div>
           
