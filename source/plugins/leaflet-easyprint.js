@@ -274,7 +274,6 @@ L.Control.EasyPrint = L.Control.extend({
         <head>
             <title>${plugin.options.customWindowTitle}</title>
             <style>
-            @media print {
                 body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -308,7 +307,7 @@ L.Control.EasyPrint = L.Control.extend({
 
                 .content {
                 flex: 1;
-                background-color: #FDD306;
+                background-color: white;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -329,19 +328,17 @@ L.Control.EasyPrint = L.Control.extend({
                 height: auto;
                 }
 
-                /* Estilo para la fecha en la esquina inferior derecha del mapa con mayor transparencia */
                 .date-container {
                 position: absolute;
                 bottom: 10px;
                 right: 10px;
                 font-size: 12px;
                 color: black;
-                background-color: rgba(255, 255, 255, 0.2); /* Más transparencia */
+                background-color: rgba(255, 255, 255, 0.2);
                 padding: 5px;
                 border-radius: 3px;
-                opacity: 0.8; /* Transparencia del texto */
+                opacity: 0.8;
                 }
-            }
             </style>
             <script>
             function step1() {
@@ -365,17 +362,17 @@ L.Control.EasyPrint = L.Control.extend({
         <body onload="step1()">
             ${plugin.options.additionalContent ? `<div class="additional-content">${plugin.options.additionalContent}</div>` : ''}
             <div class="print-container">
-            <div class="print-header">
-                <h2 class="header-text">${plugin.options.printHeader}</h2>
-            </div>            
-            <div class="map-container">            
-                <img src="${img}" alt="Mapa">
-                <div class="date-container">
-                <span id="current-date"></span>
+                <div class="print-header">
+                    <h2 class="header-text">${plugin.options.printHeader}</h2>
+                </div>            
+                <div class="map-container">            
+                    <img src="${img}" alt="Mapa">
+                    <div class="date-container">
+                    <span id="current-date"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="content">
-            </div>
+                <div class="content">
+                </div>
             </div>
         </body>
     </html>

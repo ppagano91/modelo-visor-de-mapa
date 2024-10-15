@@ -4,7 +4,6 @@ import {
   MapContainer,
   TileLayer,
   LayersControl,
-  useMap,
   WMSTileLayer,
 } from "react-leaflet";
 
@@ -24,15 +23,10 @@ import WMSMap from "../WMSMap";
 
 import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";
-import PrintControl from "./controls/PrintControl";
 import WMSControl from "./controls/WMSControl";
 import PrintMapButton from "./controls/PrintMapButton";
 
-// import PrintControlDefault from "react-leaflet-easyprint"
-
 const { BaseLayer, Overlay } = LayersControl;
-
-// const PrintControl = withLeaflet(PrintControlDefault);
 
 export default function Map() {
   const { baseMapLayer } = useContext(MapLayerContext);
@@ -40,7 +34,6 @@ export default function Map() {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
   const { selectedLayers, setSelectedLayers } = useContext(AppContext);
-  // const printControlRef = useRef();
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -120,16 +113,12 @@ export default function Map() {
       >
         <BaseLayer checked name="Mapa Base">
           <TileLayer
-            url={getEnv("VITE_MAPA_BASE")}
-            tms={true}
             attribution="Mapa Base"
-            zIndex={25}
-            // url={baseMapLayer.url}
-            // layers={baseMapLayer.name}
-            // format="image/png"
+            url={baseMapLayer.url}
+            layers={baseMapLayer.name}
+            format="image/png"
             transparent={true}
           />
-          {/* https://geoserver.buenosaires.gob.ar/geoserver/mapa_base_prod/wms?service=WMS&version=1.1.0&request=GetMap&layers=mapa_base_prod%3Amapa_base&bbox=13831.887476771106%2C61708.32547485026%2C31778.069575850328%2C81291.41085047911&width=703&height=768&srs=EPSG%3A9498&styles=&format=application/openlayers */}
         </BaseLayer>        
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
@@ -148,7 +137,7 @@ export default function Map() {
         </BaseLayer>
       </LayersControl>
 
-      <CoordinatesControl position="bottomleft" className="print-hidden"/>
+      <CoordinatesControl position="bottomleft"/>
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />
 
@@ -157,8 +146,7 @@ export default function Map() {
 
       <LinearMeasureControl />
       <InitialView />
-      {/* <PrintControl /> */}
-      <PrintMapButton/>
+      <PrintMapButton />
     </MapContainer>
   );
 }
