@@ -4,7 +4,7 @@ import LOGO from "../assets/images/logo-bsas.png";
 const Navbar = () => {
   return (
     <nav
-      className="navbar print-hidden"
+      className="navbar"
       style={{ height: "10vh", backgroundColor: "#FDD306" }}
     >
       <div className="container-fluid">
@@ -16,12 +16,10 @@ const Navbar = () => {
           />
         </a>
         <div className="mx-auto">
-          <span className="navbar-text h4 mb-0 text-center fw-bold color">
+          <h1 className="navbar-text mb-0 text-center fw-bold color fs-4 d-none d-md-block">
             Mapa de la Ciudad de Buenos Aires
-          </span>
+          </h1>
         </div>
-
-        {/* TODO: Agregar botón para redireccionar al Portal */}
       </div>
     </nav>
   );
