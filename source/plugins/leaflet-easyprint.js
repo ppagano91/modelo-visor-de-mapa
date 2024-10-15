@@ -526,10 +526,33 @@ L.Control.EasyPrint = L.Control.extend({
   },
 
   _toggleControls: function (show) {
-    var controlContainer = document.getElementsByClassName("leaflet-control-container")[0];
-    if (show) return controlContainer.style.display = 'block';
-    controlContainer.style.display = 'none';
+    let controlContainer = document.getElementsByClassName("leaflet-control-container")[0];
+    let serachControl = document.getElementsByClassName("search-control")[0]
+    let controls = controlContainer.children;
+    if (show) {
+        for (var i = 0; i < controls.length; i++) { 
+            let controlsIChildren = controls[i].children           
+            for (var j = 0; j < controlsIChildren.length; j++) {
+                controlsIChildren[j].style.display = 'block';
+            }
+        }
+        serachControl.style.display = "block"
+    }
+    else{
+        for (var i = 0; i < controls.length; i++) { 
+            let controlsIChildren = controls[i].children
+            for (var j = 0; j < controlsIChildren.length; j++) {            
+                if (controlsIChildren[j].classList.contains("leaflet-control-scale") || controlsIChildren[j].classList.contains("coordinates-control")) {
+                    controlsIChildren[j].style.display = 'block';
+                } else{
+                    controlsIChildren[j].style.display = 'none';
+                }
+            }
+        }
+        serachControl.style.display = "none"
+    }
   },
+
   _toggleClasses: function (classes, show) {
     classes.forEach(function (className) {
       var div = document.getElementsByClassName(className)[0];
