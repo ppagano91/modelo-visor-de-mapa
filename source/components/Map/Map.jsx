@@ -112,14 +112,13 @@ export default function Map() {
         zIndex={500}
       >
         <BaseLayer checked name="Mapa Base">
-          <TileLayer
-            attribution="Mapa Base"
+          <WMSTileLayer
             url={baseMapLayer.url}
             layers={baseMapLayer.name}
             format="image/png"
             transparent={true}
           />
-        </BaseLayer>        
+        </BaseLayer>   
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
             url={getEnv("VITE_ARGENMAP")}
