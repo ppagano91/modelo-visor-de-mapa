@@ -232,79 +232,40 @@ L.Control.EasyPrint = L.Control.extend({
   },
 
   _createSpinner: function (title, spinnerClass, spinnerColor) {
-    return `<html><head><title>`+ title + `</title></head><body><style>
-      body{
-        background: ` + spinnerColor + `;
-      }
-      .epLoader,
-      .epLoader:before,
-      .epLoader:after {
-        border-radius: 50%;
-      }
-      .epLoader {
-        color: #ffffff;
-        font-size: 11px;
-        text-indent: -99999em;
-        margin: 55px auto;
-        position: relative;
-        width: 10em;
-        height: 10em;
-        box-shadow: inset 0 0 0 1em;
-        -webkit-transform: translateZ(0);
-        -ms-transform: translateZ(0);
-        transform: translateZ(0);
-      }
-      .epLoader:before,
-      .epLoader:after {
-        position: absolute;
-        content: '';
-      }
-      .epLoader:before {
-        width: 5.2em;
-        height: 10.2em;
-        background: #0dc5c1;
-        border-radius: 10.2em 0 0 10.2em;
-        top: -0.1em;
-        left: -0.1em;
-        -webkit-transform-origin: 5.2em 5.1em;
-        transform-origin: 5.2em 5.1em;
-        -webkit-animation: load2 2s infinite ease 1.5s;
-        animation: load2 2s infinite ease 1.5s;
-      }
-      .epLoader:after {
-        width: 5.2em;
-        height: 10.2em;
-        background: #0dc5c1;
-        border-radius: 0 10.2em 10.2em 0;
-        top: -0.1em;
-        left: 5.1em;
-        -webkit-transform-origin: 0px 5.1em;
-        transform-origin: 0px 5.1em;
-        -webkit-animation: load2 2s infinite ease;
-        animation: load2 2s infinite ease;
-      }
-      @-webkit-keyframes load2 {
-        0% {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-      @keyframes load2 {
-        0% {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-      </style>
-    <div class="`+spinnerClass+`">Loading...</div></body></html>`;
+    return `<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid black;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+
+<div style="display: flex; align-items:center; justify-content: center; margin:100px">
+	<div class="loader"></div>
+</div>
+
+</body>
+</html>`;
   },
 
   _createNewWindow: function (img, orientation, plugin) {
