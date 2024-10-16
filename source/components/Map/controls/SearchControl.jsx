@@ -215,7 +215,7 @@ const SearchControl = () => {
         <button
           type="button"
           className="btn  flex-1 mx-1 py-1"
-          style={{ backgroundColor: "#FDD306" }}
+          style={{ backgroundColor: getEnv("VITE_COLOR") }}
           onClick={() => handleSearch(selectedIndex)}
         >
           <Search fontSize="medium" className="d-flex text-white" />

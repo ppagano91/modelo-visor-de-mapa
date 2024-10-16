@@ -49,6 +49,7 @@ const ListItems = ({ nameSection, color, items }) => {
             format: 'image/png',
             layer: layerName,
             style: '',
+            legend_options: 'fontName:Cantarell Bold;fontSize:11;fontColor:#2f00ff;forceLabels:on',
         };
         const url = urlBase + L.Util.getParamString(params, '', true);
 

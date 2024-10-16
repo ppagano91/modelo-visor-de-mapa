@@ -1,6 +1,7 @@
 import domtoimage from 'dom-to-image';
 import domtoimagemore from "dom-to-image-more"
 import filesaver from 'file-saver';
+import { getEnv } from '../config';
 
 L.Control.EasyPrint = L.Control.extend({
   options: {
@@ -65,6 +66,8 @@ L.Control.EasyPrint = L.Control.extend({
       this.link.id = "leafletEasyPrint";
       this.link.title = this.options.title;
       this.holder = L.DomUtil.create('ul', 'easyPrintHolder', container);
+
+      L.DomEvent.addListener(btn, 'click', this.printMap, this);
 
       this.options.sizeModes.forEach(function (sizeMode) {
         var btn = L.DomUtil.create('li', 'easyPrintSizeMode', this.holder);
@@ -233,39 +236,39 @@ L.Control.EasyPrint = L.Control.extend({
 
   _createSpinner: function (title, spinnerClass, spinnerColor) {
     return `<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid black;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-}
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+      .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid black;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+      }
 
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
+      /* Safari */
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
-</head>
-<body>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      </style>
+      </head>
+      <body>
 
-<div style="display: flex; align-items:center; justify-content: center; margin:100px">
-	<div class="loader"></div>
-</div>
+      <div style="display: flex; align-items:center; justify-content: center; margin:100px">
+        <div class="loader"></div>
+      </div>
 
-</body>
-</html>`;
+      </body>
+      </html>`;
   },
 
   _createNewWindow: function (img, orientation, plugin) {
@@ -284,7 +287,7 @@ L.Control.EasyPrint = L.Control.extend({
 
                 .print-header {
                 text-align: center;
-                background-color: #FDD306;
+                background-color: ${getEnv("VITE_COLOR")};
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
                 }

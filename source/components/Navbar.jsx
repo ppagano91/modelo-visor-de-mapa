@@ -1,11 +1,12 @@
 import React from "react";
 import LOGO from "../assets/images/logo-bsas.png";
+import { getEnv } from "../config";
 
 const Navbar = () => {
   return (
     <nav
       className="navbar"
-      style={{ height: "10vh", backgroundColor: "#FDD306" }}
+      style={{ height: "10vh", backgroundColor: getEnv("VITE_COLOR") }}
     >
       <div className="container-fluid">
         <a className="navbar-brand" href="#">

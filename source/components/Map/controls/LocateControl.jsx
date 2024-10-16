@@ -14,11 +14,13 @@ const LocateControl = () => {
         icon:"leaflet-control-locate-button",
         strings: {
             title: "Mi ubicación"
-        }
+        },
+        showPopup: false,
+        flyTo: true
+
     });
 
     map.addControl(locateControl);
-
 
     return () => {
       map.removeControl(locateControl);

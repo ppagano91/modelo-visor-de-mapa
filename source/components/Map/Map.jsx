@@ -119,6 +119,13 @@ export default function Map() {
             transparent={true}
           />
         </BaseLayer>   
+        <BaseLayer name="Mapa Base 2">
+        {/* <WMSTileLayer
+          url={getEnv("VITE_MAPA_BASE_TMS")}
+          tms={true}
+          attribution="&copy; <a href='http://geoserver.buenosaires.gob.ar'>Geoserver Buenos Aires</a>"
+        /> */}
+        </BaseLayer>   
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
             url={getEnv("VITE_ARGENMAP")}

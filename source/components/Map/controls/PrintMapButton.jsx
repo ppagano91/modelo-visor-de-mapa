@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { useMap } from "react-leaflet";
-// import 'leaflet-easyprint';
 import '../../../plugins/leaflet-easyprint';
 import L from "leaflet";
 
-const PrintMapButton = ({ position = "topleft" }) => {
+const PrintMapButton = ({ position = "bottomright" }) => {
   const map = useMap();
 
   useEffect(() => {

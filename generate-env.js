@@ -6,6 +6,10 @@ dotenv.config();
 
 const envConfig = process.env;
 
+if (!envConfig.VITE_COLOR) {
+  envConfig.VITE_COLOR = "#007BC7"; // Color por defecto
+}
+
 // Crear contenido para env.js
 const envVariables = Object.keys(envConfig)
   .filter(key => key.startsWith('VITE_'))
