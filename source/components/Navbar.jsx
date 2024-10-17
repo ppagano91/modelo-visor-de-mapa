@@ -26,7 +26,7 @@ const Navbar = () => {
             }}
           >
             Mapa de la Ciudad de Buenos Aires
-          </h1>
+          </span>
         </div>
       </div>
     </nav>
