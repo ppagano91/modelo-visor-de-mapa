@@ -7,17 +7,16 @@ const PrintMapButton = ({ position = "bottomright" }) => {
   const map = useMap();
 
   useEffect(() => {
-    // Configurar EasyPrint
     const easyPrint = L.easyPrint({
       printHeader: 'Mapa de la Ciudad de Buenos Aires',
       title: 'Imprimir mapa',
       position: position || 'bottomright',
       exportOnly: false,
       hideControlContainer: true,
-      sizeModes: ['Current'], // Solo usar el tamaño actual del mapa
+      sizeModes: ['Current'],
       filename: 'mapa',
       exportType: 'png',
-      printLayer: true, // Asegura que las capas vectoriales se impriman
+      printLayer: true,
     }).addTo(map);
 
     return () => {
