@@ -97,7 +97,7 @@ L.Control.EasyPrint = L.Control.extend({
 
   _createImagePlaceholder: function () {
     var plugin = this;
-    domtoimage.toPng(this.mapContainer, {
+    domtoimagemore.toPng(this.mapContainer, {
         width: parseInt(this.originalState.mapWidth.replace('px')),
         height: parseInt(this.originalState.mapHeight.replace('px'))
       })
@@ -115,7 +115,7 @@ L.Control.EasyPrint = L.Control.extend({
         plugin._resizeAndPrintMap();
       })
       .catch(function (error) {
-          console.error('Oops, algo salió mal!', error);
+          console.error('Algo salió mal!', error);
       });
   },
 
