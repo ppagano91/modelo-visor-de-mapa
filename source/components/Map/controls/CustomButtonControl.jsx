@@ -8,7 +8,8 @@ const CustomButtonControl = ({
   iconClassName,
   onClick: onClickFunction,
   postion,
-  buttonStyle,
+  anchorStyle,
+  className,
   title,
 }) => {
   const map = useMap();
@@ -17,6 +18,9 @@ const CustomButtonControl = ({
     const control = L.Control.extend({
       onAdd: function (map) {
         const element = L.DomUtil.create("div", "leaflet-bar");
+        if (className){
+          L.DomUtil.addClass(element, className);
+        }
         if (iconImage) {
           const img = L.DomUtil.create("a");
           img.src = iconImage;
@@ -29,6 +33,8 @@ const CustomButtonControl = ({
         }
         if (iconClassName) {
           const icon = L.DomUtil.create("a", iconClassName);
+          Object.assign(icon.style, anchorStyle);
+          
           element.appendChild(icon);
         }
         if (onClickFunction) {
@@ -49,7 +55,7 @@ const CustomButtonControl = ({
     return () => {
       customControl.remove();
     };
-  }, [iconImage, onClickFunction, buttonStyle]);
+  }, [iconImage, onClickFunction, className]);
   return null;
 };
 

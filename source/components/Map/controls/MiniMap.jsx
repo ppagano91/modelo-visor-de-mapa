@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-minimap';
+import { getEnv } from '../../../config';
 
 const MiniMap = ({ position }) => {
   const map = useMap();
 
   useEffect(() => {
-    const minimapLayer = new L.TileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png', {
+    const minimapLayer = new L.TileLayer(getEnv("VITE_ARGENMAP"), {
       minZoom: 0,
       maxZoom: 13,
       // bounds: map.getBounds()

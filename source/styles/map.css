@@ -52,3 +52,8 @@
     border: 1px solid black;
     font-size: 12px;
   }
+
+  .print-hidden-control {
+    display: none !important;
+  }
+  

@@ -1,11 +1,12 @@
 import React from "react";
 import LOGO from "../assets/images/logo-bsas.png";
+import { getEnv } from "../config";
 
 const Navbar = () => {
   return (
     <nav
-      className="navbar print-hidden"
-      style={{ height: "10vh", backgroundColor: "#FDD306" }}
+      className="navbar"
+      style={{ height: "10vh", backgroundColor: getEnv("VITE_COLOR") }}
     >
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
@@ -25,10 +26,8 @@ const Navbar = () => {
             }}
           >
             Mapa de la Ciudad de Buenos Aires
-          </span>
+          </h1>
         </div>
-
-        {/* TODO: Agregar botón para redireccionar al Portal */}
       </div>
     </nav>
   );

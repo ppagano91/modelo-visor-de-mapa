@@ -1,8 +1,11 @@
-import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Spinner } from "react-bootstrap";
 
-const DownloadModal = ({ show, handleClose, downloadProps }) => {  
+const DownloadModal = ({ show, handleClose, downloadProps }) => {
+  const [loading, setLoading] = useState(false); // Estado de carga
+
   const handleDownload = (format) => {
+    setLoading(true); // Iniciar el estado de carga
     const wfsUrl = `${downloadProps.url.replace('/wms?', '/wfs')}`;
     const params = new URLSearchParams({
       service: 'WFS',
@@ -30,6 +33,9 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
       })
       .catch(error => {
         console.error("Error al descargar la información de la capa:", error);
+      })
+      .finally(() => {
+        setLoading(false); // Finalizar el estado de carga
       });
   };
 
@@ -45,9 +51,35 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
         ></button>
       </Modal.Header>
       <Modal.Body className="d-flex justify-content-around">
-        <Button variant="warning fw-medium" onClick={() => handleDownload('vnd.google-earth.kml+xml')}>KML</Button>
-        <Button variant="warning fw-medium" onClick={() => handleDownload('shp')}>SHP</Button>
-        <Button variant="warning fw-medium" onClick={() => handleDownload('json')}>JSON</Button>
+        {loading ? ( // Mostrar spinner si está cargando
+          <Spinner animation="border" role="status" className="m-auto">
+            <span className="visually-hidden">Preparando archivo...</span>
+          </Spinner>
+        ) : (
+          <>
+            <Button
+              variant="warning fw-medium"
+              onClick={() => handleDownload('vnd.google-earth.kml+xml')}
+              disabled={loading} // Deshabilitar botones mientras se descarga
+            >
+              KML
+            </Button>
+            <Button
+              variant="warning fw-medium"
+              onClick={() => handleDownload('shp')}
+              disabled={loading}
+            >
+              SHP
+            </Button>
+            <Button
+              variant="warning fw-medium"
+              onClick={() => handleDownload('json')}
+              disabled={loading}
+            >
+              JSON
+            </Button>
+          </>
+        )}
       </Modal.Body>
     </Modal>
   );

@@ -72,10 +72,15 @@ export const AppProvider = ({ children }) => {
     setMetadata(prevState => data);
   };
 
-  const handleGeoserviciosModalClose = () => setGeoserviciosModalShow(false);
-  const handleGeoserviciosModal = (event, props) => {
+  const handleGeoserviciosModalClose = () =>{ 
+    setGeoserviciosModalShow(false)
+    setMetadata({});
+  };
+
+  const handleGeoserviciosModal = (event, data) => {
     event.stopPropagation();
     setGeoserviciosModalShow(true);
+    setMetadata(prevState => data)
   };
 
   const handleActiveSectionName = sectionName => {

@@ -96,6 +96,11 @@ const SearchControl = () => {
           map.setView(latLng, 16);
         }
       }
+      if (selectedIndex == -1) {
+        setInput(suggestions[0].value);
+      } else {
+        setInput(suggestions[selectedIndex].value);
+      }
       setSuggestions([]);
     } else {
       if ("response" in res) {
@@ -193,7 +198,7 @@ const SearchControl = () => {
         borderRadius: "1rem",
         width: "22rem",
       }}
-      className="print-hidden"
+      className="search-control"
     >
       <form className="d-flex" role="search">
         <input

@@ -6,6 +6,7 @@ import {
   DropdownButton,
   OverlayTrigger,
   Tooltip,
+  Spinner,
 } from "react-bootstrap";
 import axios from "axios";
 import { parseString } from "xml2js";
@@ -13,40 +14,46 @@ import { AppContext } from "../context/AppContext";
 import { FaInfoCircle } from "react-icons/fa";
 import { PATHS } from "../utils/consts/paths";
 import Alerts from "../components/Alerts/Alerts";
+import { getEnv } from "../config";
 
 const WMSMap = ({ showModal, handleCloseModal }) => {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
+  const [loading, setLoading] = useState(false); // Estado de carga
   const [error, setError] = useState(false);
   const { setSelectedLayers, openSection } = useContext(AppContext);
 
-  const handleUrlChange = event => {
+  const handleUrlChange = (event) => {
     setWmsUrl(event.target.value);
     setLayers([]);
-    setError(false)
+    setError(false);
   };
 
   const handleLoadClick = async () => {
     const fullUrl = `${wmsUrl}?request=GetCapabilities&service=WMS&version=1.3.0`;
+    setLoading(true); // Iniciar el estado de carga
     try {
       const response = await axios.get(fullUrl);
       parseString(response.data, (err, result) => {
         if (err) {
           console.error("Error WMS capabilities:", err);
           setError(true);
+          setLoading(false); // Terminar la carga
           return;
         }
         const layerList = extractLayers(result);
         setLayers(layerList);
-        setError(false)
+        setError(false);
       });
     } catch (error) {
       console.error("Error fetching WMS capabilities:", error);
-      setError(true)
+      setError(true);
+    } finally {
+      setLoading(false); // Finalizar el estado de carga
     }
   };
 
-  const extractLayers = capabilities => {
+  const extractLayers = (capabilities) => {
     const layers = [];
     const layerElements =
       capabilities.WMS_Capabilities.Capability[0].Layer[0].Layer;
@@ -60,14 +67,14 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
     return layers;
   };
 
-  const handleLayerSelect = layer => {
-    setSelectedLayers(prevLayers => [...prevLayers, layer]);
+  const handleLayerSelect = (layer) => {
+    setSelectedLayers((prevLayers) => [...prevLayers, layer]);
     openSection(PATHS.temporalsLayers);
     handleCloseModal();
   };
 
-  const renderTooltip = props => (
-    <Tooltip id="button-tooltip " {...props}>
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
       Ejemplo: http://tu-servidor.com/geoserver/wms
     </Tooltip>
   );
@@ -75,8 +82,8 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
   return (
     <Modal show={showModal} onHide={handleCloseModal} className="mx-4 my-5">
       <Modal.Header
-        className=" p-2 px-3"
-        style={{ backgroundColor: "#FDD306" }}
+        className="p-2 px-3"
+        style={{ backgroundColor: getEnv("VITE_COLOR") }}
       >
         <Modal.Title className="h5 fw-medium">Capas Temporales</Modal.Title>
         <button
@@ -101,26 +108,36 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
             </span>
           </OverlayTrigger>
         </div>
-        {layers.length > 0 && (
-          <DropdownButton
-            className="mb-2"
-            title="Capas Disponibles"
-            menuVariant="dark"
-            variant="dark"
-          >
-            {layers.map((layer, index) => (
-              <Dropdown.Item
-                key={index}
-                onClick={() => handleLayerSelect(layer)}
-              >
-                {layer.name}
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
+
+        {loading ? ( // Mostrar spinner si está cargando
+          <div className="text-center my-3">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Cargando...</span>
+            </Spinner>
+          </div>
+        ) : (
+          layers.length > 0 && (
+            <DropdownButton
+              className="mb-2"
+              title="Capas Disponibles"
+              menuVariant="dark"
+              variant="dark"
+            >
+              {layers.map((layer, index) => (
+                <Dropdown.Item
+                  key={index}
+                  onClick={() => handleLayerSelect(layer)}
+                >
+                  {layer.name}
+                </Dropdown.Item>
+              ))}
+            </DropdownButton>
+          )
         )}
-        {error &&(
+
+        {error && (
           <div className="error-message">
-          <Alerts type="danger" message="La URL ingresada es incorrecta"/>
+            <Alerts type="danger" message="La URL ingresada es incorrecta" />
           </div>
         )}
       </Modal.Body>
@@ -130,10 +147,11 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
           style={{
             backgroundColor: "#007BC7",
             borderColor: "#007BC7",
-            hover: "FDD306",
+            hover: getEnv("VITE_COLOR"),
           }}
+          disabled={loading} // Deshabilitar botón mientras carga
         >
-          Cargar Capas
+          {loading ? "Cargando..." : "Cargar Capas"}
         </Button>
       </Modal.Footer>
     </Modal>

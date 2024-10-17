@@ -58,6 +58,12 @@
   cursor: pointer;
 }
 
+.wms-control-button {
+  background-image: url("./assets/images/layer-plus-regular-24.png");
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
 .suggestions-item-list {
   display: flex;
   white-space: nowrap;
