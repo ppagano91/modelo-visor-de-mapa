@@ -93,7 +93,15 @@ const Contacto = () => {
     <div id="contacto-informacion" style={{ width: "21rem" }}>
       <div className="m-3">
         <div className="text-justify">
-          <h1 className="fs-3">Contacto</h1>
+          <h1
+            className="fs-3"
+            style={{
+              fontWeight: "bold",
+              fontFamily: "Nunito",
+            }}
+          >
+            Contacto
+          </h1>
           <p className="" style={{ fontSize: "0.9rem" }}>
             Utilice este formulario para hacernos llegar sus comentarios,
             sugerencias, consultas o críticas respecto al Mapa Interactivo de
@@ -107,6 +115,9 @@ const Contacto = () => {
             <div className="input-group">
               <input
                 className="w-100 form-control"
+                style={{
+                  fontFamily: "Open Sans",
+                }}
                 type="text"
                 placeholder="Nombre (*)"
                 name="nombre"
@@ -118,6 +129,9 @@ const Contacto = () => {
             <div className="input-group">
               <input
                 className="w-100 form-control"
+                style={{
+                  fontFamily: "Open Sans",
+                }}
                 type="email"
                 placeholder="Correo electrónico"
                 name="correo"
@@ -131,7 +145,7 @@ const Contacto = () => {
               <input
                 // hacer mas alto el input de mensaje con opci0n de expandirlo
 
-                style={{ height: "8rem" }}
+                style={{ height: "8rem", fontFamily: "Open Sans" }}
                 className="w-200  form-control "
                 type="text"
                 placeholder="Mensaje (*)"
@@ -149,7 +163,13 @@ const Contacto = () => {
             />
             {errorMessage}
             {successMessage}
-            <button className="btn btn-warning w-25" type="submit">
+            <button
+              className="btn btn-warning w-25"
+              type="submit"
+              style={{
+                fontFamily: "Open Sans",
+              }}
+            >
               Enviar
             </button>
           </form>

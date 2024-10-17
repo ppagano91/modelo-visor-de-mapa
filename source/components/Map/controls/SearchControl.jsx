@@ -144,7 +144,7 @@ const SearchControl = () => {
     } else if (event.key === "Enter") {
       event.preventDefault();
       handleSearch(selectedIndex);
-      setInput(suggestions[selectedIndex].value)
+      setInput(suggestions[selectedIndex].value);
     }
   };
 
@@ -207,22 +207,40 @@ const SearchControl = () => {
           onChange={e => setInput(e.target.value)}
           placeholder="Buscar..."
           className="form-control form-control-input-search border-2 border-secondary input-group-sm "
+          style={{
+            fontFamily: "Open Sans",
+          }}
         />
         <button
           type="button"
-          className="btn  flex-1 mx-1 py-1"
-          style={{ backgroundColor: "#FDD306" }}
+          className="btn  flex-1 mx-1 py-1 "
+          style={{
+            backgroundColor: "#FDD306",
+            transition: "background-color 0.3s",
+          }}
+          onMouseEnter={e =>
+            (e.currentTarget.style.backgroundColor = "#FFDB2E")
+          }
+          onMouseLeave={e =>
+            (e.currentTarget.style.backgroundColor = "#FDD306")
+          }
           onClick={() => handleSearch(selectedIndex)}
         >
-          <Search fontSize="medium" className="d-flex text-white" />
+          <Search
+            fontSize="medium"
+            className="d-flex text-dark text-opacity-75"
+          />
         </button>
       </form>
       {suggestions && suggestions.length > 0 && (
         <ul
-          className={`bg-light my-1 p-0 border  ${
+          className={`bg-light my-1 p-0 border rounded-3  ${
             suggestions.length > 0 ? suggestions.length : error
           }`}
-          style={{ paddingLeft: "1rem" }}
+          style={{
+            paddingLeft: "1rem",
+            fontFamily: "Open Sans",
+          }}
         >
           {suggestions.map((sug, i) => {
             return (
@@ -246,8 +264,11 @@ const SearchControl = () => {
         </ul>
       )}
       {error && (
-        <div className="alert alert-danger my-1 py-2 border-2">
-          <span className="text-danger p-1 fw-bold msg-error">
+        <div
+          className="alert alert-danger my-1 py-2 px-1 border-2 "
+          style={{ width: "100%" }}
+        >
+          <span className="text-danger p-1 fw-bold msg-error text">
             {error.value}
           </span>
         </div>

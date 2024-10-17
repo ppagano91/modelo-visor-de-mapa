@@ -4,21 +4,18 @@ import ListItems from "../../../components/ListItems";
 
 const Salud = ({ color }) => {
   const [itemsSalud, setItemsSalud] = useState([]);
-  const {  hits } =
-    useContext(MapLayerContext);
+  const { hits } = useContext(MapLayerContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {        
+      try {
         const data = Object.keys(hits)
-        .filter(key => key === 'salud')
-        .reduce((obj, key) => {
-          obj[key] = hits[key];
-          return obj;
-        }, {});
-        const items = data.salud.elements.map(element => (
-          element
-        ))
+          .filter(key => key === "salud")
+          .reduce((obj, key) => {
+            obj[key] = hits[key];
+            return obj;
+          }, {});
+        const items = data.salud.elements.map(element => element);
         setItemsSalud(items);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
@@ -28,9 +25,7 @@ const Salud = ({ color }) => {
     fetchData();
   }, []);
 
-  return (
-    <ListItems nameSection={"Salud"} color={color} items={itemsSalud}/>
-  );
+  return <ListItems nameSection={"Salud"} color={color} items={itemsSalud} />;
 };
 
 export default Salud;

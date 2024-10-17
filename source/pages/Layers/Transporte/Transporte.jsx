@@ -9,17 +9,15 @@ const Transporte = ({ color }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {        
+      try {
         const data = Object.keys(hits)
-        .filter(key => key === 'transporte')
-        .reduce((obj, key) => {
-          obj[key] = hits[key];
-          return obj;
-        }, {});
-        
-        const items = data.transporte.elements.map(element => (
-          element
-        ))
+          .filter(key => key === "transporte")
+          .reduce((obj, key) => {
+            obj[key] = hits[key];
+            return obj;
+          }, {});
+
+        const items = data.transporte.elements.map(element => element);
         setItemsTransporte(items);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);
@@ -30,7 +28,15 @@ const Transporte = ({ color }) => {
   }, []);
 
   return (
-    <ListItems nameSection={"Transporte"} color={color} items={itemsTransporte}/>
+    <ListItems
+      nameSection={"Transporte"}
+      color={color}
+      items={itemsTransporte}
+      style={{
+        fontWeight: "bold",
+        fontFamily: "Nunito",
+      }}
+    />
   );
 };
 

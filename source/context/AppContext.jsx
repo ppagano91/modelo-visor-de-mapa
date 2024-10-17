@@ -17,7 +17,7 @@ export const AppProvider = ({ children }) => {
   const [geoserviciosModalShow, setGeoserviciosModalShow] = useState(false);
   const [lastActiveSection, setLastActiveSection] = useState(null);
   const [selectedLayers, setSelectedLayers] = useState([]);
-  const [showTemporalLayers, setShowTemporalLayers] = useState(false);  
+  const [showTemporalLayers, setShowTemporalLayers] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -55,7 +55,7 @@ export const AppProvider = ({ children }) => {
     }
   }, [selectedLayers]);
 
-  const openSection = (page) => {
+  const openSection = page => {
     setActiveSection(page);
     setLastActiveSection(page);
     navigate(page);
@@ -78,48 +78,26 @@ export const AppProvider = ({ children }) => {
     setGeoserviciosModalShow(true);
   };
 
-  const handleActiveSectionName = (sectionName) => {
+  const handleActiveSectionName = sectionName => {
     setActiveSectionName(prevState => sectionName);
-  }
+  };
 
-  const setActiveSectionNameNull = () =>{
+  const setActiveSectionNameNull = () => {
     setActiveSectionName(null);
-  }
-
-
+  };
 
   const getComponentByName = (name, source) => {
     switch (name.toLowerCase()) {
       case "urbanismo":
-        return (
-          <Urbanismo
-            color={"#FF5733"}
-          />
-        );
+        return <Urbanismo color={"#FF5733"} />;
       case "transporte":
-        return (
-          <Transporte
-            color={"#0dcaf0"}
-          />
-        );
+        return <Transporte color={"#0dcaf0"} />;
       case "salud":
-        return (
-          <Salud
-            color={"#3357FF"}
-          />
-        );
+        return <Salud color={"#3357FF"} />;
       case "servicios":
-        return (
-          <Servicios
-            color={"#FF33A1"}
-          />
-        );
+        return <Servicios color={"#FF33A1"} />;
       case "otros":
-        return (
-          <Otros
-            color={"#123456"}
-          />
-        );
+        return <Otros color={"#123456"} />;
       default:
         return null;
     }
@@ -155,7 +133,7 @@ export const AppProvider = ({ children }) => {
         handleGeoserviciosModal,
         getComponentByName,
         handleActiveSectionName,
-        setActiveSectionNameNull
+        setActiveSectionNameNull,
       }}
     >
       {children}
