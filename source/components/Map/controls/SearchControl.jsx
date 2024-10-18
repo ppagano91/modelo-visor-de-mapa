@@ -179,12 +179,18 @@ const SearchControl = () => {
     if (map.tap) map.tap.enable();
   };
 
-  const handleFocus = () => {
+  const handleFocus = e => {
     disableMapInteraction();
+    // Cambia el estilo del borde cuando el input recibe el foco
+    e.target.style.borderColor = "#005E7A";
+    e.target.style.boxShadow = "0 0 0 0.15rem #005E7A";
   };
 
-  const handleBlur = () => {
+  const handleBlur = e => {
     enableMapInteraction();
+    // Restaura el borde cuando el input pierde el foco
+    e.target.style.borderColor = "#ced4da";
+    e.target.style.boxShadow = "none";
   };
 
   return (
@@ -201,41 +207,32 @@ const SearchControl = () => {
       className="search-control"
     >
       <form className="d-flex" role="search">
-        <input
-          type="text"
-          value={input}
-          onClick={handleInputClick}
-          onKeyDown={handleKeyDown}
-          onMouseDown={handleMouseDown}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onChange={e => setInput(e.target.value)}
-          placeholder="Buscar..."
-          className="form-control form-control-input-search border-2 border-secondary input-group-sm "
-          style={{
-            fontFamily: "Open Sans",
-          }}
-        />
-        <button
-          type="button"
-          className="btn  flex-1 mx-1 py-1 "
-          style={{
-            backgroundColor: "#FDD306",
-            transition: "background-color 0.3s",
-          }}
-          onMouseEnter={e =>
-            (e.currentTarget.style.backgroundColor = "#FFDB2E")
-          }
-          onMouseLeave={e =>
-            (e.currentTarget.style.backgroundColor = "#FDD306")
-          }
-          onClick={() => handleSearch(selectedIndex)}
-        >
-          <Search
-            fontSize="medium"
-            className="d-flex text-dark text-opacity-75"
+        <div className="search-container">
+          <input
+            type="search"
+            id="search-btn"
+            value={input}
+            onClick={handleInputClick}
+            onKeyDown={handleKeyDown}
+            onMouseDown={handleMouseDown}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChange={e => setInput(e.target.value)}
+            placeholder="Buscar direcciones..."
+            className="form-control input-search input-search-with-button input-tertiary "
+            style={{
+              fontFamily: "Open Sans",
+            }}
           />
-        </button>
+
+          <button
+            className="button-search"
+            type="submit"
+            onClick={() => handleSearch(selectedIndex)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          ></button>
+        </div>
       </form>
       {suggestions && suggestions.length > 0 && (
         <ul
@@ -270,10 +267,25 @@ const SearchControl = () => {
       )}
       {error && (
         <div
-          className="alert alert-danger my-1 py-2 px-1 border-2 "
-          style={{ width: "100%" }}
+          className="alert alert-danger  my-2 py-3 "
+          role="alert"
+          style={{
+            width: "100%",
+            alignItems: "flex-start",
+            position: "relative",
+            fontFamily: "Open Sans",
+          }}
         >
-          <span className="text-danger p-1 fw-bold msg-error text">
+          <span
+            style={{
+              fontFamily: "Open Sans",
+              paddingLeft: "2.5rem",
+
+              justifyContent: "flex-start",
+              display: "flex",
+              alignItems: "start",
+            }}
+          >
             {error.value}
           </span>
         </div>
