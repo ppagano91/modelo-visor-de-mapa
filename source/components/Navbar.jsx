@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <nav
       className="navbar"
-      style={{ height: "10vh", backgroundColor: getEnv("VITE_COLOR") }}
+      style={{ height: "10vh", backgroundColor: getEnv("VITE_COLOR_AZUL") }}
     >
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
@@ -18,7 +18,7 @@ const Navbar = () => {
         </a>
         <div className="mx-auto">
           <span
-            className="navbar-text h3 mb-0 text-center color"
+            className="navbar-text h3 mb-0 text-center text-white"
             // fuente nunito bold
             style={{
               fontWeight: "bold",
