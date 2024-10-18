@@ -2,7 +2,6 @@ import { useContext, useRef, useState } from "react";
 import { ScaleControl } from "react-leaflet/ScaleControl";
 import {
   MapContainer,
-  TileLayer,
   LayersControl,
   WMSTileLayer,
 } from "react-leaflet";
@@ -68,12 +67,13 @@ export default function Map() {
     
     return canvas.toDataURL();
   };
+  const centerCoords=getEnv("VITE_CENTRO_CABA").split(",")
 
 
   return (
     <MapContainer
       className="map-container"
-      center={[-34.600174, -58.453122]}
+      center={[centerCoords[0], centerCoords[1]]}
       zoom={12}
       scrollWheelZoom={true}
       attributionControl={false}
@@ -120,16 +120,16 @@ export default function Map() {
           />
         </BaseLayer>   
         <BaseLayer name="Mapa Base 2">
-        {/* <WMSTileLayer
-          url={getEnv("VITE_MAPA_BASE_TMS")}
-          tms={true}
-          attribution="&copy; <a href='http://geoserver.buenosaires.gob.ar'>Geoserver Buenos Aires</a>"
-        /> */}
+          <WMSTileLayer
+            url={getEnv("VITE_MAPA_BASE_TMS")}
+            tms={true}
+            attribution="&copy; <a href='http://geoserver.buenosaires.gob.ar'>Geoserver Buenos Aires</a>"
+          />
         </BaseLayer>   
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
             url={getEnv("VITE_ARGENMAP")}
-            attribution="&copy; IGN https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/ServiciosOGC"
+            attribution="&copy; <a href='https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/ServiciosOGC>IGN</a>"
             zIndex={25}
           />
         </BaseLayer>

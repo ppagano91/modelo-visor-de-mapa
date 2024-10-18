@@ -7,7 +7,11 @@ dotenv.config();
 const envConfig = process.env;
 
 if (!envConfig.VITE_COLOR) {
-  envConfig.VITE_COLOR = "#007BC7"; // Color por defecto
+  envConfig.VITE_COLOR = "#007BC7";
+}
+
+if (!envConfig.VITE_CENTRO_CABA) {
+  envConfig.VITE_CENTRO_CABA= "-34.60762631005845, -58.445854986577395"
 }
 
 // Crear contenido para env.js

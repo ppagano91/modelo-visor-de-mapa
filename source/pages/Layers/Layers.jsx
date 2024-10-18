@@ -278,15 +278,16 @@ const Layers = () => {
                   <h4 style={{ fontWeight: "bold" }}>{section.name}</h4>
 
                   {section.description && (
-                    <span
-                      className="text-secondary"
+                    <p
+                      className="text-secondary m-0 p-0"
                       style={{
                         fontSize: "0.8rem",
                         display: "block",
+                        textAlign: "justify"
                       }}
                     >
                       {section.description}
-                    </span>
+                    </p>
                   )}
                 </li>
               ))}

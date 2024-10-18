@@ -17,16 +17,14 @@ const Navbar = () => {
           />
         </a>
         <div className="mx-auto">
-          <span
-            className="navbar-text h3 mb-0 text-center color"
-            // fuente nunito bold
+          <h3
+            className="navbar-text mb-0 text-center fs-4 d-none d-md-block"
             style={{
               fontWeight: "bold",
-              fontFamily: "Nunito",
             }}
           >
             Mapa de la Ciudad de Buenos Aires
-          </span>
+          </h3>
         </div>
       </div>
     </nav>
