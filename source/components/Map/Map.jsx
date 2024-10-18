@@ -24,6 +24,7 @@ import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";
 import WMSControl from "./controls/WMSControl";
 import PrintMapButton from "./controls/PrintMapButton";
+import WMTSLayer from "./components/WMTSLayer";
 
 const { BaseLayer, Overlay } = LayersControl;
 
@@ -125,7 +126,20 @@ export default function Map() {
             tms={true}
             attribution="&copy; <a href='http://geoserver.buenosaires.gob.ar'>Geoserver Buenos Aires</a>"
           />
-        </BaseLayer>   
+        </BaseLayer>
+        <BaseLayer checked name="Mapa Base WMTS">
+          {/* <WMTSLayer
+            url="http://geoserver.buenosaires.gob.ar/geoserver/gwc/service/wmts/rest/mapa_base_prod:mapa_base/{style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}"
+            options={{
+              style: 'default',
+              tilematrixset: 'EPSG:900913', // Debe coincidir con tu TileMatrixSet
+              layer: 'mapa_base_prod:mapa_base',
+              format: 'image/png',
+              tileSize: 256,
+              matrixIds: null, // Puedes definir esto si tienes matrices personalizadas
+            }}
+          /> */}
+      </BaseLayer>   
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
             url={getEnv("VITE_ARGENMAP")}
