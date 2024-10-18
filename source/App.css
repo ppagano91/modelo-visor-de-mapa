@@ -1,6 +1,9 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+@import "@gcba/obelisco-v2/dist/styles.css";
+@import "boxicons/css/boxicons.min.css";
+@import "material-symbols/index.css";
 
 * {
   margin: 0;
