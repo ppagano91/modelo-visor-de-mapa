@@ -4,6 +4,7 @@ import {
   MapContainer,
   LayersControl,
   WMSTileLayer,
+  TileLayer
 } from "react-leaflet";
 
 import "../../styles/map.css";
@@ -29,6 +30,7 @@ import WMTSLayer from "./components/WMTSLayer";
 const { BaseLayer, Overlay } = LayersControl;
 
 export default function Map() {
+
   const { baseMapLayer } = useContext(MapLayerContext);
   const [showModal, setShowModal] = useState(false);
   const [wmsUrl, setWmsUrl] = useState("");
@@ -73,11 +75,16 @@ export default function Map() {
 
   return (
     <MapContainer
+      maxZoom={19}
+      minZoom={0}
       className="map-container"
       center={[centerCoords[0], centerCoords[1]]}
       zoom={12}
       scrollWheelZoom={true}
       attributionControl={false}
+      zoomSnap={0.1}
+      zoomDelta={0.1}
+      zoomAnimation={true}
     >
       {selectedLayers.map((layer, index) => {
         if (layer.isActive) {
@@ -119,26 +126,24 @@ export default function Map() {
             format="image/png"
             transparent={true}
           />
-        </BaseLayer>   
-        <BaseLayer name="Mapa Base 2">
+        </BaseLayer>
+        <BaseLayer name="Mapa Base TMS">
           <WMSTileLayer
             url={getEnv("VITE_MAPA_BASE_TMS")}
             tms={true}
             attribution="&copy; <a href='http://geoserver.buenosaires.gob.ar'>Geoserver Buenos Aires</a>"
+            updateWhenIdle={true}
           />
         </BaseLayer>
-        <BaseLayer checked name="Mapa Base WMTS">
-          {/* <WMTSLayer
-            url="http://geoserver.buenosaires.gob.ar/geoserver/gwc/service/wmts/rest/mapa_base_prod:mapa_base/{style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}"
-            options={{
-              style: 'default',
-              tilematrixset: 'EPSG:900913', // Debe coincidir con tu TileMatrixSet
-              layer: 'mapa_base_prod:mapa_base',
-              format: 'image/png',
-              tileSize: 256,
-              matrixIds: null, // Puedes definir esto si tienes matrices personalizadas
-            }}
-          /> */}
+        <BaseLayer name="Mapa Base WMTS">
+          <TileLayer
+            url={getEnv("VITE_MAPA_BASE_WMTS")}
+            tileSize={256}
+            attribution="&copy; <a href='https://www.buenosaires.gob.ar'>Gobierno de la Ciudad de Buenos Aires</a>"
+            updateWhenIdle={true}
+            maxZoom={31}
+            minZoom={0}
+          />
       </BaseLayer>   
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
@@ -155,6 +160,19 @@ export default function Map() {
             zIndex={25}
           />
         </BaseLayer>
+        {/* <BaseLayer name="Mapa Base WMTS">
+          <WMTSLayer
+            // url="http://geoserver.buenosaires.gob.ar/geoserver/gwc/service/wmts/rest/mapa_base_prod:mapa_base/{style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}"
+            url={getEnv("VITE_MAPA_BASE_WMTS")}
+            options={{
+              tileSize: 256,
+              minZoom: 0,
+              maxZoom: 18,
+              attribution: '&copy; Gobierno de la Ciudad de Buenos Aires',
+              updateWhenIdle: true
+            }}
+          />
+        </BaseLayer> */}
       </LayersControl>
 
       <CoordinatesControl position="bottomleft"/>
