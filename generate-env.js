@@ -14,6 +14,10 @@ if (!envConfig.VITE_CENTRO_CABA) {
   envConfig.VITE_CENTRO_CABA= "-34.60762631005845, -58.445854986577395"
 }
 
+if (!envConfig.VITE_COLOR_BLANCO) {
+  envConfig.VITE_COLOR_BLANCO=""
+}
+
 // Crear contenido para env.js
 const envVariables = Object.keys(envConfig)
   .filter(key => key.startsWith('VITE_'))

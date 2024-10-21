@@ -1,6 +1,7 @@
 import filesaver from 'file-saver';
 import { getEnv } from '../config';
 import domtoimage from './dom-to-image-more';
+import LOGO from "../assets/images/logo-idecaba.png";
 
 
 L.Control.EasyPrint = L.Control.extend({
@@ -244,6 +245,7 @@ L.Control.EasyPrint = L.Control.extend({
         <head>
             <title>${plugin.options.customWindowTitle}</title>
             <style>
+                @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
                 body {
                     font-family: Arial, sans-serif;
                     margin: 0;
@@ -256,15 +258,30 @@ L.Control.EasyPrint = L.Control.extend({
                 }
 
                 .print-header {
-                    text-align: center;
-                    background-color: ${getEnv("VITE_COLOR_AZUL")};
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: black;
+                    background-color: ${getEnv("VITE_COLOR_BLANCO")};
+                    border-bottom: .25rem solid ${getEnv("VITE_COLOR_AZUL")};
                     -webkit-print-color-adjust: exact;
                     print-color-adjust: exact;
+                    width: 100%; /* Que el header ocupe todo el ancho */
                 }
 
-                .header-text {              
+                .print-header img {
+                    height: 30px;
+                    width: auto;
+                    margin-left: 10px;
+                }
+
+                .header-text {
+                    font-family: "Nunito"
                     font-size: 24px;
                     font-weight: 600;
+                    text-align: center;
+                    flex-grow: 1;
+                    padding: 10px;
                 }
 
                 .additional-content {
@@ -338,8 +355,9 @@ L.Control.EasyPrint = L.Control.extend({
         </head>
         <body onload="step1()">
             ${plugin.options.additionalContent ? `<div class="additional-content">${plugin.options.additionalContent}</div>` : ''}
-            <div class="print-container">
+              <div class="print-container">
                 <div class="print-header">
+                    <img src=${LOGO} alt="Logo" />
                     <h2 class="header-text">${plugin.options.printHeader}</h2>
                 </div>            
                 <div class="map-container">            
@@ -354,7 +372,9 @@ L.Control.EasyPrint = L.Control.extend({
         </body>
     </html>
     `;
-  },
+},
+
+
 
 
   _createOuterContainer: function (mapDiv) {
