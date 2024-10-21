@@ -830,7 +830,7 @@
             let cacheEntry = domtoimage.impl.urlCache.find(function (el) {
                 return el.url === url;
             });
-
+        
             if (!cacheEntry) {
                 cacheEntry = {
                     url: url,
@@ -838,46 +838,45 @@
                 };
                 domtoimage.impl.urlCache.push(cacheEntry);
             }
-
+        
             if (cacheEntry.promise === null) {
                 if (domtoimage.impl.options.cacheBust) {
-                    // Cache bypass so we dont have CORS issues with cached images
-                    // Source: https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest#Bypassing_the_cache
+                    // Cache bypass to avoid CORS issues with cached images
                     url += (/\?/.test(url) ? '&' : '?') + new Date().getTime();
                 }
-
-                cacheEntry.promise = new Promise(function (resolve) {
+        
+                cacheEntry.promise = new Promise(function (resolve, reject) { // Asegúrate de incluir reject aquí
                     const httpTimeout = domtoimage.impl.options.httpTimeout;
                     const request = new XMLHttpRequest();
-
-                    request.onreadystatechange = done;
+        
+                    request.onreadystatechange = function() {
+                        done(request, resolve, reject); // Pasa resolve y reject a done
+                    };
                     request.ontimeout = timeout;
                     request.responseType = 'blob';
                     request.timeout = httpTimeout;
-
+        
                     if (domtoimage.impl.options.useCredentialsFilters.length > 0) {
                         domtoimage.impl.options.useCredentials =
                             domtoimage.impl.options.useCredentialsFilters.filter(
                                 (credentialsFilter) => url.search(credentialsFilter) >= 0
                             ).length > 0;
                     }
-
+        
                     if (domtoimage.impl.options.useCredentials) {
                         request.withCredentials = true;
                     }
-
+        
                     if (
                         domtoimage.impl.options.corsImg &&
                         url.indexOf('http') === 0 &&
                         url.indexOf(window.location.origin) === -1
                     ) {
                         const method =
-                            (
-                                domtoimage.impl.options.corsImg.method || 'GET'
-                            ).toUpperCase() === 'POST'
+                            (domtoimage.impl.options.corsImg.method || 'GET').toUpperCase() === 'POST'
                                 ? 'POST'
                                 : 'GET';
-
+        
                         request.open(
                             method,
                             (domtoimage.impl.options.corsImg.url || '').replace(
@@ -886,7 +885,7 @@
                             ),
                             true
                         );
-
+        
                         let isJson = false;
                         const headers = domtoimage.impl.options.corsImg.headers || {};
                         Object.keys(headers).forEach(function (key) {
@@ -895,23 +894,23 @@
                             }
                             request.setRequestHeader(key, headers[key]);
                         });
-
+        
                         const corsData = handleJson(
                             domtoimage.impl.options.corsImg.data || ''
                         );
-
+        
                         Object.keys(corsData).forEach(function (key) {
                             if (typeof corsData[key] === 'string') {
                                 corsData[key] = corsData[key].replace('#{cors}', url);
                             }
                         });
-
+        
                         request.send(isJson ? JSON.stringify(corsData) : corsData);
                     } else {
                         request.open('GET', url, true);
                         request.send();
                     }
-
+        
                     let placeholder;
                     if (domtoimage.impl.options.imagePlaceholder) {
                         const split = domtoimage.impl.options.imagePlaceholder.split(/,/);
@@ -919,64 +918,63 @@
                             placeholder = split[1];
                         }
                     }
-
-                    function done() {
+        
+                    function done(request, resolve, reject) {
                         if (request.readyState !== 4) {
                             return;
                         }
-
+        
                         if (request.status >= 300) {
                             if (placeholder) {
                                 resolve(placeholder);
                             } else {
                                 fail(
-                                    `cannot fetch resource: ${url}, status: ${request.status}`
+                                    `Cannot fetch resource: ${url}, status: ${request.status}`
                                 );
                             }
-
                             return;
                         }
-
+        
                         const encoder = new FileReader();
                         encoder.onloadend = function () {
                             resolve(encoder.result);
                         };
-
+        
                         if (request.response instanceof Blob) {
                             encoder.readAsDataURL(request.response);
                         } else {
-                            // console.error("La respuesta no es un Blob:", request.response);
                             reject(new Error("La respuesta no es del tipo Blob."));
                         }
                     }
-
+        
                     function timeout() {
                         if (placeholder) {
                             resolve(placeholder);
                         } else {
                             fail(
-                                `timeout of ${httpTimeout}ms occured while fetching resource: ${url}`
+                                `Timeout of ${httpTimeout}ms occurred while fetching resource: ${url}`
                             );
                         }
                     }
-
+        
                     function handleJson(data) {
                         try {
                             return JSON.parse(JSON.stringify(data));
                         } catch (e) {
-                            fail('corsImg.data is missing or invalid:' + e.toString());
+                            fail('corsImg.data is missing or invalid: ' + e.toString());
                             return;
                         }
                     }
-
+        
                     function fail(message) {
                         console.error(message);
-                        resolve('');
+                        resolve(''); // Resolvemos la promesa con un valor vacío en caso de error
                     }
                 });
             }
+        
             return cacheEntry.promise;
-        }
+        }        
 
         function escapeRegEx(string) {
             return string.replace(/([.*+?^${}()|[\]/\\])/g, '\\$1');
