@@ -1,6 +1,7 @@
-// import domtoimage from "./dom-to-image-more.js";
 import filesaver from 'file-saver';
 import { getEnv } from '../config';
+import domtoimage from './dom-to-image-more';
+
 
 L.Control.EasyPrint = L.Control.extend({
   options: {
@@ -256,7 +257,7 @@ L.Control.EasyPrint = L.Control.extend({
 
                 .print-header {
                     text-align: center;
-                    background-color: ${getEnv("VITE_COLOR")};
+                    background-color: ${getEnv("VITE_COLOR_AZUL")};
                     -webkit-print-color-adjust: exact;
                     print-color-adjust: exact;
                 }
