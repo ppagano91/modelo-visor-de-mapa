@@ -1,12 +1,16 @@
 import React from "react";
-import LOGO from "../assets/images/logo-bsas.png";
+import LOGO from "../assets/images/logo-idecaba.png";
 import { getEnv } from "../config";
 
 const Navbar = () => {
   return (
     <nav
       className="navbar"
-      style={{ height: "10vh", backgroundColor: getEnv("VITE_COLOR_AZUL") }}
+      style={{
+        height: "10vh",
+        backgroundColor: getEnv("VITE_COLOR_BLANCO"),
+        borderBottom: ".25rem solid " + getEnv("VITE_COLOR_AZUL"),
+      }}
     >
       <div className="container-fluid">
         <a className="navbar-brand" href="#">
@@ -17,14 +21,17 @@ const Navbar = () => {
           />
         </a>
         <div className="mx-auto">
-          <h3
-            className="navbar-text mb-0 text-center text-white fs-4 d-none d-md-block"
+          <h1
+            className="navbar-text h3 mb-0 text-center "
+            // fuente nunito bold
             style={{
+              fontFamily: "Nunito",
               fontWeight: "bold",
+              color: getEnv("VITE_COLOR_SECONDARY"),
             }}
           >
             Mapa de la Ciudad de Buenos Aires
-          </h3>
+          </h1>
         </div>
       </div>
     </nav>
