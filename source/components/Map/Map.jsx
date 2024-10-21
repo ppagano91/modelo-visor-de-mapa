@@ -49,12 +49,6 @@ export default function Map() {
     setSelectedLayers(prevLayers => [...prevLayers, { ...layer, url: wmsUrl }]);
   };
 
-  const handlePrint = () => {
-    const link = document.createElement('a');
-    link.download = 'map.png';
-    link.href = captureMapImage();
-    link.click();
-  };
 
   const captureMapImage = () => {
     const canvas = document.createElement('canvas');
@@ -160,19 +154,7 @@ export default function Map() {
             zIndex={25}
           />
         </BaseLayer>
-        {/* <BaseLayer name="Mapa Base WMTS">
-          <WMTSLayer
-            // url="http://geoserver.buenosaires.gob.ar/geoserver/gwc/service/wmts/rest/mapa_base_prod:mapa_base/{style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}"
-            url={getEnv("VITE_MAPA_BASE_WMTS")}
-            options={{
-              tileSize: 256,
-              minZoom: 0,
-              maxZoom: 18,
-              attribution: '&copy; Gobierno de la Ciudad de Buenos Aires',
-              updateWhenIdle: true
-            }}
-          />
-        </BaseLayer> */}
+
       </LayersControl>
 
       <CoordinatesControl position="bottomleft"/>

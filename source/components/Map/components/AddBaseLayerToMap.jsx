@@ -9,7 +9,7 @@ import { PATHS } from '../../../utils/consts/paths';
 const AddBaseLayerToMap = () => {
   const map = useMap();
   const { openSection } = useContext(AppContext)
-  const { layers, handleInfoBaseMap, handleInfoWMSLayers, geoserverBaseUrl, baseMapLayer, setGeoserverBaseUrl, handleSetMarker } = useContext(MapLayerContext);
+  const { layers, resetInfo, handleInfoWMSLayers, handleSetMarker } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
     const latlng = event.latlng;
@@ -25,6 +25,12 @@ const AddBaseLayerToMap = () => {
     });
 
     const marker = L.marker(latlng).addTo(map);
+
+    marker.on('click', () => {
+      map.removeLayer(marker);
+      resetInfo();
+    });
+
     handleSetMarker(marker);
 
     map.setView(latlng);
