@@ -97,7 +97,6 @@ const Contacto = () => {
             className="fs-3"
             style={{
               fontWeight: "bold",
-              fontFamily: "Nunito",
             }}
           >
             Contacto
@@ -164,10 +163,11 @@ const Contacto = () => {
             {errorMessage}
             {successMessage}
             <button
-              className="btn btn-warning w-25"
+              className="btn w-25"              
               type="submit"
               style={{
                 fontFamily: "Open Sans",
+                backgroundColor: getEnv("VITE_COLOR")
               }}
             >
               Enviar

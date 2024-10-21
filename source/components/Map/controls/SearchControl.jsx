@@ -193,6 +193,11 @@ const SearchControl = () => {
     e.target.style.boxShadow = "none";
   };
 
+  const handleCleanSearch = () =>{
+    setInput("");
+    setSuggestions([]);
+  }
+
   return (
     <div
       ref={searchRef}
@@ -225,6 +230,7 @@ const SearchControl = () => {
             }}
           />
 
+          <button class="reset" type="reset" onClick={handleCleanSearch}/>
           <button
             className="button-search"
             type="submit"

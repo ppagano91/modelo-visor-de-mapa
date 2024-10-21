@@ -1,10 +1,12 @@
 import CustomButtonControl from "./CustomButtonControl";
 import { useMap } from "react-leaflet";
+import { getEnv } from "../../../config";
 
 const InitialView = () => {
+  const centerCoords=getEnv("VITE_CENTRO_CABA").split(",")
   const map = useMap();
   const handleClick = () => {
-    map.setView([-34.599722, -58.381944], 12);
+    map.setView([centerCoords[0], centerCoords[1]], 12);
   };
 
   return (
