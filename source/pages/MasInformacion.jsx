@@ -57,7 +57,7 @@ const MasInformacion = () => {
         >
           <Info className="m-2" />
           <p className="text-justify p-2 masinfo-texto">
-            Puede acceder a <b>información contextual</b> haciendo "<i>click</i> derecho" sobre un punto del mapa.
+            Puede acceder a <b>información contextual</b> haciendo "<i>click</i> derecho" sobre alguna capa temática de la sección <b>"Capas"</b>.
           </p>
         </div>
       ) : (

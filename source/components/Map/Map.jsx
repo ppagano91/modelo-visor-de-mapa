@@ -4,6 +4,7 @@ import {
   MapContainer,
   LayersControl,
   WMSTileLayer,
+  TileLayer
 } from "react-leaflet";
 
 import "../../styles/map.css";
@@ -24,10 +25,12 @@ import DrawToolbar from "./controls/DrawControl";
 import { AppContext } from "../../context/AppContext";
 import WMSControl from "./controls/WMSControl";
 import PrintMapButton from "./controls/PrintMapButton";
+import WMTSLayer from "./components/WMTSLayer";
 
 const { BaseLayer, Overlay } = LayersControl;
 
 export default function Map() {
+
   const { baseMapLayer } = useContext(MapLayerContext);
   const [showModal, setShowModal] = useState(false);
   const [wmsUrl, setWmsUrl] = useState("");
@@ -46,12 +49,6 @@ export default function Map() {
     setSelectedLayers(prevLayers => [...prevLayers, { ...layer, url: wmsUrl }]);
   };
 
-  const handlePrint = () => {
-    const link = document.createElement('a');
-    link.download = 'map.png';
-    link.href = captureMapImage();
-    link.click();
-  };
 
   const captureMapImage = () => {
     const canvas = document.createElement('canvas');
@@ -72,11 +69,16 @@ export default function Map() {
 
   return (
     <MapContainer
+      maxZoom={19}
+      minZoom={0}
       className="map-container"
       center={[centerCoords[0], centerCoords[1]]}
       zoom={12}
       scrollWheelZoom={true}
       attributionControl={false}
+      zoomSnap={0.1}
+      zoomDelta={0.1}
+      zoomAnimation={true}
     >
       {selectedLayers.map((layer, index) => {
         if (layer.isActive) {
@@ -118,14 +120,25 @@ export default function Map() {
             format="image/png"
             transparent={true}
           />
-        </BaseLayer>   
-        <BaseLayer name="Mapa Base 2">
+        </BaseLayer>
+        <BaseLayer name="Mapa Base TMS">
           <WMSTileLayer
             url={getEnv("VITE_MAPA_BASE_TMS")}
             tms={true}
             attribution="&copy; <a href='http://geoserver.buenosaires.gob.ar'>Geoserver Buenos Aires</a>"
+            updateWhenIdle={true}
           />
-        </BaseLayer>   
+        </BaseLayer>
+        <BaseLayer name="Mapa Base WMTS">
+          <TileLayer
+            url={getEnv("VITE_MAPA_BASE_WMTS")}
+            tileSize={256}
+            attribution="&copy; <a href='https://www.buenosaires.gob.ar'>Gobierno de la Ciudad de Buenos Aires</a>"
+            updateWhenIdle={true}
+            maxZoom={31}
+            minZoom={0}
+          />
+      </BaseLayer>   
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
             url={getEnv("VITE_ARGENMAP")}
@@ -141,6 +154,7 @@ export default function Map() {
             zIndex={25}
           />
         </BaseLayer>
+
       </LayersControl>
 
       <CoordinatesControl position="bottomleft"/>
