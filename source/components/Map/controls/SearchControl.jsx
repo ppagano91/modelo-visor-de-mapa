@@ -193,10 +193,10 @@ const SearchControl = () => {
     e.target.style.boxShadow = "none";
   };
 
-  const handleCleanSearch = () =>{
+  const handleCleanSearch = () => {
     setInput("");
     setSuggestions([]);
-  }
+  };
 
   return (
     <div
@@ -227,12 +227,19 @@ const SearchControl = () => {
             className="form-control input-search input-search-with-button input-tertiary "
             style={{
               fontFamily: "Open Sans",
+              width: "22rem",
             }}
           />
 
-          <button class="reset" type="reset" onClick={handleCleanSearch}/>
           <button
-            className="button-search"
+            class="reset "
+            type="reset"
+            onClick={handleCleanSearch}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+          <button
+            className="button-search opacity-75"
             type="submit"
             onClick={() => handleSearch(selectedIndex)}
             onFocus={handleFocus}
@@ -242,7 +249,7 @@ const SearchControl = () => {
       </form>
       {suggestions && suggestions.length > 0 && (
         <ul
-          className={`bg-light my-1 p-0 border rounded-3  ${
+          className={`bg-light my-0 p-0 border rounded-3  ${
             suggestions.length > 0 ? suggestions.length : error
           }`}
           style={{
@@ -255,12 +262,12 @@ const SearchControl = () => {
               <li
                 key={i}
                 className={`p-1 ${
-                  selectedIndex === i ? "fw-bold" : ""
+                  selectedIndex === i ? "fw-bold text-white" : ""
                 } suggestions-item-list`}
                 style={{
                   listStyle: "none",
                   cursor: "pointer",
-                  backgroundColor: selectedIndex === i ? "#FFDB2E" : "inherit",
+                  backgroundColor: selectedIndex === i ? "#336ACC" : "inherit",
                 }}
                 onClick={e => handleMouseDown(e, i)}
                 onMouseOver={() => setSelectedSuggestionIndex(i)}
