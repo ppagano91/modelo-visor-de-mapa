@@ -52,11 +52,17 @@ const MasInformacion = () => {
     <div className="masinfo-wrapper">
       {Object.keys(info).length === 0 ? (
         <div
-          className="d-flex flex-column justify-content-center align-items-center p-2 h-100"
+          className="d-flex flex-column justify-content-center p-3"
           style={{ width: "21rem", position: "relative" }}
         >
-          <Info className="m-2" />
-          <p className="text-justify p-2 masinfo-texto">
+          <div className="status status-info mt-4" />
+
+          <h2
+            className="status-title mt-3">
+            Mas información
+          </h2>
+
+          <p className="masinfo-texto mt-2" >
             Puede acceder a <b>información contextual</b> haciendo "<i>click</i> derecho" sobre alguna capa temática de la sección <b>"Capas"</b>.
           </p>
         </div>
@@ -84,7 +90,7 @@ const MasInformacion = () => {
                 ></button>
               </div>
             </div>
-            <ul className="p-0 m-0" style={{ maxHeight: "21rem", overflowY: "auto"}}>
+            <ul className="p-0 m-0" style={{ maxHeight: "21rem", overflowY: "auto" }}>
               {Object.keys(info).map((key) => (
                 <li style={{ listStyle: "none", marginRight: "0.25rem" }} key={key}>
                   <div className="d-flex justify-content-between masinfo-items">
