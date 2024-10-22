@@ -1,7 +1,8 @@
-import domtoimage from 'dom-to-image';
-import domtoimagemore from "dom-to-image-more";
 import filesaver from 'file-saver';
 import { getEnv } from '../config';
+import domtoimage from './dom-to-image-more';
+import LOGO from "../assets/images/logo-idecaba.png";
+
 
 L.Control.EasyPrint = L.Control.extend({
   options: {
@@ -10,7 +11,7 @@ L.Control.EasyPrint = L.Control.extend({
     filename: 'map',
     exportOnly: false,
     hidden: false,
-    tileWait: 500,
+    tileWait: 1000,
     hideControlContainer: true,
     hideClasses: [],
     customWindowTitle: window.document.title,
@@ -18,6 +19,7 @@ L.Control.EasyPrint = L.Control.extend({
     customSpinnerClass: 'epLoader',
     printHeader: 'Mapa Impreso',
     additionalContent: '',
+    onError: null,
   },
 
   onAdd: function () { 
@@ -56,6 +58,9 @@ L.Control.EasyPrint = L.Control.extend({
     if (!this.options.exportOnly) {
       this._page = window.open("", "_blank", 'toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,left=10, top=10, visible=none');
       this._page.document.write(this._createSpinner(this.options.customWindowTitle, this.options.customSpinnerClass, this.options.spinnerBgCOlor));
+      this._page.addEventListener('beforeunload', () => {
+        this._toggleControls(true);
+      });
     }
 
     this.originalState = {
@@ -76,7 +81,7 @@ L.Control.EasyPrint = L.Control.extend({
       this.originalState.mapWidth = this._map.getSize().x  + 'px';
     }
 
-    this._map.fire("easyPrint-start", { event: event });
+    // this._map.fire("easyPrint-start", { event: event });
 
     if (!this.options.hidden) {
       // Si tienes controles adicionales que ocultar, maneja aquí
@@ -97,7 +102,8 @@ L.Control.EasyPrint = L.Control.extend({
 
   _createImagePlaceholder: function () {
     var plugin = this;
-    domtoimagemore.toPng(this.mapContainer, {
+    
+    domtoimage.toPng(this.mapContainer, {
         width: parseInt(this.originalState.mapWidth.replace('px')),
         height: parseInt(this.originalState.mapHeight.replace('px'))
       })
@@ -115,8 +121,12 @@ L.Control.EasyPrint = L.Control.extend({
         plugin._resizeAndPrintMap();
       })
       .catch(function (error) {
-          console.error('Algo salió mal!', error);
-      });
+        if (plugin.options.onError) {
+            plugin.options.onError(error);
+        }
+        plugin._page.close();
+        plugin._toggleControls(true);
+    });
   },
 
   _resizeAndPrintMap: function () {
@@ -147,7 +157,7 @@ L.Control.EasyPrint = L.Control.extend({
 
   _printOperation: function () {
     var plugin = this;
-    domtoimagemore.toPng(plugin.mapContainer, {
+    domtoimage.toPng(plugin.mapContainer, {
         style:{
             "margin":"0 auto",
         }
@@ -177,7 +187,7 @@ L.Control.EasyPrint = L.Control.extend({
             plugin._map.setView(plugin.originalState.center);
             plugin._map.setZoom(plugin.originalState.zoom);
           }
-          plugin._map.fire("easyPrint-finished");
+          // plugin._map.fire("easyPrint-finished");
       })
       .catch(function (error) {
           console.error('La operación de impresión falló', error);
@@ -192,40 +202,41 @@ L.Control.EasyPrint = L.Control.extend({
   },
 
   _createSpinner: function (title, spinnerClass, spinnerColor) {
-    return `<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid black;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-}
+    return `
+    <html>
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+      .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid black;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+      }
 
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
+      /* Safari */
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-</style>
-</head>
-<body>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      </style>
+      </head>
+      <body>
 
-<div style="display: flex; align-items:center; justify-content: center; margin:100px">
-	<div class="loader"></div>
-</div>
+      <div style="display: flex; align-items:center; justify-content: center; margin:100px">
+        <div class="loader"></div>
+      </div>
 
-</body>
-</html>`;
+      </body>
+    </html>`;
   },
 
   _createNewWindow: function (img, orientation, plugin) {
@@ -234,70 +245,93 @@ L.Control.EasyPrint = L.Control.extend({
         <head>
             <title>${plugin.options.customWindowTitle}</title>
             <style>
+                @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
                 body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                height: 100vh;
-                background-color: white;
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    height: 100vh;
+                    background-color: white;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
 
                 .print-header {
-                text-align: center;
-                background-color: ${getEnv("VITE_COLOR")};
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: black;
+                    background-color: ${getEnv("VITE_COLOR_BLANCO")};
+                    border-bottom: .25rem solid ${getEnv("VITE_COLOR_AZUL")};
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                    width: 100%; /* Que el header ocupe todo el ancho */
                 }
 
-                .header-text {              
-                font-size: 24px;
-                font-weight: 600;
+                .print-header img {
+                    height: 30px;
+                    width: auto;
+                    margin-left: 10px;
+                }
+
+                .header-text {
+                    font-family: "Nunito"
+                    font-size: 24px;
+                    font-weight: 600;
+                    text-align: center;
+                    flex-grow: 1;
+                    padding: 10px;
                 }
 
                 .additional-content {
-                text-align: center;
-                font-size: 16px;
+                    text-align: center;
+                    font-size: 16px;
                 }
 
                 .print-container {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                    width: 100%;
+                    max-width: 100%; /* Limitar el ancho al máximo disponible */
                 }
 
                 .content {
-                flex: 1;
-                background-color: white;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                    flex: 1;
+                    background-color: white;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
 
                 .map-container {
-                position: relative;
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 0;
-                padding: 0;
+                    position: relative;
+                    width: 100%;
+                    height: auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0;
+                    padding: 0;
+                    max-width: 100%; /* Asegura que ocupe todo el ancho */
                 }
                 
                 .map-container img {
-                max-width: 100%;
-                height: auto;
+                    width: 100%; /* Ocupa todo el ancho disponible */
+                    height: auto; /* Mantiene la proporción de la imagen */
                 }
 
                 .date-container {
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
-                font-size: 12px;
-                color: black;
-                background-color: rgba(255, 255, 255, 0.2);
-                padding: 5px;
-                border-radius: 3px;
-                opacity: 0.8;
+                    position: absolute;
+                    bottom: 10px;
+                    right: 10px;
+                    font-size: 12px;
+                    color: black;
+                    background-color: rgba(255, 255, 255, 0.2);
+                    padding: 5px;
+                    border-radius: 3px;
+                    opacity: 0.8;
                 }
             </style>
             <script>
@@ -305,9 +339,9 @@ L.Control.EasyPrint = L.Control.extend({
                 const dateElement = document.getElementById('current-date');
                 const currentDate = new Date();
                 const formattedDate = currentDate.toLocaleDateString('es-ES', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
                 });
                 dateElement.textContent = "Fecha: " + formattedDate;
                 setTimeout(step2, 10);
@@ -321,14 +355,15 @@ L.Control.EasyPrint = L.Control.extend({
         </head>
         <body onload="step1()">
             ${plugin.options.additionalContent ? `<div class="additional-content">${plugin.options.additionalContent}</div>` : ''}
-            <div class="print-container">
+              <div class="print-container">
                 <div class="print-header">
+                    <img src=${LOGO} alt="Logo" />
                     <h2 class="header-text">${plugin.options.printHeader}</h2>
                 </div>            
                 <div class="map-container">            
                     <img src="${img}" alt="Mapa">
                     <div class="date-container">
-                    <span id="current-date"></span>
+                        <span id="current-date"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -337,7 +372,10 @@ L.Control.EasyPrint = L.Control.extend({
         </body>
     </html>
     `;
-  },
+},
+
+
+
 
   _createOuterContainer: function (mapDiv) {
     var outerContainer = document.createElement('div'); 
@@ -417,7 +455,7 @@ L.Control.EasyPrint = L.Control.extend({
         for (var i = 0; i < controls.length; i++) { 
             let controlsIChildren = controls[i].children;
             for (var j = 0; j < controlsIChildren.length; j++) {            
-                if (controlsIChildren[j].classList.contains("leaflet-control-scale") || controlsIChildren[j].classList.contains("coordinates-control")) {
+                if (controlsIChildren[j].classList.contains("leaflet-control-scale")) {
                     controlsIChildren[j].style.display = 'block';
                 } else{
                     controlsIChildren[j].style.display = 'none';
