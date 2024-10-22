@@ -11,7 +11,7 @@ L.Control.EasyPrint = L.Control.extend({
     filename: 'map',
     exportOnly: false,
     hidden: false,
-    tileWait: 500,
+    tileWait: 1000,
     hideControlContainer: true,
     hideClasses: [],
     customWindowTitle: window.document.title,

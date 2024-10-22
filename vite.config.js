@@ -19,5 +19,8 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/geoserver/, '')
       }
     }
+  },
+  build: {
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif'],
   }
 });
