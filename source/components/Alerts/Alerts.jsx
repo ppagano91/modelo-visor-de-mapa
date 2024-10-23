@@ -3,10 +3,10 @@ import "./alerts.css";
 import Success from "../../assets/images/success.png";
 import Danger from "../../assets/images/danger.png";
 import Warning from "../../assets/images/warning.png";
- 
+
 const Alerts = ({ type, message }) => {
   let icon;
- 
+
   switch (type) {
     case "warning":
       icon = Warning;
@@ -21,11 +21,10 @@ const Alerts = ({ type, message }) => {
       icon = null;
   }
   return (
-    <div className={`alert alert-${type}`}>
-      {icon && <img src={icon} alt={`${type} icon`} className="alert-icon" />}
-      {message}
+    <div className={`alert alert-${type} w-100 `} role="alert">
+      <span className="pt-1">{message}</span>
     </div>
   );
 };
- 
+
 export default Alerts;
