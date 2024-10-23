@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 
 const GeoserviciosModal = () => {
-  const { geoserviciosModalShow, handleGeoserviciosModalClose, metadata} =
+  const { geoserviciosModalShow, handleGeoserviciosModalClose, metadata } =
     useContext(AppContext);
   const [copiedStates, setCopiedStates] = useState({
     wms: false,
@@ -64,8 +64,16 @@ const GeoserviciosModal = () => {
       dialogClassName="modal-l"
       size="lg"
     >
-      <Modal.Header className="bg-warning p-2 fw-bolder px-3" closeButton>
+      <Modal.Header className="bg-warning p-2 fw-bolder px-3 ">
+        <div className="d-flex justify-content-between align-items-center w-100"> 
         <Modal.Title className="h5 fw-bold">Geoservicios</Modal.Title>
+        <button
+          type="button"
+          className="btn-close"
+          aria-label="Close"
+          onClick={handleGeoserviciosModalClose}
+        ></button>
+        </div>
       </Modal.Header>
       <Modal.Body>
         <p className="fw-bold">
@@ -82,10 +90,10 @@ const GeoserviciosModal = () => {
           <CheckCircleOutlineSharp className="text-success p-1" />
           Nombre de Capa:{" "}
           <span className="fw-normal">{metadata.name && metadata.name.length > 0 ? (
-            metadata.name 
+            metadata.name
           ) : (
-              "No hay información disponible."
-            )}</span>
+            "No hay información disponible."
+          )}</span>
           <span>{renderCopyIcon("layerName")}</span>
         </p>
       </Modal.Body>

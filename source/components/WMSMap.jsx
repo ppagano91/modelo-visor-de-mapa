@@ -85,13 +85,15 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
         className="p-2 px-3"
         style={{ backgroundColor: getEnv("VITE_COLOR") }}
       >
-        <Modal.Title className="h5 fw-medium">Capas Temporales</Modal.Title>
-        <button
-          type="button"
-          className="btn-close btn-close-sm"
-          aria-label="Close"
-          onClick={handleCloseModal}
-        ></button>
+        <div className="d-flex justify-content-between align-items-center w-100">
+          <Modal.Title className="h5 fw-medium">Capas Temporales</Modal.Title>
+          <button
+            type="button"
+            className="btn-close btn-close-sm"
+            aria-label="Close"
+            onClick={handleCloseModal}
+          ></button>
+        </div>
       </Modal.Header>
       <Modal.Body>
         <div className="input-group mb-2">
