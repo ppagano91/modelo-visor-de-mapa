@@ -279,11 +279,12 @@ const Layers = () => {
 
                   {section.description && (
                     <p
-                      className="text-secondary m-0 p-0"
+                      className=" m-0 p-0 text-normal"
                       style={{
                         fontSize: "0.8rem",
+                        color: "#101E37",
                         display: "block",
-                        textAlign: "justify"
+                        textAlign: "justify",
                       }}
                     >
                       {section.description}
