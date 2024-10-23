@@ -105,7 +105,10 @@ const Contacto = () => {
           <h1 className="fs-3" style={{ fontWeight: "bold" }}>
             Contacto
           </h1>
-          <p className="text fw-normal">
+          <p
+            className=""
+            style={{ fontFamily: "Open Sans", fontSize: "small" }}
+          >
             Utilice este formulario para hacernos llegar sus comentarios,
             sugerencias, consultas o críticas respecto al Mapa Interactivo de
             Buenos Aires. Asegúrese de ingresar una dirección de email válida
@@ -120,7 +123,7 @@ const Contacto = () => {
             noValidate
           >
             <div className="mb-3 ">
-              <h6 htmlFor="nombre" className="text fw-bold">
+              <h6 htmlFor="nombre" className="text fw-bold mt-0 mb-0">
                 Nombre*
               </h6>
               <input
@@ -140,7 +143,7 @@ const Contacto = () => {
             </div>
 
             <div className="mb-3">
-              <h6 htmlFor="correo" className="text fw-bold">
+              <h6 htmlFor="correo" className="text fw-bold mt-0 mb-0">
                 Correo electrónico*
               </h6>
               <input
@@ -166,7 +169,7 @@ const Contacto = () => {
             </div>
 
             <div className="mb-3">
-              <h6 htmlFor="mensaje" className="text fw-bold">
+              <h6 htmlFor="mensaje" className="text fw-bold mt-0 mb-0">
                 Mensaje*
               </h6>
               <input
