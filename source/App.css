@@ -112,6 +112,8 @@ h6 {
   font-family: "Nunito", sans-serif;
 }
 
-p {
+p,
+span,
+label {
   font-family: "Open Sans", sans-serif;
 }
