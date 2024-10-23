@@ -10,6 +10,10 @@ if (!envConfig.VITE_COLOR) {
   envConfig.VITE_COLOR = "#007BC7";
 }
 
+if (!envConfig.VITE_COLOR_THIRD) {
+  envConfig.VITE_COLOR_THIRD = "#218274";
+}
+
 if (!envConfig.VITE_CENTRO_CABA) {
   envConfig.VITE_CENTRO_CABA= "-34.60762631005845, -58.445854986577395"
 }
