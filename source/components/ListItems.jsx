@@ -128,7 +128,7 @@ const ListItems = ({ nameSection, color, items }) => {
               <div className="flex-grow-1" style={{ marginRight: "20px" }}>
                 
                 
-              {/*   <div
+                <div
                   className="d-flex align-items-center gap-2 form-checkbox"
                   style={{ cursor: 'pointer', outline: 'none' }}
                   onClick={() => handleItemClick(item.id, item.props)}
@@ -146,7 +146,7 @@ const ListItems = ({ nameSection, color, items }) => {
                   >
                     {item.name}
                   </p>
-                </div> */}
+                </div>
 
                 {/* Contenido de la leyenda */}
                 {isActive && legendURL && (
