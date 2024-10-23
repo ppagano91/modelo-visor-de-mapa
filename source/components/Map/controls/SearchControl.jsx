@@ -181,10 +181,8 @@ const SearchControl = () => {
   const handleFocus = e => {
     disableMapInteraction();
     // Cambia el estilo del borde cuando el input recibe el foco
-    // Comente el siguiente estilo porque era del borde del input y quedaba de
-    // diferente tamaño con los botones 
-    // e.target.style.borderColor = "#26874A";
-    e.target.style.boxShadow = "0 0 0 0.2rem #218274";
+    e.target.style.borderColor = import.meta.env.VITE_COLOR_THIRD;
+    e.target.style.boxShadow = "0 0 0 0.2rem " + import.meta.env.VITE_COLOR_THIRD;
   };
 
   const handleBlur = e => {
@@ -229,9 +227,9 @@ const SearchControl = () => {
             style={{
               fontFamily: "Open Sans",
               width: "22rem",
-              height:"2.75rem",
+              height: "2.75rem",
               backgroundColor: '#F3F6F9',
-              color:'black'
+              color: '#101E37'
             }}
           />
 

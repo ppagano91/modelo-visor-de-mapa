@@ -14,6 +14,10 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: #000 !important;
 }
 
+.input-search::placeholder {
+  color: '#505E70' !important;
+}
+
 * {
   margin: 0;
   padding: 0;

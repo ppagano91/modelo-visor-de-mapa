@@ -243,7 +243,8 @@ const Layers = () => {
   });
 
   const handleFocus = e => {
-    e.target.style.boxShadow = "0 0 0 0.2rem #218274";
+    e.target.style.borderColor = import.meta.env.VITE_COLOR_THIRD;
+    e.target.style.boxShadow = "0 0 0 0.2rem " + import.meta.env.VITE_COLOR_THIRD;
   };
   const handleBlur = e => {
     e.target.style.boxShadow = "none";
