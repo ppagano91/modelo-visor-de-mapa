@@ -184,7 +184,7 @@ const SearchControl = () => {
     // Comente el siguiente estilo porque era del borde del input y quedaba de
     // diferente tamaño con los botones 
     // e.target.style.borderColor = "#26874A";
-    e.target.style.boxShadow = "0 0 0 0.2rem #26874A";
+    e.target.style.boxShadow = "0 0 0 0.2rem #218274";
   };
 
   const handleBlur = e => {

@@ -243,7 +243,7 @@ const Layers = () => {
   });
 
   const handleFocus = e => {
-    e.target.style.boxShadow = "0 0 0 0.2rem #26874A";
+    e.target.style.boxShadow = "0 0 0 0.2rem #218274";
   };
   const handleBlur = e => {
     e.target.style.boxShadow = "none";
@@ -254,13 +254,6 @@ const Layers = () => {
   return (
     <>
       <div className="layer-wrapper">
-        {/* <form >
-          <div className="mb-2 d-flex align-items-center w-90 layer-search py-1 search-container">
-            <input type="text" className="py-1 mx-2 form-control input-search" placeholder="Buscador de Capas" value={searchTerm} onChange={handleSearchChange} onFocus={handleFocus} onBlur={handleBlur} style={{
-              fontFamily: "Open Sans",
-            }} />
-          </div>
-        </form> */}
         <form>
           <div class='search-container m-2'>
             <input type="search" class="py-1  form-control input-search" id="search" placeholder="Buscador de Capas"
