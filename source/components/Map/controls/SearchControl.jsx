@@ -181,8 +181,8 @@ const SearchControl = () => {
   const handleFocus = e => {
     disableMapInteraction();
     // Cambia el estilo del borde cuando el input recibe el foco
-    e.target.style.borderColor = import.meta.env.VITE_COLOR_THIRD;
-    e.target.style.boxShadow = "0 0 0 0.2rem " + import.meta.env.VITE_COLOR_THIRD;
+    e.target.style.borderColor = getEnv("VITE_COLOR_THIRD");
+    e.target.style.boxShadow = "0 0 0 0.2rem " + getEnv("VITE_COLOR_THIRD");
   };
 
   const handleBlur = e => {
