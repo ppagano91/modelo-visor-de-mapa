@@ -10,7 +10,7 @@ const MetadataModal = () => {
       show={metadataModalShow}
       onHide={handleMetadataModalClose}
       centered
-      dialogClassName="modal-l"
+      dialogClassName="modal-l padding-modal"
     >
       <Modal.Header className="bg-warning p-2 fw-bolder px-3">
         <div className="d-flex justify-content-between align-items-center w-100">
@@ -23,7 +23,7 @@ const MetadataModal = () => {
           ></button>
         </div>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="modal-l ps-2 pb-2">
         <p className="fw-bold">
           Resumen:{" "}
           <span className="fw-normal">

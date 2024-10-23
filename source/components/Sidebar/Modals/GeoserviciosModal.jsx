@@ -61,7 +61,7 @@ const GeoserviciosModal = () => {
       show={geoserviciosModalShow}
       onHide={handleGeoserviciosModalClose}
       centered
-      dialogClassName="modal-l"
+      dialogClassName="modal-l padding-modal"
       size="lg"
     >
       <Modal.Header className="bg-warning p-2 fw-bolder px-3 ">
@@ -75,7 +75,7 @@ const GeoserviciosModal = () => {
         ></button>
         </div>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="ps-2 pb-2">
         <p className="fw-bold">
           <CheckCircleOutlineSharp className="text-success p-1" />
           WMS:: <span className="fw-normal block">{getTextToCopy("wms")}</span>

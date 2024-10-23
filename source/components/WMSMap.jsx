@@ -80,7 +80,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
   );
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal} className="mx-4 my-5">
+    <Modal show={showModal} onHide={handleCloseModal} className="mx-4 my-5 padding-modal">
       <Modal.Header
         className="p-2 px-3"
         style={{ backgroundColor: getEnv("VITE_COLOR") }}
@@ -95,7 +95,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
           ></button>
         </div>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="ps-2 pe-2">
         <div className="input-group mb-2">
           <input
             type="text"
@@ -143,7 +143,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
           </div>
         )}
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="pb-2 pe-2">
         <Button
           onClick={handleLoadClick}
           style={{

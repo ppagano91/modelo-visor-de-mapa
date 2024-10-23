@@ -115,3 +115,7 @@ h6 {
 p {
   font-family: "Open Sans", sans-serif;
 }
+
+.padding-modal .modal-content {
+  padding: 0 !important;
+}
