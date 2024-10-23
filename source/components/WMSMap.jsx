@@ -80,20 +80,22 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
   );
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal} className="mx-4 my-5">
+    <Modal centered show={showModal} onHide={handleCloseModal} className="mx-4 my-5 padding-modal">
       <Modal.Header
         className="p-2 px-3"
         style={{ backgroundColor: getEnv("VITE_COLOR") }}
       >
-        <Modal.Title className="h5 fw-medium">Capas Temporales</Modal.Title>
-        <button
-          type="button"
-          className="btn-close btn-close-sm"
-          aria-label="Close"
-          onClick={handleCloseModal}
-        ></button>
+        <div className="d-flex justify-content-between align-items-center w-100">
+          <Modal.Title className="h5 fw-medium">Capas Temporales</Modal.Title>
+          <button
+            type="button"
+            className="btn-close btn-close-sm"
+            aria-label="Close"
+            onClick={handleCloseModal}
+          ></button>
+        </div>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="ps-2 pe-2">
         <div className="input-group mb-2">
           <input
             type="text"
@@ -141,7 +143,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
           </div>
         )}
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="pb-2 pe-2">
         <Button
           onClick={handleLoadClick}
           style={{

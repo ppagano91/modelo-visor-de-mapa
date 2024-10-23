@@ -244,8 +244,8 @@ L.Control.EasyPrint = L.Control.extend({
       <html>
         <head>
             <title>${plugin.options.customWindowTitle}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
             <style>
-                @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
                 body {
                     font-family: Arial, sans-serif;
                     margin: 0;
@@ -275,13 +275,14 @@ L.Control.EasyPrint = L.Control.extend({
                     margin-left: 10px;
                 }
 
-                .header-text {
-                    font-family: "Nunito"
-                    font-size: 24px;
-                    font-weight: 600;
-                    text-align: center;
-                    flex-grow: 1;
-                    padding: 10px;
+                .header-text {              
+                  font-family: 'Nunito', sans-serif;
+                  font-size: 24px;
+                  font-weight: 600;
+                  color: #625a71;
+                  text-align: center;
+                  flex-grow: 1;
+                  padding: 10px;
                 }
 
                 .additional-content {

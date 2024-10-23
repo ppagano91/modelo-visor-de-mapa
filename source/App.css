@@ -5,6 +5,19 @@
 @import "boxicons/css/boxicons.min.css";
 @import "material-symbols/index.css";
 
+/* El autocomplete no hace transparente el input */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #000 !important;
+}
+
+.input-search::placeholder {
+  color: '#505E70' !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -116,4 +129,8 @@ p,
 span,
 label {
   font-family: "Open Sans", sans-serif;
+}
+
+.padding-modal .modal-content {
+  padding: 0 !important;
 }
