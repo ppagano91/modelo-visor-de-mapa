@@ -80,7 +80,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
   );
 
   return (
-    <Modal show={showModal} onHide={handleCloseModal} className="mx-4 my-5 padding-modal">
+    <Modal centered show={showModal} onHide={handleCloseModal} className="mx-4 my-5 padding-modal">
       <Modal.Header
         className="p-2 px-3"
         style={{ backgroundColor: getEnv("VITE_COLOR") }}
