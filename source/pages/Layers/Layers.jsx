@@ -59,16 +59,16 @@ const Layers = () => {
           const elements = records?.flatMap(doc => {
             const layerProps = Array.isArray(doc._source.link)
               ? doc._source.link.find(
-                  link =>
-                    link.protocol === "OGC:WMS" &&
-                    link.function === "information"
-                )
+                link =>
+                  link.protocol === "OGC:WMS" &&
+                  link.function === "information"
+              )
               : null;
 
             const metadata = Array.isArray(doc._source.link)
               ? doc._source.link.find(
-                  link => link.protocol === "WWW:LINK-1.0-http--link"
-                )
+                link => link.protocol === "WWW:LINK-1.0-http--link"
+              )
               : null;
 
             const groupPublished = Array.isArray(doc._source.groupPublished)
@@ -96,33 +96,33 @@ const Layers = () => {
                   description: doc._source.resourceAbstractObject.default,
                   props: layerProps
                     ? {
-                        url: layerProps.urlObject?.default || "",
-                        name: layerProps.nameObject?.default || "",
-                        description:
-                          layerProps.descriptionObject?.default || "",
-                        attribution: "",
-                      }
+                      url: layerProps.urlObject?.default || "",
+                      name: layerProps.nameObject?.default || "",
+                      description:
+                        layerProps.descriptionObject?.default || "",
+                      attribution: "",
+                    }
                     : {
-                        url: "",
-                        name: "",
-                        description: "",
-                        attribution: "",
-                      },
+                      url: "",
+                      name: "",
+                      description: "",
+                      attribution: "",
+                    },
                   metadata: metadata
                     ? {
-                        url: metadata.urlObject?.default || "",
-                        name: metadata.nameObject?.default || "",
-                        description: metadata.descriptionObject?.default || "",
-                        contact: doc._source.contact,
-                        attribution: "",
-                      }
+                      url: metadata.urlObject?.default || "",
+                      name: metadata.nameObject?.default || "",
+                      description: metadata.descriptionObject?.default || "",
+                      contact: doc._source.contact,
+                      attribution: "",
+                    }
                     : {
-                        url: "",
-                        name: "",
-                        description: "",
-                        contact: "",
-                        attribution: "",
-                      },
+                      url: "",
+                      name: "",
+                      description: "",
+                      contact: "",
+                      attribution: "",
+                    },
                   section: section,
                 };
               } else {
@@ -242,24 +242,39 @@ const Layers = () => {
     return a.name.localeCompare(a.name);
   });
 
+  const handleFocus = e => {
+    e.target.style.boxShadow = "0 0 0 0.2rem #26874A";
+  };
+  const handleBlur = e => {
+    e.target.style.boxShadow = "none";
+  };
+  const handleCleanSearch = () => {
+    setSearchTerm("");
+  };
   return (
     <>
       <div className="layer-wrapper">
-        <div className="m-1 d-flex align-items-center justify-content-center w-90 layer-search border-bottom py-1">
-          <input
-            type="text"
-            className="w-100 py-1 form-control border-3 flex-4 mx-2 px-2"
-            placeholder="Buscador de Capas"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            style={{
+        {/* <form >
+          <div className="mb-2 d-flex align-items-center w-90 layer-search py-1 search-container">
+            <input type="text" className="py-1 mx-2 form-control input-search" placeholder="Buscador de Capas" value={searchTerm} onChange={handleSearchChange} onFocus={handleFocus} onBlur={handleBlur} style={{
               fontFamily: "Open Sans",
-            }}
-          />
-          <button className="btn btn-dark flex-1 mx-1 py-1">
-            <Search />
-          </button>
-        </div>
+            }} />
+          </div>
+        </form> */}
+        <form>
+          <div class='search-container m-2'>
+            <input type="search" class="py-1  form-control input-search" id="search" placeholder="Buscador de Capas"
+              value={searchTerm} onChange={handleSearchChange} onFocus={handleFocus} onBlur={handleBlur}
+              style={{
+                fontFamily: "Open Sans",
+                height: "2.75rem",
+                backgroundColor: '#F3F6F9',
+                color: 'black'
+              }} />
+            <button class="reset" type="reset" aria-label="Borrar" onClick={handleCleanSearch} onFocus={handleFocus} onBlur={handleBlur}></button>
+          </div>
+        </form>
+
         <div
           className="h-100 layer-container"
           style={{ width: "21rem", position: "relative" }}

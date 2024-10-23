@@ -3,7 +3,6 @@ import { useMap } from "react-leaflet";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Autocompleter } from "autocompleter-caba/dist/src/services/Autocompleter";
 import { getEnv } from "../../../config";
-import { Search } from "@mui/icons-material";
 
 const autocompleter = new Autocompleter();
 
@@ -182,14 +181,16 @@ const SearchControl = () => {
   const handleFocus = e => {
     disableMapInteraction();
     // Cambia el estilo del borde cuando el input recibe el foco
-    e.target.style.borderColor = "#005E7A";
-    e.target.style.boxShadow = "0 0 0 0.15rem #005E7A";
+    // Comente el siguiente estilo porque era del borde del input y quedaba de
+    // diferente tamaño con los botones 
+    // e.target.style.borderColor = "#26874A";
+    e.target.style.boxShadow = "0 0 0 0.2rem #26874A";
   };
 
   const handleBlur = e => {
     enableMapInteraction();
     // Restaura el borde cuando el input pierde el foco
-    e.target.style.borderColor = "#ced4da";
+    // e.target.style.borderColor = "#ced4da";
     e.target.style.boxShadow = "none";
   };
 
@@ -228,18 +229,21 @@ const SearchControl = () => {
             style={{
               fontFamily: "Open Sans",
               width: "22rem",
+              height:"2.75rem",
+              backgroundColor: '#F3F6F9',
+              color:'black'
             }}
           />
 
           <button
-            class="reset "
+            class="reset"
             type="reset"
             onClick={handleCleanSearch}
             onFocus={handleFocus}
             onBlur={handleBlur}
           />
           <button
-            className="button-search opacity-75"
+            className="button-search"
             type="submit"
             onClick={() => handleSearch(selectedIndex)}
             onFocus={handleFocus}
@@ -249,9 +253,8 @@ const SearchControl = () => {
       </form>
       {suggestions && suggestions.length > 0 && (
         <ul
-          className={`bg-light my-0 p-0 border rounded-3  ${
-            suggestions.length > 0 ? suggestions.length : error
-          }`}
+          className={`bg-light my-0 p-0 border rounded-3  ${suggestions.length > 0 ? suggestions.length : error
+            }`}
           style={{
             paddingLeft: "1rem",
             fontFamily: "Open Sans",
@@ -261,9 +264,8 @@ const SearchControl = () => {
             return (
               <li
                 key={i}
-                className={`p-1 ${
-                  selectedIndex === i ? "fw-bold text-white" : ""
-                } suggestions-item-list`}
+                className={`p-1 ${selectedIndex === i ? "fw-bold text-white" : ""
+                  } suggestions-item-list`}
                 style={{
                   listStyle: "none",
                   cursor: "pointer",
