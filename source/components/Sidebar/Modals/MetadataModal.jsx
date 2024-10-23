@@ -12,8 +12,16 @@ const MetadataModal = () => {
       centered
       dialogClassName="modal-l"
     >
-      <Modal.Header className="bg-warning p-2 fw-bolder px-3" closeButton>
-        <Modal.Title className="h5 fw-bold">{metadata.name || "Metadata"}</Modal.Title>
+      <Modal.Header className="bg-warning p-2 fw-bolder px-3">
+        <div className="d-flex justify-content-between align-items-center w-100">
+          <Modal.Title className="h5 fw-bold">{metadata.name || "Metadata"}</Modal.Title>
+          <button
+            type="button"
+            className="btn-close"
+            aria-label="Close"
+            onClick={handleMetadataModalClose}
+          ></button>
+        </div>
       </Modal.Header>
       <Modal.Body>
         <p className="fw-bold">
@@ -25,15 +33,15 @@ const MetadataModal = () => {
         <p className="fw-bold">
           Contacto:{" "}
           <span className="fw-normal">{metadata.contact && metadata.contact.length > 0 ? (
-              metadata.contact.map((item, index) => (
-                <span key={index}>
-                  {item.organisationObject.default}: <a onClick={(e) => window.location.href=`mailto:${item.email}`}>{item.email}</a>
-                  {index < metadata.contact.length - 1 && "/ "}
-                </span>
-              ))
-            ) : (
-              "No hay información de contacto disponible."
-            )}
+            metadata.contact.map((item, index) => (
+              <span key={index}>
+                {item.organisationObject.default}: <a onClick={(e) => window.location.href = `mailto:${item.email}`}>{item.email}</a>
+                {index < metadata.contact.length - 1 && "/ "}
+              </span>
+            ))
+          ) : (
+            "No hay información de contacto disponible."
+          )}
           </span>
         </p>
         <p>

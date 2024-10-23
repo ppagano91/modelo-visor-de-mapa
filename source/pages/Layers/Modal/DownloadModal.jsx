@@ -42,13 +42,15 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
   return (
     <Modal show={show} onHide={handleClose} centered dialogClassName="modal-sm">
       <Modal.Header className="bg-warning p-2 fw-bolder px-3">
-        <Modal.Title className="h5 fw-bold">Descargas</Modal.Title>
-        <button
-          type="button"
-          className="btn-close btn-close-sm"
-          aria-label="Close"
-          onClick={handleClose}
-        ></button>
+        <div className="d-flex justify-content-between align-items-center w-100">
+          <Modal.Title className="h5 fw-bold">Descargas</Modal.Title>
+          <button
+            type="button"
+            className="btn-close btn-close-sm"
+            aria-label="Close"
+            onClick={handleClose}
+          ></button>
+        </div>
       </Modal.Header>
       <Modal.Body className="d-flex justify-content-around">
         {loading ? ( // Mostrar spinner si está cargando
