@@ -117,18 +117,35 @@ const ListItems = ({ nameSection, color, items }) => {
         ></button>
       </div>
 
-      <ul className="m-0 p-0">
+      <ul className="mt-3 p-0">
         {items.map(item => {
           const isActive = activeLayers && activeLayers.includes(item.id);
           const legendURL = legendImageURLs[item.id];
 
           return (
-            <li key={item.id} className="d-flex align-items-center justify-content-between p-2" style={{ position: "relative" }}>
+            <li key={item.id} className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}>
               {/* Detalles para la leyenda y el nombre */}
               <div className="flex-grow-1" style={{ marginRight: "20px" }}>
-                
-                
+
                 <div
+                  className="form-checkbox"
+                  style={{ cursor: 'pointer' }}
+                  
+                >
+                  <input
+                    class="form-checkbox-input"
+                    type="checkbox"
+                    checked={isActive}
+                    name="professionCheckbox"
+                    id={item.name}
+                    onClick={() => handleItemClick(item.id, item.props)}
+                  />
+                  <label class="form-checkbox-label"  for={item.name} >
+                    {item.name}
+                  </label>
+                 
+                </div>
+                {/*   <div
                   className="d-flex align-items-center gap-2 form-checkbox"
                   style={{ cursor: 'pointer', outline: 'none' }}
                   onClick={() => handleItemClick(item.id, item.props)}
