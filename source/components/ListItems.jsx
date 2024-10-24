@@ -117,38 +117,28 @@ const ListItems = ({ nameSection, color, items }) => {
         ></button>
       </div>
 
-      <ul className="m-0 p-0">
+      <ul className="mt-3 p-0">
         {items.map(item => {
           const isActive = activeLayers && activeLayers.includes(item.id);
           const legendURL = legendImageURLs[item.id];
 
           return (
-            <li key={item.id} className="d-flex align-items-center justify-content-between p-2" style={{ position: "relative" }}>
-              {/* Detalles para la leyenda y el nombre */}
-              <div className="flex-grow-1" style={{ marginRight: "20px" }}>
-                
-                
-              {/*   <div
-                  className="d-flex align-items-center gap-2 form-checkbox"
-                  style={{ cursor: 'pointer', outline: 'none' }}
-                  onClick={() => handleItemClick(item.id, item.props)}
-                >
-                  <input type="checkbox"  checked={isActive} readOnly />
-                  <p
-                    className="m-0 flex-grow-1 "
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      maxWidth: '14rem'
-                    }}
-                    title={item.name}
-                  >
+            <li key={item.id} className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}>
+              <div className="flex-grow-1" style={{ marginRight: "80px" }}>
+                <div className="form-checkbox" style={{ cursor: 'pointer', display: 'flex',}}>
+                  <input
+                    className="form-checkbox-input"
+                    type="checkbox"
+                    checked={isActive}
+                    name="professionCheckbox"
+                    id={item.name}
+                    onClick={() => handleItemClick(item.id, item.props)}
+                  />
+                  <label className="form-checkbox-label" htmlFor={item.name}>
                     {item.name}
-                  </p>
-                </div> */}
-
-                {/* Contenido de la leyenda */}
+                  </label>
+                </div>
+          
                 {isActive && legendURL && (
                   <div style={{ paddingLeft: "20px", backgroundColor: "white" }}>
                     <img src={legendURL} alt={`Leyenda de ${item.name}`} />

@@ -13,9 +13,17 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #000 !important;
 }
+/* Para los diferentes navegadores y versiones */
+.input-search::-webkit-input-placeholder {
+  color: #505E70 !important;
+}
+
+.input-search:-ms-input-placeholder {
+  color: #505E70 !important;
+}
 
 .input-search::placeholder {
-  color: '#505E70' !important;
+  color: #505E70 !important;
 }
 
 * {

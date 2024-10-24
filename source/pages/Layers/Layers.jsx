@@ -243,8 +243,8 @@ const Layers = () => {
   });
 
   const handleFocus = e => {
-    e.target.style.borderColor = getEnv("VITE_COLOR_THIRD");
-    e.target.style.boxShadow = "0 0 0 0.2rem " + getEnv("VITE_COLOR_THIRD");
+    e.target.style.border = "none";
+    e.target.style.boxShadow = "0 0 0 0.25rem " + getEnv("VITE_COLOR_THIRD");
   };
   const handleBlur = e => {
     e.target.style.boxShadow = "none";
@@ -344,3 +344,4 @@ const Layers = () => {
 };
 
 export default Layers;
+
