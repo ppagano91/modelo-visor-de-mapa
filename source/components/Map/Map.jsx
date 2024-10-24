@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useEffect, useContext, useRef, useState } from "react";
 import { ScaleControl } from "react-leaflet/ScaleControl";
 import {
   MapContainer,
@@ -36,6 +36,7 @@ export default function Map() {
   const [wmsUrl, setWmsUrl] = useState("");
   const [layers, setLayers] = useState([]);
   const { selectedLayers, setSelectedLayers } = useContext(AppContext);
+  const [showControls, setShowControls] = useState(true);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -61,11 +62,22 @@ export default function Map() {
     mapRef.current.leafletElement._container.style.left = '0px';
 
     ctx.drawImage(mapRef.current.leafletElement._tilePane, 0, 0);
-    
+
     return canvas.toDataURL();
   };
-  const centerCoords=getEnv("VITE_CENTRO_CABA").split(",")
+  const centerCoords = getEnv("VITE_CENTRO_CABA").split(",")
+  const handleResize = () => {
+    setShowControls(window.innerHeight >= 710);
+  };
 
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <MapContainer
@@ -95,7 +107,7 @@ export default function Map() {
           );
         }
       })}
-      
+
       <WMSControl handleClick={handleShowModal} />
       <WMSMap
         showModal={showModal}
@@ -103,7 +115,7 @@ export default function Map() {
         handleLoadLayer={handleLoadLayer}
         handleSelectLayer={handleSelectLayer}
       />
-      
+
 
       <SearchControl className="search-control leaflet-control" />
       <AddBaseLayerToMap />
@@ -138,7 +150,7 @@ export default function Map() {
             maxZoom={31}
             minZoom={0}
           />
-      </BaseLayer>   
+        </BaseLayer>
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
             url={getEnv("VITE_ARGENMAP")}
@@ -157,16 +169,19 @@ export default function Map() {
 
       </LayersControl>
 
-      <CoordinatesControl position="bottomleft"/>
+      <CoordinatesControl position="bottomleft" />
       <MiniMap position="bottomleft" />
       <ScaleControl position="bottomleft" imperial={false} />
 
-      <DrawToolbar />
+      {showControls && (
+        <>
+          <DrawToolbar />
+          <LinearMeasureControl />
+          <PrintMapButton />
+        </>
+      )}
       <LocateControl />
-
-      <LinearMeasureControl />
       <InitialView />
-      <PrintMapButton />
     </MapContainer>
   );
 }
