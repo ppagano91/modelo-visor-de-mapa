@@ -3,12 +3,42 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { getEnv } from "../config";
 import Alerts from "../components/Alerts/Alerts";
 
+const MyButton = ({ isHovered, setIsHovered }) => {
+  const buttonStyle = {
+    color: "#fff",
+    fontFamily: "Nunito",
+    fontWeight: "bold",
+    fontSize: "18px",
+    textDecoration: "none",
+    border: "none",
+    outline: ".125rem solid #101e37",
+    outlineOffset: "-.125rem",
+    transition: "all 50ms ease-in-out",
+    backgroundColor: isHovered ? "#101e37" : "#080F1C",
+    cursor: "pointer",
+    marginLeft: "auto",
+  };
+
+  return (
+    <button
+      className="btn btn-secondary w-50 float-right"
+      type="submit"
+      style={buttonStyle}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      Enviar
+    </button>
+  );
+};
+
 const Contacto = () => {
   const captchaRef = useRef(null);
   const [isRobot, setIsRobot] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [isMailSent, setIsMailSent] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [formData, setFormData] = useState({
     nombre: "",
     correo: "",
@@ -60,12 +90,10 @@ const Contacto = () => {
   };
 
   const handleFocus = e => {
-    // Cambia el estilo del borde cuando el input recibe el foco
     e.target.style.boxShadow = "0 0 0 0.2rem " + getEnv("VITE_COLOR_THIRD");
   };
 
   const handleBlur = e => {
-    // Restaura el borde cuando el input pierde el foco
     e.target.style.boxShadow = "none";
   };
 
@@ -119,7 +147,6 @@ const Contacto = () => {
             className=" fw-normal"
             style={{
               fontFamily: "Open Sans",
-
               color: "#101E37",
             }}
           >
@@ -197,7 +224,6 @@ const Contacto = () => {
               <textarea
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                // que el texto empiece arriba a la izquierda
                 style={{
                   height: "4rem",
                   fontFamily: "Open Sans",
@@ -224,17 +250,7 @@ const Contacto = () => {
             />
             {captchaErrorMessage}
             {successMessage}
-            <button
-              className="btn w-25"
-              type="submit"
-              style={{
-                fontFamily: "Open Sans",
-                backgroundColor: getEnv("VITE_COLOR_SECONDARY"),
-                color: "white",
-              }}
-            >
-              Enviar
-            </button>
+            <MyButton isHovered={isHovered} setIsHovered={setIsHovered} />
           </form>
         </div>
       </div>
