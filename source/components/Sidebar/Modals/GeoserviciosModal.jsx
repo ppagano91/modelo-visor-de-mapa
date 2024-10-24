@@ -102,7 +102,7 @@ const GeoserviciosModal = () => {
         ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="ps-3 pb-2">        
+      <Modal.Body className="ps-3">        
         <div className="d-flex">
               <span className="fw-bold">WMS:</span>
               <p className="fw-normal block ms-2">
