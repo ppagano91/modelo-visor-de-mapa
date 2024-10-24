@@ -23,7 +23,7 @@ const MetadataModal = () => {
           ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="modal-l ps-3 pb-2">
+      <Modal.Body className="modal-l ps-3">
         <p className="fw-bold">
           Resumen:{" "}
           <span className="fw-normal">

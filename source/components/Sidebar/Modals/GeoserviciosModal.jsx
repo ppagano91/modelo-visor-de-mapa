@@ -95,7 +95,7 @@ const GeoserviciosModal = () => {
         ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="ps-3 pb-2">
+      <Modal.Body className="ps-3">
         <p className="fw-bold">
           WMS: <span className="fw-normal block">{getTextToCopy("wms")}</span>
           <span>{renderCopyIcon("wms")}</span>

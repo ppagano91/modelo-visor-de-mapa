@@ -52,7 +52,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
           ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="d-flex justify-content-around pb-2">
+      <Modal.Body className="d-flex justify-content-around">
         {loading ? ( // Mostrar spinner si está cargando
           <Spinner animation="border" role="status" className="m-auto">
             <span className="visually-hidden">Preparando archivo...</span>
