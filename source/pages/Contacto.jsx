@@ -59,6 +59,16 @@ const Contacto = () => {
     });
   };
 
+  const handleFocus = e => {
+    // Cambia el estilo del borde cuando el input recibe el foco
+    e.target.style.boxShadow = "0 0 0 0.2rem " + getEnv("VITE_COLOR_THIRD");
+  };
+
+  const handleBlur = e => {
+    // Restaura el borde cuando el input pierde el foco
+    e.target.style.boxShadow = "none";
+  };
+
   const successMessage = isMailSent ? (
     <div className="success-message">
       <Alerts type="success" message="¡Correo enviado con éxito!" />
@@ -102,12 +112,16 @@ const Contacto = () => {
     >
       <div className="m-3">
         <div className="text-justify">
-          <h1 className="fs-3" style={{ fontWeight: "bold" }}>
+          <h1 className="fs-3" style={{ fontWeight: "bold", color: "#101E37" }}>
             Contacto
           </h1>
           <p
-            className=""
-            style={{ fontFamily: "Open Sans", fontSize: "small" }}
+            className=" fw-normal"
+            style={{
+              fontFamily: "Open Sans",
+
+              color: "#101E37",
+            }}
           >
             Utilice este formulario para hacernos llegar sus comentarios,
             sugerencias, consultas o críticas respecto al Mapa Interactivo de
@@ -123,7 +137,7 @@ const Contacto = () => {
             noValidate
           >
             <div className="mb-3 ">
-              <h6 htmlFor="nombre" className="text fw-bold mt-0 mb-0">
+              <h6 htmlFor="nombre" className="text fw-bold ">
                 Nombre*
               </h6>
               <input
@@ -132,7 +146,11 @@ const Contacto = () => {
                 }`}
                 style={{
                   fontFamily: "Open Sans",
+                  color: "#101E37",
+                  backgroundColor: "#F3F6F9",
                 }}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 type="text"
                 name="nombre"
                 value={formData.nombre}
@@ -143,7 +161,7 @@ const Contacto = () => {
             </div>
 
             <div className="mb-3">
-              <h6 htmlFor="correo" className="text fw-bold mt-0 mb-0">
+              <h6 htmlFor="correo" className="text fw-bold ">
                 Correo electrónico*
               </h6>
               <input
@@ -155,12 +173,16 @@ const Contacto = () => {
                 }`}
                 style={{
                   fontFamily: "Open Sans",
+                  color: "#101E37",
+                  backgroundColor: "#F3F6F9",
                 }}
                 type="email"
                 placeholder="ejemplo@ejemplo.com"
                 name="correo"
                 value={formData.correo}
                 onChange={handleInputChange}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 required
               />
               <div className="invalid-feedback">
@@ -169,12 +191,20 @@ const Contacto = () => {
             </div>
 
             <div className="mb-3">
-              <h6 htmlFor="mensaje" className="text fw-bold mt-0 mb-0">
+              <h6 htmlFor="mensaje" className="text fw-bold ">
                 Mensaje*
               </h6>
-              <input
-                style={{ height: "8rem", fontFamily: "Open Sans" }}
-                className={`form-control ${
+              <textarea
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                // que el texto empiece arriba a la izquierda
+                style={{
+                  height: "4rem",
+                  fontFamily: "Open Sans",
+                  color: "#101E37",
+                  backgroundColor: "#F3F6F9",
+                }}
+                className={`form-control align-top ${
                   formSubmitted && !formData.mensaje ? "is-invalid" : ""
                 }`}
                 type="text"
