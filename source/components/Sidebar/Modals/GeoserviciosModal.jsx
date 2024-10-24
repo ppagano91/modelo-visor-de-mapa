@@ -36,7 +36,7 @@ const GeoserviciosModal = () => {
 
     const hasPermission = await checkClipboardPermissions();
     if (!hasPermission) {
-    alert("No se tiene permiso para acceder al portapapeles.");
+    // alert("No se tiene permiso para acceder al portapapeles.");
     return;
   }
 
@@ -71,7 +71,7 @@ const GeoserviciosModal = () => {
   const renderCopyIcon = key => {
     return(
       <span
-        class="material-symbols-outlined"
+        className="material-symbols-outlined"
         title="Copiar"
         style={{ cursor: "pointer", marginLeft: "24px"}}
         onClick={() => copyToClipboard(getTextToCopy(key), key)}

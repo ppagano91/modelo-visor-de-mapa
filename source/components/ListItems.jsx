@@ -95,7 +95,7 @@ const ListItems = ({ nameSection, color, items }) => {
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
       >
-        <div className="fs-4 text-light list-group-item">
+        <div className="fs-4 text-light list-group-item d-flex align-items-center">
           {nameSection}
           <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
             {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
@@ -133,39 +133,18 @@ const ListItems = ({ nameSection, color, items }) => {
                   
                 >
                   <input
-                    class="form-checkbox-input"
+                    className="form-checkbox-input"
                     type="checkbox"
-                    checked={isActive}
+                    defaultChecked={isActive}
                     name="professionCheckbox"
                     id={item.name}
                     onClick={() => handleItemClick(item.id, item.props)}
                   />
-                  <label class="form-checkbox-label"  for={item.name} >
+                  <label className="form-checkbox-label"  htmlFor={item.name} >
                     {item.name}
                   </label>
                  
                 </div>
-                {/*   <div
-                  className="d-flex align-items-center gap-2 form-checkbox"
-                  style={{ cursor: 'pointer', outline: 'none' }}
-                  onClick={() => handleItemClick(item.id, item.props)}
-                >
-                  <input type="checkbox"  checked={isActive} readOnly />
-                  <p
-                    className="m-0 flex-grow-1 "
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      maxWidth: '14rem'
-                    }}
-                    title={item.name}
-                  >
-                    {item.name}
-                  </p>
-                </div>
-
-                {/* Contenido de la leyenda */}
                 {isActive && legendURL && (
                   <div style={{ paddingLeft: "20px", backgroundColor: "white" }}>
                     <img src={legendURL} alt={`Leyenda de ${item.name}`} />

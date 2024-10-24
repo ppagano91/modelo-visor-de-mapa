@@ -256,8 +256,8 @@ const Layers = () => {
     <>
       <div className="layer-wrapper">
         <form>
-          <div class='search-container m-2'>
-            <input type="search" class="py-1  form-control input-search" id="search" placeholder="Buscador de Capas"
+          <div className='search-container m-2'>
+            <input type="search" className="py-1  form-control input-search" id="search" placeholder="Buscador de Capas"
               value={searchTerm} onChange={handleSearchChange} onFocus={handleFocus} onBlur={handleBlur}
               style={{
                 fontFamily: "Open Sans",
@@ -265,7 +265,7 @@ const Layers = () => {
                 backgroundColor: '#F3F6F9',
                 color: 'black'
               }} />
-            <button class="reset" type="reset" aria-label="Borrar" onClick={handleCleanSearch} onFocus={handleFocus} onBlur={handleBlur}></button>
+            <button className="reset" type="reset" aria-label="Borrar" onClick={handleCleanSearch} onFocus={handleFocus} onBlur={handleBlur}></button>
           </div>
         </form>
 

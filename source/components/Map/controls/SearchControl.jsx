@@ -234,7 +234,7 @@ const SearchControl = () => {
           />
 
           <button
-            class="reset"
+            className="reset"
             type="reset"
             onClick={handleCleanSearch}
             onFocus={handleFocus}
