@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import copy from "../../../assets/images/copy.png"
@@ -6,6 +6,8 @@ import copy from "../../../assets/images/copy.png"
 const GeoserviciosModal = () => {
   const { geoserviciosModalShow, handleGeoserviciosModalClose, metadata } =
     useContext(AppContext);
+
+  const [layerName, setLayerName] = useState("");
   const [copiedStates, setCopiedStates] = useState({
     wms: false,
     wfs: false,
@@ -62,17 +64,22 @@ const GeoserviciosModal = () => {
   };
 
   const getTextToCopy = key => {
+    
     switch (key) {
       case "wms":
         return "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms";
       case "wfs":
         return "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wfs";
       case "layerName":
-        return "Lorem, ipsum dolor sit amet consectetur adipisicing elit.";
+        return layerName;
       default:
         return "";
     }
   };
+  useEffect(() => {
+    setLayerName(metadata.name)
+  }, [metadata])
+  
 
   return (
     <Modal
@@ -95,24 +102,32 @@ const GeoserviciosModal = () => {
         ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="ps-3 pb-2">
-        <p className="fw-bold">
-          WMS: <span className="fw-normal block">{getTextToCopy("wms")}</span>
-          <span>{renderCopyIcon("wms")}</span>
-        </p>
-        <p className="fw-bold">
-          WFS: <span className="fw-normal">{getTextToCopy("wfs")}</span>
-          <span>{renderCopyIcon("wfs")}</span>
-        </p>
-        <p className="fw-bold">
-          Nombre de Capa:{" "}
-          <span className="fw-normal">{metadata.name && metadata.name.length > 0 ? (
-            metadata.name
-          ) : (
-            "No hay información disponible."
-          )}</span>
-          <span>{renderCopyIcon("layerName")}</span>
-        </p>
+      <Modal.Body className="ps-3 pb-2">        
+        <div className="d-flex">
+              <span className="fw-bold">WMS:</span>
+              <p className="fw-normal block ms-2">
+                {getTextToCopy("wms")}
+              </p>
+              <span>{renderCopyIcon("wms")}</span>
+        </div>
+        <div className="d-flex">
+          <span className="fw-bold">WFS:</span>
+              <p className="fw-normal block ms-2">
+                {getTextToCopy("wfs")}
+              </p>
+              <span>{renderCopyIcon("wfs")}</span>
+          </div>
+
+          <div className="d-flex">
+            <span className="fw-bold">Nombre de Capa:{" "}</span>
+              
+            <p className="fw-normal block ms-2">{metadata.name && metadata.name.length > 0 ? (
+                metadata.name
+              ) : (
+                "No hay información disponible."
+              )}</p>
+              <span>{renderCopyIcon("layerName")}</span>
+          </div>
       </Modal.Body>
     </Modal>
   );
