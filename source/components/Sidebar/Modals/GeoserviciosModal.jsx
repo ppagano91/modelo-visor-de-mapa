@@ -16,32 +16,71 @@ const GeoserviciosModal = () => {
     layerName: false,
   });
 
-  const copyToClipboard = (text, key) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setCopiedStates(prev => ({ ...prev, [key]: true }));
-        setTimeout(() => {
-          setCopiedStates(prev => ({ ...prev, [key]: false }));
-        }, 2000);
-      })
-      .catch(err => {
-        console.error("Error al copiar el texto: ", err);
-      });
+  const checkClipboardPermissions = async () => {
+    try {
+      const result = await navigator.permissions.query({ name: 'clipboard-write' });
+      if (result.state === 'granted' || result.state === 'prompt') {
+        console.log("PERMISO OTORGADO")
+        return true; // El permiso está concedido o se puede solicitar.
+      } else {
+        console.error("Permiso denegado para escribir en el portapapeles.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error al verificar permisos del portapapeles: ", error);
+      return false;
+    }
   };
 
+  const copyToClipboard = async (text, key) => {
+
+    const hasPermission = await checkClipboardPermissions();
+    if (!hasPermission) {
+    alert("No se tiene permiso para acceder al portapapeles.");
+    return;
+  }
+
+    navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      setCopiedStates(prev => ({ ...prev, [key]: true }));
+      setTimeout(() => {
+        setCopiedStates(prev => ({ ...prev, [key]: false }));
+      }, 2000);
+    })
+    .catch(err => {
+      console.error("Error al copiar el texto: ", err);
+    });
+  };
+
+  // RENDER COPY ICON ORIGINAL
+
+  // const renderCopyIcon = key => {
+  //   return copiedStates[key] ? (
+  //     <CheckCircle className="text-success mx-4" titleAccess="Copiado" />
+  //   ) : (
+  //     <ContentCopy
+  //       className="text-secondary mx-4"
+  //       titleAccess="Copiar"
+  //       onClick={() => copyToClipboard(getTextToCopy(key), key)}
+  //       style={{ cursor: "pointer" }}
+  //     />
+  //   );
+  // };
+
   const renderCopyIcon = key => {
-    return copiedStates[key] ? (
-      <CheckCircle className="text-success mx-4" titleAccess="Copiado" />
-    ) : (
-      <ContentCopy
-        className="text-secondary mx-4"
-        titleAccess="Copiar"
+    return(
+      <span
+        class="material-symbols-outlined"
+        title="Copiar"
+        style={{ cursor: "pointer", marginLeft: "24px"}}
         onClick={() => copyToClipboard(getTextToCopy(key), key)}
-        style={{ cursor: "pointer" }}
-      />
+      >
+        content_copy
+      </span>
     );
   };
+
 
   const getTextToCopy = key => {
     switch (key) {
@@ -64,9 +103,11 @@ const GeoserviciosModal = () => {
       dialogClassName="modal-l padding-modal"
       size="lg"
     >
-      <Modal.Header className="bg-warning p-2 fw-bolder px-3 ">
+      <Modal.Header className="p-2 fw-bolder px-3">
         <div className="d-flex justify-content-between align-items-center w-100"> 
-        <Modal.Title className="h5 fw-bold">Geoservicios</Modal.Title>
+        <Modal.Title className="h5 fw-bold">
+          Geoservicios
+        </Modal.Title>
         <button
           type="button"
           className="btn-close"
@@ -75,19 +116,16 @@ const GeoserviciosModal = () => {
         ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="ps-2 pb-2">
+      <Modal.Body className="ps-3 pb-2">
         <p className="fw-bold">
-          <CheckCircleOutlineSharp className="text-success p-1" />
-          WMS:: <span className="fw-normal block">{getTextToCopy("wms")}</span>
+          WMS: <span className="fw-normal block">{getTextToCopy("wms")}</span>
           <span>{renderCopyIcon("wms")}</span>
         </p>
         <p className="fw-bold">
-          <CheckCircleOutlineSharp className="text-success p-1" />
           WFS: <span className="fw-normal">{getTextToCopy("wfs")}</span>
           <span>{renderCopyIcon("wfs")}</span>
         </p>
         <p className="fw-bold">
-          <CheckCircleOutlineSharp className="text-success p-1" />
           Nombre de Capa:{" "}
           <span className="fw-normal">{metadata.name && metadata.name.length > 0 ? (
             metadata.name
