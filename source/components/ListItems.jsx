@@ -148,7 +148,14 @@ const ListItems = ({ nameSection, color, items }) => {
                     id={item.name}
                     onClick={() => handleItemClick(item.id, item.props)}
                   />
-                  <label className="form-checkbox-label" htmlFor={item.name}>
+                  <label className="form-checkbox-label"
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      maxWidth: '15rem'
+                    }}
+                   htmlFor={item.name}>
                     {item.name}
                   </label>
                 </div>
