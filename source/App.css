@@ -140,4 +140,5 @@ label {
 
 .padding-modal .modal-content {
   padding-top: 0 !important;
+  padding-bottom: 0;
 }
