@@ -142,29 +142,7 @@ const ListItems = ({ nameSection, color, items }) => {
               className="d-flex align-items-center justify-content-between p-2"
               style={{ position: "relative" }}
             >
-              {/* Detalles para la leyenda y el nombre */}
               <div className="flex-grow-1" style={{ marginRight: "20px" }}>
-                <div
-                  className="d-flex align-items-center gap-2 form-checkbox"
-                  style={{ cursor: "pointer", outline: "none" }}
-                  onClick={() => handleItemClick(item.id, item.props)}
-                >
-                  <input type="checkbox" checked={isActive} readOnly />
-                  <p
-                    className="m-0 flex-grow-1 "
-                    style={{
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      maxWidth: "14rem",
-                      color: "#101E37",
-                    }}
-                    title={item.name}
-                  >
-                    {item.name}
-                  </p>
-                </div>
-
                 <div
                   className="form-checkbox"
                   style={{ cursor: 'pointer' }}
