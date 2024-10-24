@@ -1,16 +1,27 @@
-import React, { useContext, useState, useEffect } from 'react';
-import DownloadModal from '../pages/Layers/Modal/DownloadModal';
-import { MapLayerContext } from '../context/MapLayerContext';
-import { CloudDownloadOutlined, InfoOutlined, PublicOutlined, Recycling } from '@mui/icons-material';
-import { AppContext } from '../context/AppContext';
+import React, { useContext, useState, useEffect } from "react";
+import DownloadModal from "../pages/Layers/Modal/DownloadModal";
+import { MapLayerContext } from "../context/MapLayerContext";
+import {
+  CloudDownloadOutlined,
+  InfoOutlined,
+  PublicOutlined,
+  Recycling,
+  FileDownloadRounded,
+} from "@mui/icons-material";
+import { AppContext } from "../context/AppContext";
 
 const ListItems = ({ nameSection, color, items }) => {
   const [showModal, setShowModal] = useState(false);
   const [downloadProps, setDownloadProps] = useState(null);
   const [legendImageURLs, setLegendImageURLs] = useState({});
   const handleModalClose = () => setShowModal(false);
-  const { toggleLayer, setActiveLayers, activeLayers, clearAllSelections } = useContext(MapLayerContext);
-  const { handleMetadataModal, handleGeoserviciosModal, setActiveSectionNameNull } = useContext(AppContext);
+  const { toggleLayer, setActiveLayers, activeLayers, clearAllSelections } =
+    useContext(MapLayerContext);
+  const {
+    handleMetadataModal,
+    handleGeoserviciosModal,
+    setActiveSectionNameNull,
+  } = useContext(AppContext);
 
   const handleModal = (e, layerProps) => {
     e.stopPropagation();
@@ -43,15 +54,16 @@ const ListItems = ({ nameSection, color, items }) => {
 
   const fetchLegend = (layerName, urlBase) => {
     const params = {
-      service: 'WMS',
-      version: '1.1.0',
-      request: 'GetLegendGraphic',
-      format: 'image/png',
+      service: "WMS",
+      version: "1.1.0",
+      request: "GetLegendGraphic",
+      format: "image/png",
       layer: layerName,
-      style: '',
-      legend_options: 'fontName:Cantarell Bold;fontSize:11;fontColor:#2f00ff;forceLabels:on',
+      style: "",
+      legend_options:
+        "fontName:Cantarell Bold;fontSize:11;fontColor:#2f00ff;forceLabels:on",
     };
-    const url = urlBase + L.Util.getParamString(params, '', true);
+    const url = urlBase + L.Util.getParamString(params, "", true);
 
     return fetch(url)
       .then(response => response.blob())
@@ -60,7 +72,7 @@ const ListItems = ({ nameSection, color, items }) => {
         return imgURL;
       })
       .catch(error => {
-        console.error('Error fetching legend:', error);
+        console.error("Error fetching legend:", error);
         return null;
       });
   };
@@ -98,7 +110,9 @@ const ListItems = ({ nameSection, color, items }) => {
         <div className="fs-4 text-light list-group-item">
           {nameSection}
           <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
-            {activeLayers && activeLayers.length ? `${activeLayers.length}` : null}
+            {activeLayers && activeLayers.length
+              ? `${activeLayers.length}`
+              : null}
           </div>
           {activeLayers && activeLayers.length > 0 && (
             <Recycling
@@ -113,7 +127,7 @@ const ListItems = ({ nameSection, color, items }) => {
           type="button"
           className="btn-close btn-close-white p-0 m-2"
           aria-label="Close"
-          title='Cerrar'
+          title="Cerrar"
         ></button>
       </div>
 
@@ -123,24 +137,27 @@ const ListItems = ({ nameSection, color, items }) => {
           const legendURL = legendImageURLs[item.id];
 
           return (
-            <li key={item.id} className="d-flex align-items-center justify-content-between p-2" style={{ position: "relative" }}>
+            <li
+              key={item.id}
+              className="d-flex align-items-center justify-content-between p-2"
+              style={{ position: "relative" }}
+            >
               {/* Detalles para la leyenda y el nombre */}
               <div className="flex-grow-1" style={{ marginRight: "20px" }}>
-                
-                
                 <div
                   className="d-flex align-items-center gap-2 form-checkbox"
-                  style={{ cursor: 'pointer', outline: 'none' }}
+                  style={{ cursor: "pointer", outline: "none" }}
                   onClick={() => handleItemClick(item.id, item.props)}
                 >
-                  <input type="checkbox"  checked={isActive} readOnly />
+                  <input type="checkbox" checked={isActive} readOnly />
                   <p
                     className="m-0 flex-grow-1 "
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
-                      maxWidth: '14rem'
+                      maxWidth: "14rem",
+                      color: "#101E37",
                     }}
                     title={item.name}
                   >
@@ -150,12 +167,21 @@ const ListItems = ({ nameSection, color, items }) => {
 
                 {/* Contenido de la leyenda */}
                 {isActive && legendURL && (
-                  <div style={{ paddingLeft: "20px", backgroundColor: "white" }}>
+                  <div
+                    style={{ paddingLeft: "20px", backgroundColor: "white" }}
+                  >
                     <img src={legendURL} alt={`Leyenda de ${item.name}`} />
                   </div>
                 )}
               </div>
-              <div className="d-flex gap-1 align-items-center" style={{ position: "absolute", right: "0.25rem", top: "0.75rem" }}>
+              <div
+                className="d-flex gap-1 align-items-center"
+                style={{
+                  position: "absolute",
+                  right: "0.25rem",
+                  top: "0.75rem",
+                }}
+              >
                 <PublicOutlined
                   style={{ height: "1rem", cursor: "pointer" }}
                   titleAccess="Acceso a Geoservicios"
@@ -171,7 +197,7 @@ const ListItems = ({ nameSection, color, items }) => {
                     handleMetadataModal(e, item.metadata);
                   }}
                 />
-                <CloudDownloadOutlined
+                <FileDownloadRounded
                   style={{ height: "1rem", cursor: "pointer" }}
                   tooltip="Descargar Geoservicios"
                   titleAccess="Descargar Geoservicios"
@@ -184,12 +210,8 @@ const ListItems = ({ nameSection, color, items }) => {
           );
         })}
       </ul>
-
     </div>
   );
-
-
-
 };
 
 export default ListItems;
