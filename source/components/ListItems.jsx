@@ -107,7 +107,7 @@ const ListItems = ({ nameSection, color, items }) => {
         className="d-flex m-0 p-2 justify-content-between align-items-center"
         style={{ backgroundColor: `${color}` }}
       >
-        <div className="fs-4 text-light list-group-item">
+        <div className="fs-4 text-light list-group-item d-flex align-items-center">
           {nameSection}
           <div className="badge fs-6 text-dark fw-bold bg-white opacity-50 px-2 mx-3">
             {activeLayers && activeLayers.length
@@ -131,41 +131,35 @@ const ListItems = ({ nameSection, color, items }) => {
         ></button>
       </div>
 
-      <ul className="m-0 p-0">
+      <ul className="mt-3 p-0">
         {items.map(item => {
           const isActive = activeLayers && activeLayers.includes(item.id);
           const legendURL = legendImageURLs[item.id];
 
           return (
-            <li
-              key={item.id}
-              className="d-flex align-items-center justify-content-between p-2"
-              style={{ position: "relative" }}
-            >
-              {/* Detalles para la leyenda y el nombre */}
-              <div className="flex-grow-1" style={{ marginRight: "20px" }}>
-                <div
-                  className="d-flex align-items-center gap-2 form-checkbox"
-                  style={{ cursor: "pointer", outline: "none" }}
-                  onClick={() => handleItemClick(item.id, item.props)}
-                >
-                  <input type="checkbox" checked={isActive} readOnly />
-                  <p
-                    className="m-0 flex-grow-1 "
+            <li key={item.id} className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}>
+              <div className="flex-grow-1" style={{ marginRight: "80px" }}>
+                <div className="form-checkbox" style={{ cursor: 'pointer', display: 'flex',}}>
+                  <input
+                    className="form-checkbox-input"
+                    type="checkbox"
+                    checked={isActive}
+                    name="professionCheckbox"
+                    id={item.name}
+                    onClick={() => handleItemClick(item.id, item.props)}
+                  />
+                  <label className="form-checkbox-label"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
-                      maxWidth: "14rem",
-                      color: "#101E37",
+                      maxWidth: '15rem'
                     }}
-                    title={item.name}
-                  >
+                   htmlFor={item.name}>
                     {item.name}
-                  </p>
+                  </label>
                 </div>
-
-                {/* Contenido de la leyenda */}
+          
                 {isActive && legendURL && (
                   <div
                     style={{ paddingLeft: "20px", backgroundColor: "white" }}

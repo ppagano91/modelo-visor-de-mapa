@@ -62,7 +62,6 @@ const SearchControl = () => {
       document.removeEventListener("touchstart", handleClickOutside);
     };
   }, []);
-
   const handleSearch = async index => {
     let res;
     if (index == -1) {
@@ -85,6 +84,7 @@ const SearchControl = () => {
           map.setView(latLng, 16);
         }
       } else if ("coordenada_x" in res.data && "coordenada_y" in res.data) {
+        
         // Direcciones
         const { coordenada_x, coordenada_y } = res.data;
         if (coordenada_x && coordenada_y) {
@@ -181,8 +181,8 @@ const SearchControl = () => {
   const handleFocus = e => {
     disableMapInteraction();
     // Cambia el estilo del borde cuando el input recibe el foco
-    e.target.style.borderColor = getEnv("VITE_COLOR_THIRD");
-    e.target.style.boxShadow = "0 0 0 0.2rem " + getEnv("VITE_COLOR_THIRD");
+    e.target.style.border = "none";
+    e.target.style.boxShadow = "0 0 0 0.25rem " + getEnv("VITE_COLOR_THIRD");
   };
 
   const handleBlur = e => {
@@ -234,7 +234,7 @@ const SearchControl = () => {
           />
 
           <button
-            class="reset"
+            className="reset"
             type="reset"
             onClick={handleCleanSearch}
             onFocus={handleFocus}
@@ -299,7 +299,7 @@ const SearchControl = () => {
               alignItems: "start",
             }}
           >
-            {error.value}
+            {error.value}.
           </span>
         </div>
       )}

@@ -1,60 +1,85 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
-import {
-  CheckCircleOutlineSharp,
-  ContentCopy,
-  CheckCircle,
-} from "@mui/icons-material";
+import copy from "../../../assets/images/copy.png"
 
 const GeoserviciosModal = () => {
   const { geoserviciosModalShow, handleGeoserviciosModalClose, metadata } =
     useContext(AppContext);
+
+  const [layerName, setLayerName] = useState("");
   const [copiedStates, setCopiedStates] = useState({
     wms: false,
     wfs: false,
     layerName: false,
   });
 
-  const copyToClipboard = (text, key) => {
+  const checkClipboardPermissions = async () => {
+    try {
+      const result = await navigator.permissions.query({ name: 'clipboard-write' });
+      if (result.state === 'granted' || result.state === 'prompt') {
+        console.log("PERMISO OTORGADO")
+        return true; // El permiso está concedido o se puede solicitar.
+      } else {
+        console.error("Permiso denegado para escribir en el portapapeles.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error al verificar permisos del portapapeles: ", error);
+      return false;
+    }
+  };
+
+  const copyToClipboard = async (text, key) => {
+
+    const hasPermission = await checkClipboardPermissions();
+    if (!hasPermission) {
+    // alert("No se tiene permiso para acceder al portapapeles.");
+    return;
+  }
+
     navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setCopiedStates(prev => ({ ...prev, [key]: true }));
-        setTimeout(() => {
-          setCopiedStates(prev => ({ ...prev, [key]: false }));
-        }, 2000);
-      })
-      .catch(err => {
-        console.error("Error al copiar el texto: ", err);
-      });
+    .writeText(text)
+    .then(() => {
+      setCopiedStates(prev => ({ ...prev, [key]: true }));
+      setTimeout(() => {
+        setCopiedStates(prev => ({ ...prev, [key]: false }));
+      }, 2000);
+    })
+    .catch(err => {
+      console.error("Error al copiar el texto: ", err);
+    });
   };
 
   const renderCopyIcon = key => {
     return copiedStates[key] ? (
-      <CheckCircle className="text-success mx-4" titleAccess="Copiado" />
+      <span class="badge badge-success ms-3" style={{color:'#101E37', fontWeight:'normal', textTransform: 'none'}}>¡Copiado!</span>
     ) : (
-      <ContentCopy
+      <img src={copy}
         className="text-secondary mx-4"
         titleAccess="Copiar"
         onClick={() => copyToClipboard(getTextToCopy(key), key)}
-        style={{ cursor: "pointer" }}
-      />
+        style={{ cursor: "pointer" }}/>
     );
   };
 
   const getTextToCopy = key => {
+    
     switch (key) {
       case "wms":
         return "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms";
       case "wfs":
         return "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wfs";
       case "layerName":
-        return "Lorem, ipsum dolor sit amet consectetur adipisicing elit.";
+        return layerName;
       default:
         return "";
     }
   };
+  useEffect(() => {
+    setLayerName(metadata.name)
+  }, [metadata])
+  
 
   return (
     <Modal
@@ -64,9 +89,11 @@ const GeoserviciosModal = () => {
       dialogClassName="modal-l padding-modal"
       size="lg"
     >
-      <Modal.Header className="bg-warning p-2 fw-bolder px-3 ">
+      <Modal.Header className="p-2 fw-bolder px-3">
         <div className="d-flex justify-content-between align-items-center w-100"> 
-        <Modal.Title className="h5 fw-bold">Geoservicios</Modal.Title>
+        <Modal.Title className="h5 fw-bold">
+          Geoservicios
+        </Modal.Title>
         <button
           type="button"
           className="btn-close"
@@ -75,27 +102,32 @@ const GeoserviciosModal = () => {
         ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="ps-2 pb-2">
-        <p className="fw-bold">
-          <CheckCircleOutlineSharp className="text-success p-1" />
-          WMS:: <span className="fw-normal block">{getTextToCopy("wms")}</span>
-          <span>{renderCopyIcon("wms")}</span>
-        </p>
-        <p className="fw-bold">
-          <CheckCircleOutlineSharp className="text-success p-1" />
-          WFS: <span className="fw-normal">{getTextToCopy("wfs")}</span>
-          <span>{renderCopyIcon("wfs")}</span>
-        </p>
-        <p className="fw-bold">
-          <CheckCircleOutlineSharp className="text-success p-1" />
-          Nombre de Capa:{" "}
-          <span className="fw-normal">{metadata.name && metadata.name.length > 0 ? (
-            metadata.name
-          ) : (
-            "No hay información disponible."
-          )}</span>
-          <span>{renderCopyIcon("layerName")}</span>
-        </p>
+      <Modal.Body className="ps-3">        
+        <div className="d-flex">
+              <span className="fw-bold">WMS:</span>
+              <p className="fw-normal block ms-2">
+                {getTextToCopy("wms")}
+              </p>
+              <span>{renderCopyIcon("wms")}</span>
+        </div>
+        <div className="d-flex">
+          <span className="fw-bold">WFS:</span>
+              <p className="fw-normal block ms-2">
+                {getTextToCopy("wfs")}
+              </p>
+              <span>{renderCopyIcon("wfs")}</span>
+          </div>
+
+          <div className="d-flex">
+            <span className="fw-bold">Nombre de Capa:{" "}</span>
+              
+            <p className="fw-normal block ms-2">{metadata.name && metadata.name.length > 0 ? (
+                metadata.name
+              ) : (
+                "No hay información disponible."
+              )}</p>
+              <span>{renderCopyIcon("layerName")}</span>
+          </div>
       </Modal.Body>
     </Modal>
   );

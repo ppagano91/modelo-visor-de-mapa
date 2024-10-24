@@ -67,7 +67,7 @@ const SelectedLayersSidebar = () => {
               >
                 <input
                   type="checkbox"
-                  checked={layer.isActive}
+                  defaultChecked={layer.isActive}
                   onChange={() => handleLayerClick(layer.name)}
                 />
                 {/* alinear a la izquierda */}

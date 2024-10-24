@@ -41,7 +41,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
 
   return (
     <Modal show={show} onHide={handleClose} centered dialogClassName="modal-sm padding-modal">
-      <Modal.Header className="bg-warning p-2 fw-bolder px-3">
+      <Modal.Header className="p-2 fw-bolder px-3">
         <div className="d-flex justify-content-between align-items-center w-100">
           <Modal.Title className="h5 fw-bold">Descargas</Modal.Title>
           <button
@@ -52,7 +52,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
           ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="d-flex justify-content-around pb-2">
+      <Modal.Body className="d-flex justify-content-around">
         {loading ? ( // Mostrar spinner si está cargando
           <Spinner animation="border" role="status" className="m-auto">
             <span className="visually-hidden">Preparando archivo...</span>

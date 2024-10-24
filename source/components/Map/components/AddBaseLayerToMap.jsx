@@ -12,6 +12,12 @@ const AddBaseLayerToMap = () => {
   const { layers, resetInfo, handleInfoWMSLayers, handleSetMarker } = useContext(MapLayerContext);
 
   const onMapRightClick = async (event) => {
+
+    if (event.originalEvent.target.tagName === 'INPUT') {
+      //Al hacer click derecho en el Input no marca el mapa
+      return
+    }
+
     const latlng = event.latlng;
     const mapSize = map.getSize();
     const mapBounds = map.getBounds();

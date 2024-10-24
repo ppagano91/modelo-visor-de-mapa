@@ -12,7 +12,7 @@ const MetadataModal = () => {
       centered
       dialogClassName="modal-l padding-modal"
     >
-      <Modal.Header className="bg-warning p-2 fw-bolder px-3">
+      <Modal.Header className="p-2 fw-bolder px-3">
         <div className="d-flex justify-content-between align-items-center w-100">
           <Modal.Title className="h5 fw-bold">{metadata.name || "Metadata"}</Modal.Title>
           <button
@@ -23,7 +23,7 @@ const MetadataModal = () => {
           ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="modal-l ps-2 pb-2">
+      <Modal.Body className="modal-l ps-3">
         <p className="fw-bold">
           Resumen:{" "}
           <span className="fw-normal">
@@ -45,14 +45,7 @@ const MetadataModal = () => {
           </span>
         </p>
         <p>
-          <a
-            href={metadata.url || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <b>Metadato Completo</b>
-          </a>
+          <a class="external" href={metadata.url || "#"} target="_blank" rel="noopener noreferrer">Metadato Completo</a>
         </p>
       </Modal.Body>
     </Modal>
