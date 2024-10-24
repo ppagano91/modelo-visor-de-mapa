@@ -1,11 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
-import {
-  CheckCircleOutlineSharp,
-  ContentCopy,
-  CheckCircle,
-} from "@mui/icons-material";
+import copy from "../../../assets/images/copy.png"
 
 const GeoserviciosModal = () => {
   const { geoserviciosModalShow, handleGeoserviciosModalClose, metadata } =
@@ -53,34 +49,17 @@ const GeoserviciosModal = () => {
     });
   };
 
-  // RENDER COPY ICON ORIGINAL
-
-  // const renderCopyIcon = key => {
-  //   return copiedStates[key] ? (
-  //     <CheckCircle className="text-success mx-4" titleAccess="Copiado" />
-  //   ) : (
-  //     <ContentCopy
-  //       className="text-secondary mx-4"
-  //       titleAccess="Copiar"
-  //       onClick={() => copyToClipboard(getTextToCopy(key), key)}
-  //       style={{ cursor: "pointer" }}
-  //     />
-  //   );
-  // };
-
   const renderCopyIcon = key => {
-    return(
-      <span
-        className="material-symbols-outlined"
-        title="Copiar"
-        style={{ cursor: "pointer", marginLeft: "24px"}}
+    return copiedStates[key] ? (
+      <span class="badge badge-success ms-3" style={{color:'#101E37', fontWeight:'normal', textTransform: 'none'}}>¡Copiado!</span>
+    ) : (
+      <img src={copy}
+        className="text-secondary mx-4"
+        titleAccess="Copiar"
         onClick={() => copyToClipboard(getTextToCopy(key), key)}
-      >
-        content_copy
-      </span>
+        style={{ cursor: "pointer" }}/>
     );
   };
-
 
   const getTextToCopy = key => {
     switch (key) {

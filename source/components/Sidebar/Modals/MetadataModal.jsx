@@ -45,15 +45,7 @@ const MetadataModal = () => {
           </span>
         </p>
         <p>
-          <a href={metadata.url || "#"} target="_blank" rel="noopener noreferrer">Metadato Completo</a>
-          {/* <a
-            href={metadata.url || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <b>Metadato Completo</b>
-          </a> */}
+          <a class="external" href={metadata.url || "#"} target="_blank" rel="noopener noreferrer">Metadato Completo</a>
         </p>
       </Modal.Body>
     </Modal>
