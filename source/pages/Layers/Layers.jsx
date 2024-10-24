@@ -59,16 +59,16 @@ const Layers = () => {
           const elements = records?.flatMap(doc => {
             const layerProps = Array.isArray(doc._source.link)
               ? doc._source.link.find(
-                link =>
-                  link.protocol === "OGC:WMS" &&
-                  link.function === "information"
-              )
+                  link =>
+                    link.protocol === "OGC:WMS" &&
+                    link.function === "information"
+                )
               : null;
 
             const metadata = Array.isArray(doc._source.link)
               ? doc._source.link.find(
-                link => link.protocol === "WWW:LINK-1.0-http--link"
-              )
+                  link => link.protocol === "WWW:LINK-1.0-http--link"
+                )
               : null;
 
             const groupPublished = Array.isArray(doc._source.groupPublished)
@@ -96,33 +96,33 @@ const Layers = () => {
                   description: doc._source.resourceAbstractObject.default,
                   props: layerProps
                     ? {
-                      url: layerProps.urlObject?.default || "",
-                      name: layerProps.nameObject?.default || "",
-                      description:
-                        layerProps.descriptionObject?.default || "",
-                      attribution: "",
-                    }
+                        url: layerProps.urlObject?.default || "",
+                        name: layerProps.nameObject?.default || "",
+                        description:
+                          layerProps.descriptionObject?.default || "",
+                        attribution: "",
+                      }
                     : {
-                      url: "",
-                      name: "",
-                      description: "",
-                      attribution: "",
-                    },
+                        url: "",
+                        name: "",
+                        description: "",
+                        attribution: "",
+                      },
                   metadata: metadata
                     ? {
-                      url: metadata.urlObject?.default || "",
-                      name: metadata.nameObject?.default || "",
-                      description: metadata.descriptionObject?.default || "",
-                      contact: doc._source.contact,
-                      attribution: "",
-                    }
+                        url: metadata.urlObject?.default || "",
+                        name: metadata.nameObject?.default || "",
+                        description: metadata.descriptionObject?.default || "",
+                        contact: doc._source.contact,
+                        attribution: "",
+                      }
                     : {
-                      url: "",
-                      name: "",
-                      description: "",
-                      contact: "",
-                      attribution: "",
-                    },
+                        url: "",
+                        name: "",
+                        description: "",
+                        contact: "",
+                        attribution: "",
+                      },
                   section: section,
                 };
               } else {
@@ -256,16 +256,31 @@ const Layers = () => {
     <>
       <div className="layer-wrapper">
         <form>
-          <div class='search-container m-2'>
-            <input type="search" class="py-1  form-control input-search" id="search" placeholder="Buscador de Capas"
-              value={searchTerm} onChange={handleSearchChange} onFocus={handleFocus} onBlur={handleBlur}
+          <div class="search-container m-2">
+            <input
+              type="search"
+              class="py-1  form-control input-search"
+              id="search"
+              placeholder="Buscador de Capas"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               style={{
                 fontFamily: "Open Sans",
                 height: "2.75rem",
-                backgroundColor: '#F3F6F9',
-                color: 'black'
-              }} />
-            <button class="reset" type="reset" aria-label="Borrar" onClick={handleCleanSearch} onFocus={handleFocus} onBlur={handleBlur}></button>
+                backgroundColor: "#F3F6F9",
+                color: "black",
+              }}
+            />
+            <button
+              class="reset"
+              type="reset"
+              aria-label="Borrar"
+              onClick={handleCleanSearch}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+            ></button>
           </div>
         </form>
 
@@ -284,7 +299,15 @@ const Layers = () => {
                   key={index}
                   onClick={() => handleSectionClick(index)}
                 >
-                  <h4 style={{ fontWeight: "bold" }}>{section.name}</h4>
+                  <h4
+                    style={{
+                      fontWeight: "bold",
+
+                      color: "#101E37",
+                    }}
+                  >
+                    {section.name}
+                  </h4>
 
                   {section.description && (
                     <p
