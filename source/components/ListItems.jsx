@@ -137,30 +137,22 @@ const ListItems = ({ nameSection, color, items }) => {
           const legendURL = legendImageURLs[item.id];
 
           return (
-            <li
-              key={item.id}
-              className="d-flex align-items-center justify-content-between p-2"
-              style={{ position: "relative" }}
-            >
-              <div className="flex-grow-1" style={{ marginRight: "20px" }}>
-                <div
-                  className="form-checkbox"
-                  style={{ cursor: 'pointer' }}
-                  
-                >
+            <li key={item.id} className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}>
+              <div className="flex-grow-1" style={{ marginRight: "80px" }}>
+                <div className="form-checkbox" style={{ cursor: 'pointer', display: 'flex',}}>
                   <input
                     className="form-checkbox-input"
                     type="checkbox"
-                    defaultChecked={isActive}
+                    checked={isActive}
                     name="professionCheckbox"
                     id={item.name}
                     onClick={() => handleItemClick(item.id, item.props)}
                   />
-                  <label className="form-checkbox-label"  htmlFor={item.name} >
+                  <label className="form-checkbox-label" htmlFor={item.name}>
                     {item.name}
                   </label>
-                 
                 </div>
+          
                 {isActive && legendURL && (
                   <div
                     style={{ paddingLeft: "20px", backgroundColor: "white" }}

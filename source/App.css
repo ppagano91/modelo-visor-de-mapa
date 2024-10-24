@@ -25,6 +25,14 @@ input:-webkit-autofill:active {
 .input-search::placeholder {
   color: #505E70 !important;
 }
+
+.input-search:-ms-input-placeholder {
+  color: #505E70 !important;
+}
+
+.input-search::placeholder {
+  color: #505E70 !important;
+}
 * {
   margin: 0;
   padding: 0;
