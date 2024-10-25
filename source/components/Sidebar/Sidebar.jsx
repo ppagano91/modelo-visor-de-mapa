@@ -89,7 +89,7 @@ const Sidebar = ({ children }) => {
               }`}
               onClick={() => toggle(item.path)}
             >
-              <div className="fs-5 icon">{item.icon}</div>
+              <div className="fs-5 icon" data-direction='right' data-tooltip={item.name}>{item.icon}</div>
             </NavLink>
           ))}
           {/* {(selectedLayers.length > 0 || showTemporalLayers) && (
@@ -121,9 +121,7 @@ const Sidebar = ({ children }) => {
                 }`}
                 onClick={() => toggle(item.path)}
               >
-                <div className="fs-5 icon" title={item.name}>
-                  {item.icon}
-                </div>
+                <div className="fs-5 icon" data-direction='right' data-tooltip={item.name}>{item.icon}</div>
               </NavLink>
             ))}
           </div>

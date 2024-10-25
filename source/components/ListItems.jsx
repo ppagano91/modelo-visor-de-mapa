@@ -153,8 +153,8 @@ const ListItems = ({ nameSection, color, items }) => {
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      maxWidth: '15rem'
+                      maxWidth: '15rem',
+                      color:getEnv("VITE_COLOR_SECONDARY")
                     }}
                    htmlFor={item.name}>
                     {item.name}
