@@ -9,6 +9,7 @@ import {
   FileDownloadRounded,
 } from "@mui/icons-material";
 import { AppContext } from "../context/AppContext";
+import { getEnv } from "../config";
 
 const ListItems = ({ nameSection, color, items }) => {
   const [showModal, setShowModal] = useState(false);
@@ -61,7 +62,7 @@ const ListItems = ({ nameSection, color, items }) => {
       layer: layerName,
       style: "",
       legend_options:
-        "fontName:Cantarell Bold;fontSize:11;fontColor:#2f00ff;forceLabels:on",
+        `fontName:Cantarell Bold;fontSize:11;fontColor:${getEnv("#101E37")};forceLabels:on`,
     };
     const url = urlBase + L.Util.getParamString(params, "", true);
 

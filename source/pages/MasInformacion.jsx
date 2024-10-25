@@ -58,11 +58,11 @@ const MasInformacion = () => {
           <div className="status status-info mt-4" />
 
           <h2
-            className="status-title mt-3" style={{color:'#101E37'}}>
+            className="status-title mt-3" style={{color:getEnv("VITE_COLOR_SECONDARY")}}>
             Mas información
           </h2>
 
-          <p className="masinfo-texto mt-2" style={{color:'#101E37'}} >
+          <p className="masinfo-texto mt-2" style={{color:getEnv("VITE_COLOR_SECONDARY")}} >
             Puede acceder a <b>información contextual</b> haciendo "<i>click</i> derecho" sobre alguna capa temática de la sección <b>"Capas"</b>.
           </p>
         </div>

@@ -269,7 +269,7 @@ const Layers = () => {
               style={{
                 fontFamily: "Open Sans",
                 height: "2.75rem",
-                backgroundColor: "#F3F6F9",
+                backgroundColor: getEnv("VITE_COLOR_LIGHT"),
                 color: "black",
               }}
             />
@@ -303,7 +303,7 @@ const Layers = () => {
                     style={{
                       fontWeight: "bold",
 
-                      color: "#101E37",
+                      color: getEnv("VITE_COLOR_SECONDARY"),
                     }}
                   >
                     {section.name}
@@ -314,7 +314,7 @@ const Layers = () => {
                       className=" m-0 p-0 text-normal"
                       style={{
                         fontSize: "0.8rem",
-                        color: "#101E37",
+                        color: getEnv("VITE_COLOR_SECONDARY"),
                         display: "block",
                         textAlign: "justify",
                       }}

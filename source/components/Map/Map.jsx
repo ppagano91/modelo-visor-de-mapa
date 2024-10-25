@@ -113,15 +113,7 @@ export default function Map() {
         position="topright"
         zIndex={500}
       >
-        <BaseLayer checked name="Mapa Base">
-          <WMSTileLayer
-            url={baseMapLayer.url}
-            layers={baseMapLayer.name}
-            format="image/png"
-            transparent={true}
-          />
-        </BaseLayer>
-        <BaseLayer name="Mapa Base TMS">
+        <BaseLayer checked name="Mapa Base (TMS)">
           <WMSTileLayer
             url={getEnv("VITE_MAPA_BASE_TMS")}
             tms={true}
@@ -129,6 +121,14 @@ export default function Map() {
             updateWhenIdle={true}
           />
         </BaseLayer>
+        <BaseLayer name="Mapa Base WMS">
+          <WMSTileLayer
+            url={baseMapLayer.url}
+            layers={baseMapLayer.name}
+            format="image/png"
+            transparent={true}
+          />
+        </BaseLayer>        
         <BaseLayer name="Mapa Base WMTS">
           <TileLayer
             url={getEnv("VITE_MAPA_BASE_WMTS")}

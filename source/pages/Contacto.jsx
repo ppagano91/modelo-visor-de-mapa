@@ -14,7 +14,7 @@ const MyButton = ({ isHovered, setIsHovered }) => {
     outline: ".125rem solid #101e37",
     outlineOffset: "-.125rem",
     transition: "all 50ms ease-in-out",
-    backgroundColor: isHovered ? "#101e37" : "#080F1C",
+    backgroundColor: isHovered ? getEnv("VITE_COLOR_SECONDARY") : "#080F1C",
     cursor: "pointer",
     marginLeft: "auto",
   };
@@ -140,14 +140,14 @@ const Contacto = () => {
     >
       <div className="m-3">
         <div className="text-justify">
-          <h1 className="fs-3" style={{ fontWeight: "bold", color: "#101E37" }}>
+          <h1 className="fs-3" style={{ fontWeight: "bold", color: getEnv("VITE_COLOR_SECONDARY") }}>
             Contacto
           </h1>
           <p
             className=" fw-normal"
             style={{
               fontFamily: "Open Sans",
-              color: "#101E37",
+              color: getEnv("VITE_COLOR_SECONDARY"),
             }}
           >
             Utilice este formulario para hacernos llegar sus comentarios,
@@ -173,8 +173,8 @@ const Contacto = () => {
                 }`}
                 style={{
                   fontFamily: "Open Sans",
-                  color: "#101E37",
-                  backgroundColor: "#F3F6F9",
+                  color: getEnv("VITE_COLOR_SECONDARY"),
+                  backgroundColor: getEnv("VITE_COLOR_LIGHT"),
                 }}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -200,8 +200,8 @@ const Contacto = () => {
                 }`}
                 style={{
                   fontFamily: "Open Sans",
-                  color: "#101E37",
-                  backgroundColor: "#F3F6F9",
+                  color: getEnv("VITE_COLOR_SECONDARY"),
+                  backgroundColor: getEnv("VITE_COLOR_LIGHT"),
                 }}
                 type="email"
                 placeholder="ejemplo@ejemplo.com"
@@ -227,8 +227,8 @@ const Contacto = () => {
                 style={{
                   height: "4rem",
                   fontFamily: "Open Sans",
-                  color: "#101E37",
-                  backgroundColor: "#F3F6F9",
+                  color: getEnv("VITE_COLOR_SECONDARY"),
+                  backgroundColor: getEnv("VITE_COLOR_LIGHT"),
                 }}
                 className={`form-control align-top ${
                   formSubmitted && !formData.mensaje ? "is-invalid" : ""

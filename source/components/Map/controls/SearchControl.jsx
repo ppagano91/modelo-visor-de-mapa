@@ -228,8 +228,8 @@ const SearchControl = () => {
               fontFamily: "Open Sans",
               width: "22rem",
               height: "2.75rem",
-              backgroundColor: '#F3F6F9',
-              color: '#101E37'
+              backgroundColor: getEnv("VITE_COLOR_LIGHT"),
+              color: getEnv("VITE_COLOR_SECONDARY")
             }}
           />
 
