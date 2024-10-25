@@ -103,30 +103,29 @@ const GeoserviciosModal = () => {
       </Modal.Header>
       <Modal.Body className="">        
         <div className="d-flex pt-2">
-              <span className="fw-bold">WMS:</span>
-              <p className="fw-normal block ms-2 mb-0">
-                {getTextToCopy("wms")}
-              </p>
-              <span>{renderCopyIcon("wms")}</span>
+          <span className="fw-bold">WMS:</span>
+          <p className="fw-normal block ms-2 mb-0">
+            {getTextToCopy("wms")}
+          </p>
+          <span className="d-flex">{renderCopyIcon("wms")}</span>
         </div>
         <div className="d-flex pt-2">
           <span className="fw-bold">WFS:</span>
-              <p className="fw-normal block ms-2 mb-0">
-                {getTextToCopy("wfs")}
-              </p>
-              <span>{renderCopyIcon("wfs")}</span>
-          </div>
+          <p className="fw-normal block ms-2 mb-0">
+            {getTextToCopy("wfs")}
+          </p>
+          <span className="d-flex">{renderCopyIcon("wfs")}</span>
+        </div>
 
-          <div className="d-flex pt-2">
-            <span className="fw-bold">Nombre de Capa:{" "}</span>
-              
-            <p className="fw-normal block ms-2 mb-0">{metadata.name && metadata.name.length > 0 ? (
-                metadata.name
-              ) : (
-                "No hay información disponible."
-              )}</p>
-              <span>{renderCopyIcon("layerName")}</span>
-          </div>
+        <div className="d-flex pt-2">
+          <span className="fw-bold">Nombre de Capa:{" "}</span>  
+          <p className="fw-normal block ms-2 mb-0">{metadata.name && metadata.name.length > 0 ? (
+              metadata.name
+            ) : (
+              "No hay información disponible."
+            )}</p>
+            <span className="d-flex">{renderCopyIcon("layerName")}</span>
+        </div>
       </Modal.Body>
     </Modal>
   );

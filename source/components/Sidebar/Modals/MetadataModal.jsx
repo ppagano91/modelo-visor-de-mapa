@@ -50,7 +50,7 @@ const MetadataModal = () => {
             </span>
           </span>
         </div>
-        <div className="d-flex pt-2">
+        <div className="d-flex pt-2" style={{height:"32px"}}>
           <p>
             <a class="external" href={metadata.url || "#"} target="_blank" rel="noopener noreferrer">Metadato Completo</a>
           </p>
