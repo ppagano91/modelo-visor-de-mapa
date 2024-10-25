@@ -229,7 +229,7 @@ const SearchControl = () => {
               width: "22rem",
               height: "2.75rem",
               backgroundColor: getEnv("VITE_COLOR_LIGHT"),
-              color: getEnv("VITE_COLOR_SECONDARY")
+              color: getEnv("VITE_COLOR_SECONDARY"),
             }}
           />
 
