@@ -142,7 +142,7 @@ const ListItems = ({ nameSection, color, items }) => {
               className="d-flex align-items-center justify-content-between p-2"
               style={{ position: "relative" }}
             >
-              <div className="flex-grow-1" style={{ marginRight: "20px" }}>
+              <div className="flex-grow-1" style={{ marginRight: "80px" }}>
                 <div
                   className="form-checkbox"
                   style={{ cursor: 'pointer' }}

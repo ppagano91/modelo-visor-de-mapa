@@ -17,15 +17,18 @@ const CustomButtonControl = ({
   useEffect(() => {
     const control = L.Control.extend({
       onAdd: function (map) {
+        const wrapper = L.DomUtil.create("span", "tooltip-wrapper");
+        wrapper.setAttribute("data-direction", "left");
+        wrapper.setAttribute("data-tooltip", title);
+
         const element = L.DomUtil.create("div", "leaflet-bar");
-        if (className){
+
+        if (className) {
           L.DomUtil.addClass(element, className);
         }
         if (iconImage) {
           const img = L.DomUtil.create("a");
           img.src = iconImage;
-          // img.style.width = "90%";
-          // img.style.height = "auto";
           element.appendChild(img);
         }
         if (innerHTML) {
@@ -34,19 +37,15 @@ const CustomButtonControl = ({
         if (iconClassName) {
           const icon = L.DomUtil.create("a", iconClassName);
           Object.assign(icon.style, anchorStyle);
-          
           element.appendChild(icon);
         }
         if (onClickFunction) {
           element.onclick = onClickFunction;
         }
-        if (title) {
-          element.title = title;
-        }
-
-        return element;
+        wrapper.appendChild(element);
+        return wrapper;
       },
-      onRemove: function (map) {},
+      onRemove: function (map) { },
     });
 
     const customControl = new control({ position: postion || "bottomright" });
@@ -56,6 +55,7 @@ const CustomButtonControl = ({
       customControl.remove();
     };
   }, [iconImage, onClickFunction, className]);
+
   return null;
 };
 

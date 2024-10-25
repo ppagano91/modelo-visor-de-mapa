@@ -314,7 +314,7 @@ const Layers = () => {
           )}
           {!searching && filteredSections.length === 0 && (
             <div className="text-center">
-              <p className="d-block layer-section-container fs-6 p-2">
+              <p className="d-block layer-section-container fs-6 p-2" style={{color:'#101E37'}}>
                 No se encontraron resultados.
               </p>
             </div>
