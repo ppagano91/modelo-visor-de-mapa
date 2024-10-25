@@ -328,8 +328,8 @@ const Layers = () => {
           )}
           {searching && (
             <div className="text-center">
-              <div className="spinner-border" role="status"></div>
-              <span className="d-block layer-section-container fs-6 p-2">
+              <div className="spinner-border" role="status" style={{color:"#336ACC"}}></div>
+              <span className="d-block layer-section-container fs-6 p-2" style={{color:"#101E37"}}>
                 {" "}
                 Buscando capas...
               </span>
