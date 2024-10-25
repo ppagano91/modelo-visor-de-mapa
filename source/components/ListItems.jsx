@@ -9,6 +9,7 @@ import {
   FileDownloadRounded,
 } from "@mui/icons-material";
 import { AppContext } from "../context/AppContext";
+import { getEnv } from "../config";
 
 const ListItems = ({ nameSection, color, items }) => {
   const [showModal, setShowModal] = useState(false);
@@ -61,7 +62,7 @@ const ListItems = ({ nameSection, color, items }) => {
       layer: layerName,
       style: "",
       legend_options:
-        "fontName:Cantarell Bold;fontSize:11;fontColor:#2f00ff;forceLabels:on",
+        `fontName:Cantarell Bold;fontSize:11;fontColor:${getEnv("#101E37")};forceLabels:on`,
     };
     const url = urlBase + L.Util.getParamString(params, "", true);
 
@@ -137,30 +138,29 @@ const ListItems = ({ nameSection, color, items }) => {
           const legendURL = legendImageURLs[item.id];
 
           return (
-            <li
-              key={item.id}
-              className="d-flex align-items-center justify-content-between p-2"
-              style={{ position: "relative" }}
-            >
+            <li key={item.id} className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}>
               <div className="flex-grow-1" style={{ marginRight: "80px" }}>
-                <div
-                  className="form-checkbox"
-                  style={{ cursor: 'pointer' }}
-                  
-                >
+                <div className="form-checkbox" style={{ cursor: 'pointer', display: 'flex',}}>
                   <input
                     className="form-checkbox-input"
                     type="checkbox"
-                    defaultChecked={isActive}
+                    checked={isActive}
                     name="professionCheckbox"
                     id={item.name}
                     onClick={() => handleItemClick(item.id, item.props)}
                   />
-                  <label className="form-checkbox-label"  htmlFor={item.name} >
+                  <label className="form-checkbox-label"
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: '15rem',
+                      color:'#101E37'
+                    }}
+                   htmlFor={item.name}>
                     {item.name}
                   </label>
-                 
                 </div>
+          
                 {isActive && legendURL && (
                   <div
                     style={{ paddingLeft: "20px", backgroundColor: "white" }}

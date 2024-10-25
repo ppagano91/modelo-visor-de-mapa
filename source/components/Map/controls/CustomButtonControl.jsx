@@ -17,12 +17,10 @@ const CustomButtonControl = ({
   useEffect(() => {
     const control = L.Control.extend({
       onAdd: function (map) {
-        const wrapper = L.DomUtil.create("span", "tooltip-wrapper");
-        wrapper.setAttribute("data-direction", "left");
-        wrapper.setAttribute("data-tooltip", title);
-
         const element = L.DomUtil.create("div", "leaflet-bar");
-
+        
+        element.setAttribute("data-direction", "left");
+        element.setAttribute("data-tooltip", title);
         if (className) {
           L.DomUtil.addClass(element, className);
         }
@@ -42,8 +40,7 @@ const CustomButtonControl = ({
         if (onClickFunction) {
           element.onclick = onClickFunction;
         }
-        wrapper.appendChild(element);
-        return wrapper;
+        return element;
       },
       onRemove: function (map) { },
     });

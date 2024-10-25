@@ -15,10 +15,14 @@
       clickSpeed: 200,
 
       onAdd: function (map) {
-          var container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
+          const container = L.DomUtil.create('div', 'leaflet-control leaflet-bar'),
               link = L.DomUtil.create('a', 'icon-ruler', container),
               map_container = map.getContainer(),
               me = this;
+              
+              // Agrega el tooltip personalizado
+              container.setAttribute("data-direction", "left");
+              container.setAttribute("data-tooltip", 'Herramienta de Medición');
 
           link.href = '#';
           if (this.options?.title != ""){
