@@ -313,10 +313,30 @@ const Layers = () => {
             </div>
           )}
           {!searching && filteredSections.length === 0 && (
-            <div className="text-center">
-              <p className="d-block layer-section-container fs-6 p-2" style={{color:'#101E37'}}>
-                No se encontraron resultados.
-              </p>
+            <div className="m-2">
+              <div
+                className="alert alert-danger  my-2 py-3"
+                role="alert"
+                style={{
+                  width: "100%",
+                  alignItems: "flex-start",
+                  position: "relative",
+                  fontFamily: "Open Sans",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "Open Sans",
+                    paddingLeft: "2.5rem",
+
+                    justifyContent: "flex-start",
+                    display: "flex",
+                    alignItems: "start",
+                  }}
+                >
+                  No se encontraron resultados.
+                </span>
+              </div>
             </div>
           )}
           {activeSectionName !== null &&
