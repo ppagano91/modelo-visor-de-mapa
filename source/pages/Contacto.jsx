@@ -168,7 +168,7 @@ const Contacto = () => {
               <h6
                 htmlFor="nombre"
                 className="text fw-bold "
-                style={{ color: "#101E37" }}
+                style={{ color: getEnv("VITE_COLOR_SECONDARY") }}
               >
                 Nombre*
               </h6>
@@ -196,7 +196,7 @@ const Contacto = () => {
               <h6
                 htmlFor="correo"
                 className="text fw-bold "
-                style={{ color: "#101E37" }}
+                style={{ color: getEnv("VITE_COLOR_SECONDARY") }}
               >
                 Correo electrónico*
               </h6>
@@ -230,7 +230,7 @@ const Contacto = () => {
               <h6
                 htmlFor="mensaje"
                 className="text fw-bold "
-                style={{ color: "#101E37" }}
+                style={{ color: getEnv("VITE_COLOR_SECONDARY") }}
               >
                 Mensaje*
               </h6>
