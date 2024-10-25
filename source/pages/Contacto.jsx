@@ -10,6 +10,7 @@ const MyButton = ({ isHovered, setIsHovered }) => {
     fontWeight: "bold",
     fontSize: "18px",
     textDecoration: "none",
+    padding: "8px 16px",
     border: "none",
     outline: ".125rem solid #101e37",
     outlineOffset: "-.125rem",
@@ -164,7 +165,11 @@ const Contacto = () => {
             noValidate
           >
             <div className="mb-3 ">
-              <h6 htmlFor="nombre" className="text fw-bold ">
+              <h6
+                htmlFor="nombre"
+                className="text fw-bold "
+                style={{ color: "#101E37" }}
+              >
                 Nombre*
               </h6>
               <input
@@ -188,7 +193,11 @@ const Contacto = () => {
             </div>
 
             <div className="mb-3">
-              <h6 htmlFor="correo" className="text fw-bold ">
+              <h6
+                htmlFor="correo"
+                className="text fw-bold "
+                style={{ color: "#101E37" }}
+              >
                 Correo electrónico*
               </h6>
               <input
@@ -218,7 +227,11 @@ const Contacto = () => {
             </div>
 
             <div className="mb-3">
-              <h6 htmlFor="mensaje" className="text fw-bold ">
+              <h6
+                htmlFor="mensaje"
+                className="text fw-bold "
+                style={{ color: "#101E37" }}
+              >
                 Mensaje*
               </h6>
               <textarea
