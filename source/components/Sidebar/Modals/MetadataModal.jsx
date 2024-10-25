@@ -12,7 +12,7 @@ const MetadataModal = () => {
       centered
       dialogClassName="modal-l padding-modal"
     >
-      <Modal.Header className="p-2 fw-bolder px-3">
+      <Modal.Header className="fw-bolder">
         <div className="d-flex justify-content-between align-items-center w-100">
           <Modal.Title className="h5 fw-bold">{metadata.name || "Metadata"}</Modal.Title>
           <button
@@ -23,7 +23,7 @@ const MetadataModal = () => {
           ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="modal-l ps-3">
+      <Modal.Body className="modal-l">
         <p className="fw-bold">
           Resumen:{" "}
           <span className="fw-normal">
