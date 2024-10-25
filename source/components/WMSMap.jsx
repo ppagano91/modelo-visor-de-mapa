@@ -80,10 +80,11 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
   );
 
   return (
-    <Modal centered show={showModal} onHide={handleCloseModal} className="mx-4 my-5 padding-modal">
+    <Modal centered show={showModal} onHide={handleCloseModal} className="modal-l"
+    dialogClassName="wms-modal"
+    >
       <Modal.Header
         className="p-2 px-3"
-        style={{ backgroundColor: getEnv("VITE_COLOR") }}
       >
         <div className="d-flex justify-content-between align-items-center w-100">
           <Modal.Title className="h5 fw-bold">Capas Temporales</Modal.Title>
@@ -149,7 +150,6 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
           style={{
             backgroundColor: "#007BC7",
             borderColor: "#007BC7",
-            hover: getEnv("VITE_COLOR"),
           }}
           disabled={loading} // Deshabilitar botón mientras carga
         >

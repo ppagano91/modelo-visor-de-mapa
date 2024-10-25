@@ -85,7 +85,7 @@ const GeoserviciosModal = () => {
       show={geoserviciosModalShow}
       onHide={handleGeoserviciosModalClose}
       centered
-      dialogClassName="modal-l padding-modal m-auto"
+      dialogClassName="modal-l m-auto"
       size="lg"
     >
       <Modal.Header className="fw-bolder pb-2" >
