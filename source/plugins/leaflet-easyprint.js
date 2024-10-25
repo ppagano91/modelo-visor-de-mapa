@@ -263,7 +263,7 @@ L.Control.EasyPrint = L.Control.extend({
                     justify-content: center;
                     color: black;
                     background-color: ${getEnv("VITE_COLOR_BLANCO")};
-                    border-bottom: .25rem solid ${getEnv("VITE_COLOR_AZUL")};
+                    border-bottom: .25rem solid ${getEnv("VITE_COLOR_PRIMARY")};
                     -webkit-print-color-adjust: exact;
                     print-color-adjust: exact;
                     width: 100%; /* Que el header ocupe todo el ancho */

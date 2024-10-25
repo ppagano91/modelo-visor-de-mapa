@@ -146,6 +146,6 @@ label {
   font-family: "Open Sans", sans-serif;
 }
 
-.padding-modal .modal-content {
-  padding: 1.5rem;
+.wms-modal .modal-content{
+  padding: 0 !important;
 }
