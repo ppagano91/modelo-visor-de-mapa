@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
+import { getEnv } from "../../../config";
 
 const DownloadModal = ({ show, handleClose, downloadProps }) => {
   const [loading, setLoading] = useState(false); // Estado de carga
@@ -62,19 +63,19 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
       </Modal.Header>
       <Modal.Body className="d-flex justify-content-start">
         {loading ? ( // Mostrar spinner si está cargando
-          <div className="spinner-border text-primary spinner-border-lg d-flex align-items-center m-auto" role="status">
+          <Spinner animation="border" role="status" className="m-auto" style={{color:getEnv("VITE_COLOR_PRIMARY")}}>
             <span class="sr-only">Preparando archivo...</span>
-          </div>
+          </Spinner>
         ) : (
           <>
             <div className="d-flex flex-column gap-2">
               <div className="d-flex flex-column gap-2">
                 <span className="fw-bold" style={{fontFamily:"Nunito"}}>KML</span>
                 <a
-                  class="btn btn-secondary btn-sm download-link"
+                  class="btn btn-secondary btn-sm download-link custom-download"
                   onClick={() => handleDownload('vnd.google-earth.kml+xml')}
                   disabled={loading}
-                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
                 >
                   Descargar
                 </a>
@@ -82,10 +83,10 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
               <div className="d-flex flex-column gap-2">
                 <span className="fw-bold" style={{fontFamily:"Nunito"}}>SHP</span>
                 <a
-                  class="btn btn-secondary btn-sm download-link"
+                  class="btn btn-secondary btn-sm download-link custom-download"
                   onClick={() => handleDownload('shp')}
                   disabled={loading}
-                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
                 >
                   Descargar
                 </a>
@@ -93,10 +94,10 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
               <div className="d-flex flex-column gap-2">
                 <span className="fw-bold" style={{fontFamily:"Nunito"}}>JSON</span>
                 <a
-                  class="btn btn-secondary btn-sm download-link"
+                  class="btn btn-secondary btn-sm download-link custom-download"
                   onClick={() => handleDownload('json')}
                   disabled={loading}
-                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
                 >
                   Descargar
                 </a>

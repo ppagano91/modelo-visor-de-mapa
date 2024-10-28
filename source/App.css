@@ -149,3 +149,16 @@ label {
 .wms-modal .modal-content{
   padding: 0 !important;
 }
+
+.custom-download{
+  background-color: #101e37 !important;
+  outline: none;
+}
+
+.custom-download:hover{
+  background-color: #080F1C !important;
+}
+
+.custom-download:active{
+  outline: 4px solid #1f8274 !important;
+}
