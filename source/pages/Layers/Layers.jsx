@@ -316,7 +316,7 @@ const Layers = () => {
                         fontSize: "0.8rem",
                         color: getEnv("VITE_COLOR_SECONDARY"),
                         display: "block",
-                        textAlign: "justify",
+                        textAlign: "left",
                       }}
                     >
                       {section.description}

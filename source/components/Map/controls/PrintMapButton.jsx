@@ -20,7 +20,11 @@ const PrintMapButton = ({ position = "bottomright" }) => {
       exportType: 'png',
       printLayer: true,
       onError: (error) => {
-        setErrorMessage("Error en la impresión del Mapa. Por favor, inténte imprimir otro Mapa Base.");
+        setErrorMessage(
+          <p className="errorMessage">
+            Error en la impresión del Mapa. Por favor, intente imprimir otro Mapa Base.
+          </p>
+        );
         setShowModal(true);
 
         setTimeout(() => {
@@ -40,7 +44,7 @@ const PrintMapButton = ({ position = "bottomright" }) => {
       {showModal && (
         <div style={modalStyles}>
           <div style={modalContentStyles}>
-            <p>{errorMessage}</p>
+            <p style={{marginBottom:"0px"}}>{errorMessage}</p>
           </div>
         </div>
       )}

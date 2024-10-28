@@ -160,5 +160,13 @@ label {
 }
 
 .custom-download:active{
-  outline: 4px solid #1f8274 !important;
+  outline: 4px solid #218274 !important;
+}
+
+.errorMessage{
+  color: #080F1C;
+  margin-bottom: 0px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

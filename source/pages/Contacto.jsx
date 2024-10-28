@@ -149,6 +149,7 @@ const Contacto = () => {
             style={{
               fontFamily: "Open Sans",
               color: getEnv("VITE_COLOR_SECONDARY"),
+              textAlign: "left",
             }}
           >
             Utilice este formulario para hacernos llegar sus comentarios,
