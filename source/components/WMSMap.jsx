@@ -116,8 +116,8 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
                   fontFamily: "Open Sans",
                   width: "25rem",
                   height: "2.75rem",
-                  backgroundColor: "#F3F6F9",
-                  color: "#101E37",
+                  backgroundColor: getEnv("VITE_COLOR_LIGHT"),
+                  color: getEnv("VITE_COLOR_SECONDARY"),
                 }}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -143,7 +143,7 @@ const WMSMap = ({ showModal, handleCloseModal }) => {
             <p
               className="mt-2 layer-section-container fs-6 p-2 fw-bold "
               style={{
-                color: "#101E37",
+                color: getEnv("VITE_COLOR_SECONDARY"),
                 fontFamily: "Open Sans",
                 fontWeight: "600",
               }}

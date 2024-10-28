@@ -12,7 +12,7 @@ const MyButton = ({ isHovered, setIsHovered }) => {
     textDecoration: "none",
     padding: "8px 16px",
     border: "none",
-    outline: ".125rem solid #101e37",
+    outline: `.125rem solid ${getEnv("VITE_COLOR_SECONDARY")}`,
     outlineOffset: "-.125rem",
     transition: "all 50ms ease-in-out",
     backgroundColor: isHovered ? getEnv("VITE_COLOR_SECONDARY") : "#080F1C",

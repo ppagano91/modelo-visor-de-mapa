@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import "../../styles/layers.css";
-import { Search } from "@mui/icons-material";
 import { getEnv } from "../../config";
 import { MapLayerContext } from "../../context/MapLayerContext";
 import MetadataModal from "../../components/Sidebar/Modals/MetadataModal";
@@ -329,8 +328,8 @@ const Layers = () => {
           )}
           {searching && (
             <div className="text-center">
-              <div className="spinner-border" role="status" style={{color:"#336ACC"}}></div>
-              <span className="d-block layer-section-container fs-6 p-2" style={{color:"#101E37"}}>
+              <div className="spinner-border" role="status" style={{color:getEnv("VITE_COLOR_PRIMARY")}}></div>
+              <span className="d-block layer-section-container fs-6 p-2" style={{color:getEnv("VITE_COLOR_SECONDARY")}}>
                 {" "}
                 Buscando capas...
               </span>

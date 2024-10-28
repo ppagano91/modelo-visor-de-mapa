@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
+import { getEnv } from "../../../config";
 
 const DownloadModal = ({ show, handleClose, downloadProps }) => {
   const [loading, setLoading] = useState(false); // Estado de carga
@@ -74,7 +75,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
                   class="btn btn-secondary btn-sm download-link"
                   onClick={() => handleDownload('vnd.google-earth.kml+xml')}
                   disabled={loading}
-                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:getEnv("VITE_COLOR_SECONDARY"), fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
                 >
                   Descargar
                 </a>
@@ -85,7 +86,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
                   class="btn btn-secondary btn-sm download-link"
                   onClick={() => handleDownload('shp')}
                   disabled={loading}
-                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:getEnv("VITE_COLOR_SECONDARY"), fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
                 >
                   Descargar
                 </a>
@@ -96,7 +97,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
                   class="btn btn-secondary btn-sm download-link"
                   onClick={() => handleDownload('json')}
                   disabled={loading}
-                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:getEnv("VITE_COLOR_SECONDARY"), fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
                 >
                   Descargar
                 </a>

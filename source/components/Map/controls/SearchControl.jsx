@@ -267,7 +267,7 @@ const SearchControl = () => {
                 style={{
                   listStyle: "none",
                   cursor: "pointer",
-                  backgroundColor: selectedIndex === i ? "#336ACC" : "inherit",
+                  backgroundColor: selectedIndex === i ? getEnv("VITE_COLOR_PRIMARY") : "inherit",
                 }}
                 onClick={e => handleMouseDown(e, i)}
                 onMouseOver={() => setSelectedSuggestionIndex(i)}

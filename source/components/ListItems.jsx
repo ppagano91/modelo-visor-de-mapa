@@ -62,7 +62,7 @@ const ListItems = ({ nameSection, color, items }) => {
       layer: layerName,
       style: "",
       legend_options:
-        `fontName:Cantarell Bold;fontSize:11;fontColor:${getEnv("#101E37")};forceLabels:on`,
+        `fontName:Cantarell Bold;fontSize:11;fontColor:${getEnv("VITE_COLOR_SECONDARY")};forceLabels:on`,
     };
     const url = urlBase + L.Util.getParamString(params, "", true);
 
