@@ -83,13 +83,12 @@ const Sidebar = ({ children }) => {
             <NavLink
               to={item.path}
               key={index}
-              title={item.name}
               className={`d-flex align-items-center text-light gap-3 link p-3 ${
                 activeSection === item.path ? "active" : ""
               }`}
               onClick={() => toggle(item.path)}
             >
-              <div className="fs-5 icon" data-direction='right' data-tooltip={item.name}>{item.icon}</div>
+              <div className="fs-5 icon" data-direction='right' data-tooltip={item.name} style={{zIndex:1500}}>{item.icon}</div>
             </NavLink>
           ))}
           {/* {(selectedLayers.length > 0 || showTemporalLayers) && (
@@ -121,7 +120,7 @@ const Sidebar = ({ children }) => {
                 }`}
                 onClick={() => toggle(item.path)}
               >
-                <div className="fs-5 icon" data-direction='right' data-tooltip={item.name}>{item.icon}</div>
+                <div className="fs-5 icon" data-direction='right' data-tooltip={item.name} style={{zIndex:1500}}>{item.icon}</div>
               </NavLink>
             ))}
           </div>

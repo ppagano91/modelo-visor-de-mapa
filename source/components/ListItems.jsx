@@ -116,11 +116,13 @@ const ListItems = ({ nameSection, color, items }) => {
               : null}
           </div>
           {activeLayers && activeLayers.length > 0 && (
-            <Recycling
-              onClick={handleClearSelection}
-              style={{ cursor: "pointer" }}
-              titleAccess="Limpiar capas"
-            ></Recycling>
+            <div className="fs-5 icon" data-direction='right' data-tooltip="Limpiar capas">
+              <Recycling
+                onClick={handleClearSelection}
+                style={{ cursor: "pointer" }}
+                titleAccess="Limpiar capas"
+              ></Recycling>
+            </div>
           )}
         </div>
         <button
@@ -140,7 +142,7 @@ const ListItems = ({ nameSection, color, items }) => {
           return (
             <li key={item.id} className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}>
               <div className="flex-grow-1" style={{ marginRight: "80px" }}>
-                <div className="form-checkbox" style={{ cursor: 'pointer', display: 'flex',}}>
+                <div className="form-checkbox" style={{ cursor: 'pointer', display: 'flex', }}>
                   <input
                     className="form-checkbox-input"
                     type="checkbox"
@@ -154,13 +156,13 @@ const ListItems = ({ nameSection, color, items }) => {
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       maxWidth: '15rem',
-                      color:'#101E37'
+                      color: '#101E37'
                     }}
-                   htmlFor={item.name}>
+                    htmlFor={item.name}>
                     {item.name}
                   </label>
                 </div>
-          
+
                 {isActive && legendURL && (
                   <div
                     style={{ paddingLeft: "20px", backgroundColor: "white" }}
@@ -174,32 +176,34 @@ const ListItems = ({ nameSection, color, items }) => {
                 style={{
                   position: "absolute",
                   right: "0.25rem",
-                  top: "0.75rem",
+                  marginRight:10,
+                  marginTop:-5,
                 }}
               >
-                <PublicOutlined
-                  style={{ height: "1rem", cursor: "pointer" }}
-                  titleAccess="Acceso a Geoservicios"
-                  onClick={e => {
-                    handleGeoserviciosModal(e, item.props);
-                  }}
-                />
-                <InfoOutlined
-                  style={{ height: "1rem", cursor: "pointer" }}
-                  tooltip="Metadatos"
-                  titleAccess="Metadatos"
-                  onClick={e => {
-                    handleMetadataModal(e, item.metadata);
-                  }}
-                />
-                <FileDownloadRounded
-                  style={{ height: "1rem", cursor: "pointer" }}
-                  tooltip="Descargar Geoservicios"
-                  titleAccess="Descargar Geoservicios"
-                  onClick={e => {
-                    handleModal(e, item.props);
-                  }}
-                />
+                <span data-direction='top-left' data-tooltip="Acceso a Geoservicios" style={{zIndex:1500}}>
+                  <PublicOutlined
+                    style={{ height: "1rem", cursor: "pointer" }}
+                    onClick={e => {
+                      handleGeoserviciosModal(e, item.props);
+                    }}
+                  />
+                </span>
+                <span data-direction='top-left' data-tooltip="Metadatos" style={{zIndex:1500}}>
+                  <InfoOutlined
+                    style={{ height: "1rem", cursor: "pointer" }}
+                    onClick={e => {
+                      handleMetadataModal(e, item.metadata);
+                    }}
+                  />
+                </span>
+                <span data-direction='top-left' data-tooltip="Descargar Geoservicios" style={{zIndex:1500, marginTop:2}}>
+                  <FileDownloadRounded
+                    style={{ height: "1rem", cursor: "pointer" }}
+                    onClick={e => {
+                      handleModal(e, item.props);
+                    }}
+                  />
+                </span>
               </div>
             </li>
           );

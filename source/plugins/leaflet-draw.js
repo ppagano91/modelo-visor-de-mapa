@@ -1815,17 +1815,29 @@
             return /iPad|iPhone|iPod/.test(navigator.userAgent) && !t.MSStream
         },
         _createButton: function(t) {
-            var e = L.DomUtil.create("a", t.className || "", t.container)
-              , i = L.DomUtil.create("span", "sr-only", t.container);
-            e.href = "#",
-            e.appendChild(i),
-            t.title && (e.title = t.title,
-            i.innerHTML = t.title),
-            t.text && (e.innerHTML = t.text,
-            i.innerHTML = t.text);
+            var e = L.DomUtil.create("a", t.className || "", t.container),
+                i = L.DomUtil.create("span", "sr-only", t.container);
+            e.href = "#";
+            e.appendChild(i);
+            if (t.title) {
+                i.innerHTML = t.title;
+                e.setAttribute("data-tooltip", t.title);
+                e.setAttribute("data-direction", t.tooltipDirection || "left");
+            }
+            if (t.text) {
+                e.innerHTML = t.text;
+                i.innerHTML = t.text;
+            }
+            // Detectar evento en iOS
             var o = this._detectIOS() ? "touchstart" : "click";
-            return L.DomEvent.on(e, "click", L.DomEvent.stopPropagation).on(e, "mousedown", L.DomEvent.stopPropagation).on(e, "dblclick", L.DomEvent.stopPropagation).on(e, "touchstart", L.DomEvent.stopPropagation).on(e, "click", L.DomEvent.preventDefault).on(e, o, t.callback, t.context),
-            e
+            // Configurar eventos
+            L.DomEvent.on(e, "click", L.DomEvent.stopPropagation)
+                      .on(e, "mousedown", L.DomEvent.stopPropagation)
+                      .on(e, "dblclick", L.DomEvent.stopPropagation)
+                      .on(e, "touchstart", L.DomEvent.stopPropagation)
+                      .on(e, "click", L.DomEvent.preventDefault)
+                      .on(e, o, t.callback, t.context);
+            return e;
         },
         _disposeButton: function(t, e) {
             var i = this._detectIOS() ? "touchstart" : "click";
@@ -2093,11 +2105,9 @@
         _checkDisabled: function() {
             var t, e = this.options.featureGroup, i = 0 !== e.getLayers().length;
             this.options.edit && (t = this._modes[L.EditToolbar.Edit.TYPE].button,
-            i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled"),
-            t.setAttribute("title", i ? L.drawLocal.edit.toolbar.buttons.edit : L.drawLocal.edit.toolbar.buttons.editDisabled)),
+            i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled")),
             this.options.remove && (t = this._modes[L.EditToolbar.Delete.TYPE].button,
-            i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled"),
-            t.setAttribute("title", i ? L.drawLocal.edit.toolbar.buttons.remove : L.drawLocal.edit.toolbar.buttons.removeDisabled))
+            i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled"))
         }
     }),
     L.EditToolbar.Edit = L.Handler.extend({

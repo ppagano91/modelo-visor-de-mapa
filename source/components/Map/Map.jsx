@@ -61,10 +61,10 @@ export default function Map() {
     mapRef.current.leafletElement._container.style.left = '0px';
 
     ctx.drawImage(mapRef.current.leafletElement._tilePane, 0, 0);
-    
+
     return canvas.toDataURL();
   };
-  const centerCoords=getEnv("VITE_CENTRO_CABA").split(",")
+  const centerCoords = getEnv("VITE_CENTRO_CABA").split(",")
 
 
   return (
@@ -95,7 +95,7 @@ export default function Map() {
           );
         }
       })}
-      
+
       <WMSControl handleClick={handleShowModal} />
       <WMSMap
         showModal={showModal}
@@ -103,7 +103,7 @@ export default function Map() {
         handleLoadLayer={handleLoadLayer}
         handleSelectLayer={handleSelectLayer}
       />
-      
+
 
       <SearchControl className="search-control leaflet-control" />
       <AddBaseLayerToMap />
@@ -138,7 +138,7 @@ export default function Map() {
             maxZoom={31}
             minZoom={0}
           />
-      </BaseLayer>   
+        </BaseLayer>
         <BaseLayer name="ArgenMap">
           <WMSTileLayer
             url={getEnv("VITE_ARGENMAP")}
@@ -156,9 +156,25 @@ export default function Map() {
         </BaseLayer>
 
       </LayersControl>
+      
+      <CoordinatesControl position="bottomleft" />
+      {/* Div para personalizar el Tooltip en donde quiera */}
+      <div style={{ position: 'relative', width: '100%', height: '93%' }}>
+        
+        <div data-direction='right-bottom' data-tooltip="Mini mapa" style={{
+          height: 35,
+          width: 40,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          zIndex: 1500,
+          opacity: 1,
+          pointerEvents: 'none' // Esto permite que el MiniMap sea interactivo
+        }}>
 
-      <CoordinatesControl position="bottomleft"/>
       <MiniMap position="bottomleft" />
+        </div>
+      </div>
       <ScaleControl position="bottomleft" imperial={false} />
 
       <DrawToolbar />
