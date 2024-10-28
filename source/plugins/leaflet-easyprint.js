@@ -6,7 +6,7 @@ import LOGO from "../assets/images/logo-idecaba.png";
 
 L.Control.EasyPrint = L.Control.extend({
   options: {
-    title: 'Imprimir mapa',
+    title: '',
     position: 'topleft',
     filename: 'map',
     exportOnly: false,
@@ -25,12 +25,15 @@ L.Control.EasyPrint = L.Control.extend({
   onAdd: function () { 
     this.mapContainer = this._map.getContainer();
     
-    var container = L.DomUtil.create('div', 'leaflet-control-easyPrint leaflet-bar leaflet-control');
+    const container = L.DomUtil.create('div', 'leaflet-control-easyPrint leaflet-bar leaflet-control');
     if (!this.options.hidden) {
       this._addCss();
 
+      // Agrega el tooltip personalizado
+      container.setAttribute("data-direction", "left");
+      container.setAttribute("data-tooltip", 'Imprimir Mapa');
+      
       // this._addListeners(container);
-
       var btnClass = 'leaflet-control-easyPrint-button';
       if (this.options.exportOnly) btnClass = btnClass + '-export';
 
@@ -263,7 +266,7 @@ L.Control.EasyPrint = L.Control.extend({
                     justify-content: center;
                     color: black;
                     background-color: ${getEnv("VITE_COLOR_BLANCO")};
-                    border-bottom: .25rem solid ${getEnv("VITE_COLOR_AZUL")};
+                    border-bottom: .25rem solid ${getEnv("VITE_COLOR_PRIMARY")};
                     -webkit-print-color-adjust: exact;
                     print-color-adjust: exact;
                     width: 100%; /* Que el header ocupe todo el ancho */

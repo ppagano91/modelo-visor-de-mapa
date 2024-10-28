@@ -11,7 +11,6 @@ const PrintMapButton = ({ position = "bottomright" }) => {
   useEffect(() => {
     const easyPrint = L.easyPrint({
       printHeader: 'Mapa de la Ciudad de Buenos Aires',
-      title: 'Imprimir mapa',
       position: position || 'bottomright',
       exportOnly: false,
       hideControlContainer: true,

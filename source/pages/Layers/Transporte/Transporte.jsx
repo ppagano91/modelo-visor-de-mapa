@@ -11,13 +11,12 @@ const Transporte = ({ color }) => {
     const fetchData = async () => {
       try {
         const data = Object.keys(hits)
-          .filter(key => key === "transporte")
+          .filter(key => key.toLocaleLowerCase() === "transporte")
           .reduce((obj, key) => {
             obj[key] = hits[key];
             return obj;
           }, {});
-
-        const items = data.transporte.elements.map(element => element);
+          const items = data.transporte.elements.map(element => element);
         setItemsTransporte(items);
       } catch (error) {
         console.error("Error fetching data from Elasticsearch:", error);

@@ -60,35 +60,36 @@ const Layers = () => {
             const layerProps = Array.isArray(doc._source.link)
               ? doc._source.link.find(
                   link =>
-                    link.protocol === "OGC:WMS" &&
+                    link.protocol.includes("OGC:WMS") &&
                     link.function === "information"
                 )
               : null;
-
-            const metadata = Array.isArray(doc._source.link)
+              // console.log(layerProps)
+              
+              const metadata = Array.isArray(doc._source.link)
               ? doc._source.link.find(
-                  link => link.protocol === "WWW:LINK-1.0-http--link"
-                )
+                link => link.protocol === "WWW:LINK-1.0-http--link"
+              )
               : null;
-
-            const groupPublished = Array.isArray(doc._source.groupPublished)
-              ? doc._source.groupPublished
-              : [doc._source.groupPublished];
-
-            const groupPublishedId = Array.isArray(doc._source.groupPublishedId)
+              
+              const groupPublished = Array.isArray(doc._source.groupPublished)
+              ? doc._source.groupPublished.toLowerCase()
+              : [doc._source.groupPublished.toLowerCase()];
+              
+              const groupPublishedId = Array.isArray(doc._source.groupPublishedId)
               ? doc._source.groupPublishedId
               : [doc._source.groupPublishedId];
-
-            // Definimos las opciones a considerar
-            const options = (
-              getEnv("VITE_ELASTICSEARCH_OPCIONES") || elasticsearchOptions
-            )
+              
+              // Definimos las opciones a considerar
+              const options = (
+                getEnv("VITE_ELASTICSEARCH_OPCIONES") || elasticsearchOptions
+              )
               .split(",")
               .map(option => option.trim().toLowerCase());
-
-            // Mapeamos los elementos desglosados por opción que coincida
-            return groupPublished.flatMap((section, index) => {
-              if (options.includes(section)) {
+              
+              // Mapeamos los elementos desglosados por opción que coincida
+              return groupPublished.flatMap((section, index) => {
+                if (options.includes(section)) {
                 return {
                   sectionId: groupPublishedId[index],
                   id: doc._source.metadataIdentifier,
@@ -269,7 +270,7 @@ const Layers = () => {
               style={{
                 fontFamily: "Open Sans",
                 height: "2.75rem",
-                backgroundColor: "#F3F6F9",
+                backgroundColor: getEnv("VITE_COLOR_LIGHT"),
                 color: "black",
               }}
             />
@@ -303,7 +304,7 @@ const Layers = () => {
                     style={{
                       fontWeight: "bold",
 
-                      color: "#101E37",
+                      color: getEnv("VITE_COLOR_SECONDARY"),
                     }}
                   >
                     {section.name}
@@ -314,7 +315,7 @@ const Layers = () => {
                       className=" m-0 p-0 text-normal"
                       style={{
                         fontSize: "0.8rem",
-                        color: "#101E37",
+                        color: getEnv("VITE_COLOR_SECONDARY"),
                         display: "block",
                         textAlign: "justify",
                       }}
@@ -336,10 +337,30 @@ const Layers = () => {
             </div>
           )}
           {!searching && filteredSections.length === 0 && (
-            <div className="text-center">
-              <p className="d-block layer-section-container fs-6 p-2">
-                No se encontraron resultados.
-              </p>
+            <div className="m-2">
+              <div
+                className="alert alert-danger  my-2 py-3"
+                role="alert"
+                style={{
+                  width: "100%",
+                  alignItems: "flex-start",
+                  position: "relative",
+                  fontFamily: "Open Sans",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "Open Sans",
+                    paddingLeft: "2.5rem",
+
+                    justifyContent: "flex-start",
+                    display: "flex",
+                    alignItems: "start",
+                  }}
+                >
+                  No se encontraron resultados.
+                </span>
+              </div>
             </div>
           )}
           {activeSectionName !== null &&

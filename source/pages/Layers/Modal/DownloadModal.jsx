@@ -5,6 +5,7 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
   const [loading, setLoading] = useState(false); // Estado de carga
 
   const handleDownload = (format) => {
+
     setLoading(true); // Iniciar el estado de carga
     const wfsUrl = `${downloadProps.url.replace('/wms?', '/wfs')}`;
     const params = new URLSearchParams({
@@ -40,46 +41,67 @@ const DownloadModal = ({ show, handleClose, downloadProps }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered dialogClassName="modal-sm padding-modal">
-      <Modal.Header className="p-2 fw-bolder px-3">
-        <div className="d-flex justify-content-between align-items-center w-100">
-          <Modal.Title className="h5 fw-bold">Descargas</Modal.Title>
-          <button
-            type="button"
-            className="btn-close btn-close-sm"
-            aria-label="Close"
-            onClick={handleClose}
-          ></button>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      centered
+      dialogClassName="modal-sm"
+    >
+      <Modal.Header className="fw-bolder pb-2" >
+        <div className="d-flex justify-content-between align-items-center w-100"> 
+        <Modal.Title className="h5 fw-bold">
+          Descargas
+        </Modal.Title>
+        <button
+          type="button"
+          className="btn-close"
+          aria-label="Close"
+          onClick={handleClose}
+        ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="d-flex justify-content-around">
+      <Modal.Body className="d-flex justify-content-start">
         {loading ? ( // Mostrar spinner si está cargando
-          <Spinner animation="border" role="status" className="m-auto">
-            <span className="visually-hidden">Preparando archivo...</span>
-          </Spinner>
+          <div className="spinner-border text-primary spinner-border-lg d-flex align-items-center m-auto" role="status">
+            <span class="sr-only">Preparando archivo...</span>
+          </div>
         ) : (
           <>
-            <Button
-              variant="warning fw-medium"
-              onClick={() => handleDownload('vnd.google-earth.kml+xml')}
-              disabled={loading} // Deshabilitar botones mientras se descarga
-            >
-              KML
-            </Button>
-            <Button
-              variant="warning fw-medium"
-              onClick={() => handleDownload('shp')}
-              disabled={loading}
-            >
-              SHP
-            </Button>
-            <Button
-              variant="warning fw-medium"
-              onClick={() => handleDownload('json')}
-              disabled={loading}
-            >
-              JSON
-            </Button>
+            <div className="d-flex flex-column gap-2">
+              <div className="d-flex flex-column gap-2">
+                <span className="fw-bold" style={{fontFamily:"Nunito"}}>KML</span>
+                <a
+                  class="btn btn-secondary btn-sm download-link"
+                  onClick={() => handleDownload('vnd.google-earth.kml+xml')}
+                  disabled={loading}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                >
+                  Descargar
+                </a>
+              </div>
+              <div className="d-flex flex-column gap-2">
+                <span className="fw-bold" style={{fontFamily:"Nunito"}}>SHP</span>
+                <a
+                  class="btn btn-secondary btn-sm download-link"
+                  onClick={() => handleDownload('shp')}
+                  disabled={loading}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                >
+                  Descargar
+                </a>
+              </div>
+              <div className="d-flex flex-column gap-2">
+                <span className="fw-bold" style={{fontFamily:"Nunito"}}>JSON</span>
+                <a
+                  class="btn btn-secondary btn-sm download-link"
+                  onClick={() => handleDownload('json')}
+                  disabled={loading}
+                  style={{fontFamily:"Nunito", fontWeight: "bold", backgroundColor:"#101e37", fontSize:"18px", height:"32px", border:"none", borderRadius:"8px"}}
+                >
+                  Descargar
+                </a>
+              </div>
+            </div>
           </>
         )}
       </Modal.Body>

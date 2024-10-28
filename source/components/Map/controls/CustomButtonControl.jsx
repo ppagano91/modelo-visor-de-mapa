@@ -18,14 +18,15 @@ const CustomButtonControl = ({
     const control = L.Control.extend({
       onAdd: function (map) {
         const element = L.DomUtil.create("div", "leaflet-bar");
-        if (className){
+        
+        element.setAttribute("data-direction", "left");
+        element.setAttribute("data-tooltip", title);
+        if (className) {
           L.DomUtil.addClass(element, className);
         }
         if (iconImage) {
           const img = L.DomUtil.create("a");
           img.src = iconImage;
-          // img.style.width = "90%";
-          // img.style.height = "auto";
           element.appendChild(img);
         }
         if (innerHTML) {
@@ -34,19 +35,14 @@ const CustomButtonControl = ({
         if (iconClassName) {
           const icon = L.DomUtil.create("a", iconClassName);
           Object.assign(icon.style, anchorStyle);
-          
           element.appendChild(icon);
         }
         if (onClickFunction) {
           element.onclick = onClickFunction;
         }
-        if (title) {
-          element.title = title;
-        }
-
         return element;
       },
-      onRemove: function (map) {},
+      onRemove: function (map) { },
     });
 
     const customControl = new control({ position: postion || "bottomright" });
@@ -56,6 +52,7 @@ const CustomButtonControl = ({
       customControl.remove();
     };
   }, [iconImage, onClickFunction, className]);
+
   return null;
 };
 

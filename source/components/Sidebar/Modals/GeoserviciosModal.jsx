@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { AppContext } from "../../../context/AppContext";
 import copy from "../../../assets/images/copy.png"
+import { getEnv } from "../../../config";
 
 const GeoserviciosModal = () => {
   const { geoserviciosModalShow, handleGeoserviciosModalClose, metadata } =
@@ -34,7 +35,6 @@ const GeoserviciosModal = () => {
 
     const hasPermission = await checkClipboardPermissions();
     if (!hasPermission) {
-    // alert("No se tiene permiso para acceder al portapapeles.");
     return;
   }
 
@@ -53,7 +53,7 @@ const GeoserviciosModal = () => {
 
   const renderCopyIcon = key => {
     return copiedStates[key] ? (
-      <span class="badge badge-success ms-3" style={{color:'#101E37', fontWeight:'normal', textTransform: 'none'}}>¡Copiado!</span>
+      <span class="badge badge-success ms-3" style={{color:getEnv("VITE_COLOR_SECONDARY"), fontWeight:'normal', textTransform: 'none'}}>¡Copiado!</span>
     ) : (
       <img src={copy}
         className="text-secondary mx-4"
@@ -63,8 +63,7 @@ const GeoserviciosModal = () => {
     );
   };
 
-  const getTextToCopy = key => {
-    
+  const getTextToCopy = key => {    
     switch (key) {
       case "wms":
         return "https://geoserver-dev.gcba.gob.ar/geoserver/IDECABA/wms";
@@ -86,10 +85,10 @@ const GeoserviciosModal = () => {
       show={geoserviciosModalShow}
       onHide={handleGeoserviciosModalClose}
       centered
-      dialogClassName="modal-l padding-modal"
+      dialogClassName="modal-l m-auto"
       size="lg"
     >
-      <Modal.Header className="p-2 fw-bolder px-3">
+      <Modal.Header className="fw-bolder pb-2" >
         <div className="d-flex justify-content-between align-items-center w-100"> 
         <Modal.Title className="h5 fw-bold">
           Geoservicios
@@ -102,32 +101,31 @@ const GeoserviciosModal = () => {
         ></button>
         </div>
       </Modal.Header>
-      <Modal.Body className="ps-3">        
-        <div className="d-flex">
-              <span className="fw-bold">WMS:</span>
-              <p className="fw-normal block ms-2">
-                {getTextToCopy("wms")}
-              </p>
-              <span>{renderCopyIcon("wms")}</span>
+      <Modal.Body className="">        
+        <div className="d-flex pt-2">
+          <span className="fw-bold">WMS:</span>
+          <p className="fw-normal block ms-2 mb-0">
+            {getTextToCopy("wms")}
+          </p>
+          <span className="d-flex">{renderCopyIcon("wms")}</span>
         </div>
-        <div className="d-flex">
+        <div className="d-flex pt-2">
           <span className="fw-bold">WFS:</span>
-              <p className="fw-normal block ms-2">
-                {getTextToCopy("wfs")}
-              </p>
-              <span>{renderCopyIcon("wfs")}</span>
-          </div>
+          <p className="fw-normal block ms-2 mb-0">
+            {getTextToCopy("wfs")}
+          </p>
+          <span className="d-flex">{renderCopyIcon("wfs")}</span>
+        </div>
 
-          <div className="d-flex">
-            <span className="fw-bold">Nombre de Capa:{" "}</span>
-              
-            <p className="fw-normal block ms-2">{metadata.name && metadata.name.length > 0 ? (
-                metadata.name
-              ) : (
-                "No hay información disponible."
-              )}</p>
-              <span>{renderCopyIcon("layerName")}</span>
-          </div>
+        <div className="d-flex pt-2">
+          <span className="fw-bold">Nombre de Capa:{" "}</span>  
+          <p className="fw-normal block ms-2 mb-0">{metadata.name && metadata.name.length > 0 ? (
+              metadata.name
+            ) : (
+              "No hay información disponible."
+            )}</p>
+            <span className="d-flex">{renderCopyIcon("layerName")}</span>
+        </div>
       </Modal.Body>
     </Modal>
   );

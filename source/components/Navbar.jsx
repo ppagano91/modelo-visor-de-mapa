@@ -9,11 +9,11 @@ const Navbar = () => {
       style={{
         height: "10vh",
         backgroundColor: getEnv("VITE_COLOR_BLANCO"),
-        borderBottom: ".25rem solid " + getEnv("VITE_COLOR_AZUL"),
+        borderBottom: ".25rem solid " + getEnv("VITE_COLOR_PRIMARY"),
       }}
     >
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" target="_blank" href={getEnv("VITE_IDECABA_URL")}>
           <img
             src={LOGO}
             alt="Logo"

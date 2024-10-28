@@ -14,7 +14,7 @@ const LinearMeasureControl = () => {
       show_azimut: false,
       doubleClickSpeed: 500,
       position: "bottomright",
-      title: "Herramienta de Medición"
+      title: " "
     });
     measureControl.addTo(map);
     return () => {
