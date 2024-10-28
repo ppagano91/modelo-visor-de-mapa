@@ -22,7 +22,7 @@ const Alerts = ({ type, message }) => {
   }
   return (
     <div className={`alert alert-${type} w-100 `} role="alert">
-      <span className="pt-1">{message}</span>
+      <span className="pb-1 ">{message}</span>
     </div>
   );
 };
